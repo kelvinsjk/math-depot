@@ -3,9 +3,9 @@
 </script>
 
 <nav class="navbar bg-midnightblue dark:bg-midnightblue-dark text-white font-bold justify-center p-4">
-	<div class="w-full max-w-prose text-lg flex justify-between" data-sveltekit-prefetch>
+	<div class="w-full max-w-prose text-lg flex justify-between" data-sveltekit-preload-data>
 		<a class="text-lg link-hover" href="/">
-			Math Repository
+			Math Depot
 		</a>
 		<div class="flex gap-4 items-center">
 			<div class="hidden sm:block">
