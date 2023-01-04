@@ -21,6 +21,7 @@
       <li><a class="link dark:text-zinc-400" href="/amath/01-quadratics">Unit 1: Quadratic Functions, Equations and Inequalities</a></li>
       <li><a class="link dark:text-zinc-400" href="/amath/02-surds">Unit 2: Surds</a></li>
       <li><a class="link dark:text-zinc-400" href="/amath/03-polynomials">Unit 3: Polynomials, Cubic Equations and Partial Fractions</a></li>
+      <li><a class="link dark:text-zinc-400" href="/amath/04-binomial">Unit 4: Binomial Theorem</a></li>
     </ul>
   <hr>
   <footer class="text-sm">

@@ -20,7 +20,7 @@ const second = new Polynomial([-2, 3]);
 
 // typeset
 const body = `
-	${math(`${num} = (${den})(${quotient}).`, { wrap: true })}
+	${math(`\\frac{${num}}{${den}} = {${quotient}}.`, { wrap: true })}
 `;
 const partB = `${math(`
 	\\frac{${A}}{${den}} + \\frac{${second}}{${quotient}}.
