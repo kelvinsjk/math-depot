@@ -22,7 +22,7 @@ const breadth = area.times(l.conjugate()).times(den.reciprocal());
 const body = `${math(`a=${a},`)}
 	${math(`b=${b}.`)}
 `;
-const partB = `${math(`${breadth} \\textrm{ cm.}`)}`;
+const partB = `${math(`(${breadth}) \\textrm{ cm.}`)}`;
 
 // answer and solution
 const answer: AnswerObject = {
