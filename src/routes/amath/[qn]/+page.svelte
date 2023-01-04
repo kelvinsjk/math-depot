@@ -74,6 +74,7 @@
 				{topic ? topic : topics[0]}:
 			</h3>
 			<div class="grid grid-qns">
+				{#if topic in topicalList}
 				{#each topicalList[topic] as q}
 				{#if q.url===qn}
 				<div class="text-red-700 dark:text-red-400 font-semibold">
@@ -85,6 +86,7 @@
 				</a>
 				{/if}
 				{/each}
+				{/if}
 			</div>
 		</div>
 	</footer>

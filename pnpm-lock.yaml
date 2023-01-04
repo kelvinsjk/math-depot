@@ -13,7 +13,7 @@ specifiers:
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^4.0.0
   mathlifier: ^1.2.0
-  mathlify: ^0.1.18
+  mathlify: ^0.1.21
   postcss: ^8.4.20
   prettier: ^2.8.0
   prettier-plugin-svelte: ^2.8.1
@@ -31,7 +31,7 @@ dependencies:
   autoprefixer: registry.npmjs.org/autoprefixer/10.4.13_postcss@8.4.20
   daisyui: registry.npmjs.org/daisyui/2.46.1_r4gnkvssmvyxmi2wmat5xbx36a
   mathlifier: registry.npmjs.org/mathlifier/1.2.0
-  mathlify: registry.npmjs.org/mathlify/0.1.18
+  mathlify: registry.npmjs.org/mathlify/0.1.21
   postcss: registry.npmjs.org/postcss/8.4.20
   svelte-local-storage-store: registry.npmjs.org/svelte-local-storage-store/0.3.2_svelte@3.55.0
 
@@ -4045,10 +4045,10 @@ packages:
       katex: registry.npmjs.org/katex/0.16.4
     dev: false
 
-  registry.npmjs.org/mathlify/0.1.18:
-    resolution: {integrity: sha512-5TdD4mgodzZ2Yp/mNwiljyYA2W0k40Y8oemM6yahBs+lPke/JrCge7gcTCAS5KAPsWxMsdcHMXXs/BNJ0yWksw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/mathlify/-/mathlify-0.1.18.tgz}
+  registry.npmjs.org/mathlify/0.1.21:
+    resolution: {integrity: sha512-iVe/wvcgf6h15sWoWBAWUTiAZAedUIyL/BMTUG8YcHk1Qzc8CT/bGu5670R8l/HVzNCydAmOepmmI/wY6Vi11Q==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/mathlify/-/mathlify-0.1.21.tgz}
     name: mathlify
-    version: 0.1.18
+    version: 0.1.21
     dev: false
 
   registry.npmjs.org/merge-stream/2.0.0:
