@@ -70,12 +70,13 @@
 			<h2 class="mt-0 dark:text-goldenrod">
 				More solutions
 			</h2>
+			{#each topics ?? [topic] as t}
 			<h3 class="dark:text-zinc-100">
-				{topic ? topic : topics[0]}:
+				{t}:
 			</h3>
 			<div class="grid grid-qns">
-				{#if topic in topicalList}
-				{#each topicalList[topic] as q}
+				{#if t in topicalList}
+				{#each topicalList[t] as q}
 				{#if q.url===qn}
 				<div class="text-red-700 dark:text-red-400 font-semibold">
 					{q.text}
@@ -88,74 +89,9 @@
 				{/each}
 				{/if}
 			</div>
-		</div>
-	</footer>
-	<!--
-	<footer class="p-4 mt-2 bg-goldenrod dark:bg-zinc-800 dark:text-zinc-200">
-		<div class="max-w-prose mx-auto text-lg" data-sveltekit-prefetch>
-			<h2 class="mt-0 dark:text-goldenrod">
-				More solutions
-			</h2>
-			<h3 class="dark:text-zinc-100">
-				From the same year:
-			</h3>
-		-->
-			<!--year-->
-	<!--
-			<div class="flex gap-2 flex-wrap">
-				20{year} Paper 1:
-				{#each yearlyList1 as i}
-					{#if paper==="1" && i===Number(qnNo)}
-					<div class="text-red-700 dark:text-red-400 font-semibold">
-						Q{Number(i)}
-					</div>
-					{:else}
-					<a href={`/${qn.slice(0,3)}1q${qnNos[i-1]}`} class="dark:text-zinc-400">
-						Q{Number(i)}
-					</a>
-					{/if}
-				{/each}
-			</div>
-			<div class="flex gap-2 flex-wrap">
-				20{year} Paper 2:
-				{#each yearlyList2 as i}
-					{#if paper==="2" && i===Number(qnNo)}
-					<div class="text-red-700 dark:text-red-400 font-semibold">
-						Q{Number(i)}
-					</div>
-					{:else}
-					<a href={`/${qn.slice(0,3)}2q${qnNos[i-1]}`} class="dark:text-zinc-400">
-						Q{Number(i)}
-					</a>
-					{/if}
-				{/each}
-			</div>
-		-->
-			<!--topics-->
-		<!--
-			{#if topic !== ''}
-			{#each topicalQns as qnArray,i}
-			<h3 class="dark:text-zinc-100">
-				{topic ? topic : topics[i]}:
-			</h3>
-			<div class="grid grid-qns">
-				{#each qnArray as q}
-					{#if q===qn}
-					<div class="text-red-700 dark:text-red-400 font-semibold">
-						20{q.slice(0,2)} P{q[3]} Q{Number(q.slice(5))}
-					</div>
-					{:else}
-					<a href={`/${q}`} class="dark:text-zinc-400">
-						20{q.slice(0,2)} P{q[3]} Q{Number(q.slice(5))}
-					</a>
-					{/if}
-					{/each}
-				</div>
 			{/each}
-			{/if}
 		</div>
 	</footer>
-	-->
 </div>
 {:else}
 <div class="prose mx-auto py-8">
