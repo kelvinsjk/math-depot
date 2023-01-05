@@ -1,0 +1,17 @@
+export const qns = [
+	{ text: 'N20/I/9', url: '20p1q09' },
+	{ text: 'N19/I/9', url: '19p1q09' },
+	{ text: 'N18/I/9', url: '18p1q09' },
+	{ text: 'N18/II/11', url: '18p2q11' },
+	{ text: 'N17/II/9', url: '17p2q09' },
+	{ text: 'N16/I/8', url: '16p1q08' },
+	{ text: 'N16/II/11', url: '16p2q11' },
+	{ text: 'N14/I/7', url: '14p1q07' },
+	{ text: 'N13/I/10', url: '13p1q10' },
+	{ text: 'N13/II/10', url: '13p2q10' },
+	{ text: 'N20/II/9', url: '20p2q09' },
+	{ text: 'N19/II/6', url: '19p2q06' },
+	{ text: 'N17/I/12', url: '17p1q12' },
+	{ text: 'N15/II/7', url: '15p2q07' },
+	{ text: 'N14/II/10', url: '14p2q10' },
+];
