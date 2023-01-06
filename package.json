@@ -38,8 +38,8 @@
 	"dependencies": {
 		"autoprefixer": "^10.4.13",
 		"daisyui": "^2.46.1",
-		"mathlifier": "^1.2.0",
-		"mathlify": "^0.1.21",
+		"mathlifier": "^1.2.2",
+		"mathlify": "^0.1.24",
 		"postcss": "^8.4.20",
 		"svelte-local-storage-store": "^0.3.2"
 	}
