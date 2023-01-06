@@ -5,6 +5,8 @@ import { qns as qns04 } from './04-binomial/qns';
 import { qns as qns05 } from './05-logarithms/qns';
 import { qns as qns06 } from './06-coordinate/qns';
 import { qns as qns07 } from './07-linear/qns';
+import { qns as qns08 } from './08-trigo-i/qns';
+import { qns as qns09 } from './09-trigo-ii/qns';
 
 export const topicalList: { [key: string]: { text: string; url: string }[] } = {
 	'Quadratic Functions, Equations and Inequalities': qns01,
@@ -14,4 +16,6 @@ export const topicalList: { [key: string]: { text: string; url: string }[] } = {
 	'Exponential and Logarithmic Functions': qns05,
 	'Coordinate Geometry': qns06,
 	'Linear Law': qns07,
+	'Trigonometric Functions and Equations': qns08,
+	'Trigonometric Identities and Formulae': qns09,
 };

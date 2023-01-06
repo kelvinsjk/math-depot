@@ -25,6 +25,8 @@
       <li><a class="link dark:text-zinc-400" href="/amath/05-logarithms">Unit 5: Exponential and Logarithmic Functions</a></li>
       <li><a class="link dark:text-zinc-400" href="/amath/06-coordinate">Unit 6: Coordinate Geometry</a></li>
       <li><a class="link dark:text-zinc-400" href="/amath/07-linear">Unit 7: Linear Law</a></li>
+      <li><a class="link dark:text-zinc-400" href="/amath/08-trigo-i">Unit 8: Trigonometric Functions and Equations</a></li>
+      <li><a class="link dark:text-zinc-400" href="/amath/09-trigo-ii">Unit 9: Trigonometric Identities and Formulae</a></li>
     </ul>
   <hr>
   <footer class="text-sm">
