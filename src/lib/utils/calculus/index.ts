@@ -78,12 +78,20 @@ export class Laurent extends Expression {
 	}
 	subInSurd(x: SquareRoot): Expression {
 		const surds: SquareRoot[] = [];
-		this.poly.coeffs.forEach((a, i) => {
-			surds.push(x.pow(i).times(a));
-		});
+		const polyTerms = this.poly.subInSurd(x).terms;
+		//this.poly.coeffs.forEach((a, i) => {
+		//	surds.push(x.pow(i).times(a));
+		//});
 		this.negCoeffs.forEach((a, i) => {
 			surds.push(new SquareRoot(1, a).divide(x.pow(i + 1)));
 		});
-		return new Expression(...surds);
+		return new Expression(...polyTerms, ...surds);
 	}
+}
+
+export function dydx(y = 'y', x = 'x'): string {
+	return `\\frac{\\mathrm{d}${y}}{\\mathrm{d}${x}}`;
+}
+export function dTwo(y = 'y', x = 'x'): string {
+	return `\\frac{\\mathrm{d}^2${y}}{\\mathrm{d}${x}^2}`;
 }

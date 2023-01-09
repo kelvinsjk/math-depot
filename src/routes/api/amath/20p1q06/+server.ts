@@ -1,7 +1,7 @@
-import { math } from 'mathlifier';
+import { linebreak, math } from 'mathlifier';
 import type { AnswerObject } from '$lib/interfaces';
 import { SquareRoot } from 'mathlify';
-import { Laurent, quotientRule } from '$lib/utils/calculus';
+import { Laurent } from '$lib/utils/calculus';
 
 // x^2 + 4/x^2
 const y = new Laurent([1, 0, 0], [0, 4]);
@@ -19,9 +19,13 @@ const y2 = y.subInSurd(x2);
 const dTwo = dydx.differentiate();
 const dTwo1 = dTwo.subInSurd(x1);
 const dTwo2 = dTwo.subInSurd(x2);
+const max1 = dTwo1.valueOf() > 0 ? 'Minimum point' : 'Maximum point';
+const max2 = dTwo2.valueOf() > 0 ? 'Minimum point' : 'Maximum point';
 
 // typeset
-const body = `${math(`${dTwo1}, ${dTwo2}.`)}`;
+const body = `${max1} ${math(` \\left(${x1}, ${y1}\\right),`)}
+	${linebreak}${max2} ${math(` \\left(${x2}, ${y2}\\right).`)}
+`;
 
 // answer and solution
 const answer: AnswerObject = {
@@ -32,7 +36,7 @@ export async function GET() {
 	return new Response(
 		JSON.stringify({
 			answer,
-			topic: 'Gradients, Derivatives and Differentiation Techniques',
+			topic: 'Applications of Differentiation',
 		}),
 	);
 }
