@@ -32,6 +32,8 @@
       <li><a class="link dark:text-zinc-400" href="/amath/12-differentiation-iii">Unit 12: Differentiation of Trigonometric, Exponential and Logarithmic Functions and their Applications</a></li>
       <li><a class="link dark:text-zinc-400" href="/amath/13-integration-i">Unit 13: Integration</a></li>
       <li><a class="link dark:text-zinc-400" href="/amath/14-integration-ii">Unit 14: Applications of Integration</a></li>
+      <li><a class="link dark:text-zinc-400" href="/amath/15-kinematics">Unit 15: Kinematics</a></li>
+      <li><a class="link dark:text-zinc-400" href="/amath/16-geometry">Unit 16: Proofs in Plane Geometry</a></li>
     </ul>
   <hr>
   <footer class="text-sm">

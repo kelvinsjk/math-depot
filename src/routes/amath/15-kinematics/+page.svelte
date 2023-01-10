@@ -1,15 +1,15 @@
 <script lang="ts">
-  import {qns} from '$lib/topics/amath/14-integration-ii/qns';
+  import {qns} from '$lib/topics/amath/15-kinematics/qns';
 </script>
 
 <svelte:head>
-	<title>Integration II Contents</title>
+	<title>Kinematics Contents</title>
 </svelte:head>
 
 <div class="prose mx-auto">
 	<header class="p-4 pb-8 sm:text-center bg-goldenrod dark:bg-zinc-800">
 		<h1 class="font-serif text-zinc-900 dark:text-goldenrod" id="top">
-			Unit 14: Applications of Integration
+			Unit 15: Kinematics
 		</h1>
     <div class="font-serif text-3xl font-bold subtitle text-zinc-900 dark:text-goldenrod">
 			Contents
