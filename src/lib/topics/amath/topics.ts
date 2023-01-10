@@ -13,6 +13,7 @@ import { qns as qns12 } from './12-differentiation-iii/qns';
 import { qns as qns13 } from './13-integration-i/qns';
 import { qns as qns14 } from './14-integration-ii/qns';
 import { qns as qns15 } from './15-kinematics/qns';
+import { qns as qns16 } from './16-geometry/qns';
 
 export const topicalList: { [key: string]: { text: string; url: string }[] } = {
 	'Quadratic Functions, Equations and Inequalities': qns01,
@@ -31,4 +32,5 @@ export const topicalList: { [key: string]: { text: string; url: string }[] } = {
 	Integration: qns13,
 	'Applications of Integration': qns14,
 	Kinematics: qns15,
+	'Proofs in Plane Geometry': qns16,
 };

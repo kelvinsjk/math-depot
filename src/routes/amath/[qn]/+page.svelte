@@ -2,7 +2,8 @@
 	import type { AnswerObject } from '$lib/interfaces';
 	import type { PageData } from './$types';
 	export let data: PageData;
-	import {topicalList} from '$lib/topics/amath/topics'
+	import {topicalList} from '$lib/topics/amath/topics';
+	import {maxQnNo} from '$lib/years/amath/years';
 	
 	let answer: AnswerObject;
 	let solution: AnswerObject;
@@ -90,6 +91,38 @@
 				{/if}
 			</div>
 			{/each}
+			<div class="flex gap-x-2 flex-wrap mt-4">
+				<div>
+					{`20${year}`} Paper 1:
+				</div>
+			{#each qnNos.slice(0,maxQnNo[year][0]) as qNo}
+				{#if qNo===qnNo && Number(paper)===1}
+				<div class="text-red-700 dark:text-red-400 font-semibold">
+					Q{Number(qNo)}
+				</div>
+				{:else}
+				<a href="/amath/{`${year}p1q${qNo}`}" class="dark:text-zinc-400">
+					Q{Number(qNo)}
+				</a>
+				{/if}
+				{/each}
+			</div>
+			<div class="flex gap-x-2 flex-wrap mt-4">
+				<div>
+					{`20${year}`} Paper 2:
+				</div>
+			{#each qnNos.slice(0,maxQnNo[year][1]) as qNo}
+				{#if qNo===qnNo && Number(paper)===2}
+				<div class="text-red-700 dark:text-red-400 font-semibold">
+					Q{Number(qNo)}
+				</div>
+				{:else}
+				<a href="/amath/{`${year}p2q${qNo}`}" class="dark:text-zinc-400">
+					Q{Number(qNo)}
+				</a>
+				{/if}
+				{/each}
+			</div>
 		</div>
 	</footer>
 </div>
