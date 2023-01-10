@@ -11,6 +11,7 @@ import { qns as qns10 } from './10-differentiation-i/qns';
 import { qns as qns11 } from './11-differentiation-ii/qns';
 import { qns as qns12 } from './12-differentiation-iii/qns';
 import { qns as qns13 } from './13-integration-i/qns';
+import { qns as qns14 } from './14-integration-ii/qns';
 
 export const topicalList: { [key: string]: { text: string; url: string }[] } = {
 	'Quadratic Functions, Equations and Inequalities': qns01,
@@ -27,4 +28,5 @@ export const topicalList: { [key: string]: { text: string; url: string }[] } = {
 	'Differentiation of Trigonometric, Exponential and Logarithmic Functions and their Applications':
 		qns12,
 	Integration: qns13,
+	'Applications of Integration': qns14,
 };
