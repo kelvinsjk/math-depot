@@ -15,6 +15,13 @@
   <h1 class="dark:text-goldenrod">Yearly Listings</h1>
   <h2 class="dark:text-goldenrod">Additional Mathematics</h2>
     <div class="max-w-prose mx-auto text-lg" data-sveltekit-preload-data>
+			<hr>
+			<div>
+				<a href="/amath/2021p2" class="dark:text-zinc-400">
+					2021 Paper 2
+				</a>
+			</div>
+			<hr>
 			{#each years.reverse() as year}
 			<div class="flex gap-x-2 flex-wrap">
 				{`20${year}`} Paper 1:

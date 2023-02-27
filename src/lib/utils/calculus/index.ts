@@ -49,7 +49,8 @@ export class Laurent extends Expression {
 		negCoeffsFrac.forEach((coeff, i) => {
 			const sign = coeff.sign();
 			const xPower = i === 0 ? x : `x^{${i + 1}}`;
-			negativeTerms.push(new Term(sign, `\\frac{${coeff.abs()}}{${xPower}}`));
+			const xPowerTerm = new Term(coeff.den, xPower);
+			negativeTerms.push(new Term(sign, `\\frac{${coeff.abs().num}}{${xPowerTerm}}`));
 		});
 		super(...poly.terms, ...negativeTerms);
 		this.poly = poly;

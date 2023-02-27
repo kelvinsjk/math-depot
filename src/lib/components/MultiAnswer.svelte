@@ -1,16 +1,22 @@
 <script lang="ts">
 	import type { AnswerObject } from '../interfaces';
-	export let answer: AnswerObject;
+	import QnNavContents from '$lib/components/QnNavContents.svelte';
+	export let answers: AnswerObject[];
 	export let questionMode = false;
 	import { qnLabels } from './qnLabels';
 	const answersName = questionMode ? 'question' : 'answer';
 </script>
 
 <section class="flex flex-col gap-4" aria-labelledby="answers" class:leading-6={questionMode}>
-	<h2 id={answersName} class:mt-4={!questionMode} class="dark:text-zinc-300">
-		{questionMode ? 'Question' : 'Answers'}
-	</h2>
+	
 	<div class="parts grid gap-y-4 answer-container">
+		{#each answers as answer,i}
+		<div class="font-semibold" id={`qn-${i+1}`}>
+			{i+1}
+			{#if !("parts" in answer)}
+			.
+			{/if}
+		</div>
 		{#if answer['body'] !== undefined}
 			<div class="pl-2 col-span-2">
 				{@html answer.body}
@@ -19,13 +25,16 @@
 		<!--parts-->
 		{#if answer['parts'] !== undefined}
 			{#each answer.parts as part, i}
-				{#if part['body'] !== undefined}
-					{#if questionMode}
-					<div class="font-semibold text-right dark:text-zinc-300">
+			{#if part['body'] !== undefined}
+				{#if i !== 0}
+					<div class="spacer-part"></div>
+				{/if}
+					{#if !questionMode}
+					<div class="font-semibold text-center dark:text-zinc-300">
 						({qnLabels[answer['partLabelType'] ?? 'alpha'][part['partNo'] ?? i + 1]})
 					</div>
 					{:else}
-					<a class="font-semibold text-right dark:text-zinc-300" href={`#solutions-part-${part['partNo'] ?? i + 1}`}>
+					<a class="font-semibold text-center dark:text-zinc-300" href={`#solutions-part-${part['partNo'] ?? i + 1}`}>
 						({qnLabels[answer['partLabelType'] ?? 'alpha'][part['partNo'] ?? i + 1]})
 					</a>
 					{/if}
@@ -35,13 +44,16 @@
 				{/if}
 				<!--subparts-->
 				{#if part['parts'] !== undefined}
-					{#each part.parts as subpart, j}
-						{#if questionMode}
-						<div class="font-semibold text-right dark:text-zinc-300">
+				{#each part.parts as subpart, j}
+						{#if (i !== 0 || j!==0)}
+							<div class="spacer-subpart"></div>
+						{/if}
+						{#if !questionMode}
+						<div class="font-semibold text-center dark:text-zinc-300">
 							({qnLabels[answer['partLabelType'] ?? 'alpha'][part['partNo'] ?? i + 1]}{qnLabels[part['partLabelType'] ?? 'roman'][subpart['partNo'] ?? j + 1]})
 						</div>
 						{:else}
-						<a class="font-semibold text-right dark:text-zinc-300" href={`#solutions-subpart-${subpart['partNo'] ?? j + 1}`}>
+						<a class="font-semibold text-center dark:text-zinc-300" href={`#solutions-subpart-${subpart['partNo'] ?? j + 1}`}>
 							({qnLabels[answer['partLabelType'] ?? 'alpha'][part['partNo'] ?? i + 1]}{qnLabels[part['partLabelType'] ?? 'roman'][subpart['partNo'] ?? j + 1]})
 						</a>
 						{/if}
@@ -52,22 +64,27 @@
 				{/if}
 			{/each}
 		{/if}
+		<div class="col-span-3 full-bleed bg-goldenrod dark:bg-zinc-800 py-2">
+			<QnNavContents length={answers.length} linkToTop={true}/>
+		</div>
+		{/each}
 	</div>
 	<slot />
-	{#if !questionMode}
-	<div>
-		<a href="#top" class="dark:text-zinc-100">Back to top &#9650;</a>
-	</div>
-	{/if}
+	
 </section>
 
 <style>
 	.parts {
-		grid-template-columns: 4ch calc(100% - 4ch);
+		grid-template-columns: 3ch 4ch calc(100% - 7ch);
 	}
 	section {
 		margin-left: auto;
 		margin-right: auto;
 		margin-bottom: 1rem;
+	}
+	.full-bleed {
+		width: 100vw;
+		margin-left: 50%;
+		transform: translateX(-50%);
 	}
 </style>
