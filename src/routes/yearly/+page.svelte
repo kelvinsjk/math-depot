@@ -17,6 +17,11 @@
     <div class="max-w-prose mx-auto text-lg" data-sveltekit-preload-data>
 			<hr>
 			<div>
+				<a href="/amath/2021p1" class="dark:text-zinc-400">
+					2021 Paper 1
+				</a>
+			</div>
+			<div>
 				<a href="/amath/2021p2" class="dark:text-zinc-400">
 					2021 Paper 2
 				</a>
