@@ -2,8 +2,8 @@
 	import type { AnswerObject } from '$lib/interfaces';
 	import type { PageData } from './$types';
 	export let data: PageData;
-	import {topicalList} from '$lib/topics/amath/topics';
-	import {maxQnNo} from '$lib/years/amath/years';
+	//import {topicalList} from '$lib/topics/amath/topics';
+	//import {maxQnNo} from '$lib/years/amath/years';
 	
 	let answer: AnswerObject;
 	let solution: AnswerObject;
@@ -14,19 +14,18 @@
 	({answer, solution, qn, topic, topics, qnFound} = data);
 	$: ({answer, solution, qn, topic, topics, qnFound} = data);
 	import Answer from '$lib/components/Answer.svelte';
-	let year: string, paper: string, qnNo: string, yearlyList1: number[], yearlyList2: number[], topicalQns: string | string[], title: string;
+	let year: string, qnNo: string, yearlyList1: number[], yearlyList2: number[], topicalQns: string | string[], title: string;
 	//import {yearlyLists, contents} from '$lib/nav/contents';
 	const qnNos = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15'];
 	//import { topic as topicNo, year as yearNo } from '$lib/stores/topicAndYear';
 	//const topicList = Object.keys(contents);
 	$: {
 		year =  qn.slice(0, 2);
-		paper = qn[3];
-		qnNo =  qn.slice(5);
+		qnNo =  qn.slice(3);
 	//	//yearlyList1 = yearlyLists[qn.slice(0,3)+'1'];
 	//	//yearlyList2 = yearlyLists[qn.slice(0,3)+'2'];
 	//	topicalQns = topic || topic==='' ? [contents[topic] ?? ['a']] : topics?.map(topic => contents[topic]);
-		title = qnFound ? `20${year} P${paper} Q${Number(qnNo)}${topics ? `: ${topics[0]}, ${topics[1]}` : `: ${topic}`}` : 'Solution Not Found';
+		title = qnFound ? `20${year} Q${Number(qnNo)}${topics ? `: ${topics[0]}, ${topics[1]}` : `: ${topic}`}` : 'Solution Not Found';
 	//	if (qnFound){
 	//		yearNo.set(Number(year));
 	//		topicNo.set(topicList.indexOf(topic ? topic : topics[0]));
@@ -37,8 +36,8 @@
 <svelte:head>
 	<title>{title}</title>
 	<meta name="description" content=
-	{`Answers and solutions for O Level Additional Mathematics
-		20${year} Paper ${paper} Question 
+	{`Answers and solutions for A Level H1 Mathematics
+		20${year} Question 
 		${Number(qnNo)}${topics ? `: ${topics[0]}, ${topics[1]}` : `: ${topic}`}
 	`} 
 	/>
@@ -48,7 +47,7 @@
 <div class="prose mx-auto">
 	<header class="p-4 pb-8 sm:text-center bg-goldenrod dark:bg-zinc-800">
 		<h1 class="font-serif text-zinc-900 dark:text-goldenrod" id="top">
-			20{year} Additional Mathematics Paper {paper} Question {Number(qnNo)}
+			20{year} H1 Mathematics Question {Number(qnNo)}
 		</h1>
 		{#if topic}
 		<div class="font-serif text-3xl font-bold subtitle text-zinc-900 dark:text-goldenrod">
@@ -66,7 +65,7 @@
 		<Answer {answer} />
 		<!--<Answer answer={solution} solutionMode />-->
 	</main>
-	<footer class="p-4 mt-2 bg-goldenrod dark:bg-zinc-800 dark:text-zinc-200">
+	<!--<footer class="p-4 mt-2 bg-goldenrod dark:bg-zinc-800 dark:text-zinc-200">
 		<div class="max-w-prose mx-auto text-lg" data-sveltekit-preload-data>
 			<h2 class="mt-0 dark:text-goldenrod">
 				More solutions
@@ -125,11 +124,12 @@
 			</div>
 		</div>
 	</footer>
+-->
 </div>
 {:else}
 <div class="prose mx-auto py-8">
 	<h1 class="dark:text-goldenrod">
-		Solution not found<br>🚧 20{year} P{paper} Q{Number(qnNo)} 🚧
+		Solution not found<br>🚧 20{year} Q{Number(qnNo)} 🚧
 	</h1>
 	
 <div class="alert shadow-lg">
