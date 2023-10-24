@@ -68,3 +68,19 @@ input[type='number'] {
 /* .dark .answer-container svg {
 	background-color: #a2a09e;
 } */
+
+.answers ul:first-child,
+.solutions ul:first-child,
+.answers ul li:first-child,
+.solutions ul li:first-child,
+.answers p:first-child,
+.solutions p:first-child {
+	margin-top: 0;
+}
+
+.mathlifier-display {
+	margin-block: 1.5rem;
+}
+.mathlifier-display:first-child {
+	margin-top: 0;
+}
