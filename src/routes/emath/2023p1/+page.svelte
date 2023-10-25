@@ -8,6 +8,13 @@
 
 <svelte:head>
 	<title>{title}</title>
+	<meta property="og:title" content={`2023 Elementary Mathematics Paper 1`} />
+	<meta property="og:description" content={`Digital-friendly solutions`} />
+	<meta property="og:site_name" content={`Math Depot`} />
+	<meta
+		name="description"
+		content={`Digital-friendly solutions for O Level E Math 2023 Paper 1`}
+	/>
 </svelte:head>
 
 <div class="prose mx-auto">
