@@ -444,7 +444,7 @@ export const qn16: () => AnswerObject = () => {
 export const qn17: () => AnswerObject = () => {
 	const partA = `<div><img style="display:block;margin:auto;max-width:250px" alt="q1-diagram" src="/Venn_2023p1q17a.png" loading="lazy" /></div>`;
 	const body = mathlify`
-		$${`(A \\cup B)' \\cup (A \\cap B)`} ${qed}
+		$${`(C \\cup D)' \\cup (C \\cap D)`} ${qed}
 	`;
 	return {
 		parts: [{ body: partA }, { body }],
