@@ -1,4 +1,4 @@
-import { mathlifyGen } from '../core/';
+import { mathlifyGen } from '../core';
 
 const modules = {
 	math,
@@ -7,6 +7,16 @@ const modules = {
 	b,
 	br,
 	hr,
+	mathEnvs: {
+		equation: mathEnvironmentGenerator('equation'),
+		align: mathEnvironmentGenerator('align'),
+		gather: mathEnvironmentGenerator('gather'),
+		alignat: alignatGenerator(false),
+		equationStar: mathEnvironmentGenerator('equation*'),
+		alignStar: mathEnvironmentGenerator('align*'),
+		gatherStar: mathEnvironmentGenerator('gather*'),
+		alignatStar: alignatGenerator(true),
+	},
 };
 
 /**
@@ -35,4 +45,15 @@ function br(): string {
 }
 function hr(): string {
 	return `\\hrule `;
+}
+function mathEnvironmentGenerator(env: string): (x: string) => string {
+	return (x: string) => {
+		return `\\begin{${env}}${x}\n\\end{${env}}`;
+	};
+}
+function alignatGenerator(star: boolean): (eqnColumns: number, x: string) => string {
+	return (eqnColumns: number, x: string) => {
+		const asterisk = star ? '*' : '';
+		return `\\begin{alignat${asterisk}}{${eqnColumns}}${x}\n\\end{alignat${asterisk}}`;
+	};
 }
