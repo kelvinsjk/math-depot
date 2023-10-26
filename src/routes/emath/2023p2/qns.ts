@@ -126,10 +126,17 @@ export const qn2: () => AnswerObject = () => {
 
 	// d
 	const denA = new Polynomial([2, -1]);
-	const denB = new Polynomial([-1, 4]);
+	const denB = new Polynomial([4, -1], { ascending: true });
 	const numA = new Polynomial([1, 0]).times(denB).minus(denA.times(6));
-	const [x1, x2] = solveQuadraticNumerical(numA, denA.times(denB).times(3));
+	const poly = numA.minus(denA.times(denB).times(3));
+	const [x1, x2] = solveQuadraticNumerical(poly);
 	const partD = mathlify`
+		~${'align*'}
+		\\frac{x}{${denA}} - \\frac{6}{${denB}} &= 3 \\\\
+		\\frac{x(${denB}) - 6(${denA})}{(${denA})(${denB})} &= 3 \\\\
+		${numA} &= 3(${denA.times(denB)}) \\\\
+		${poly} &= 0
+
 		$${`x = ${x1.toFixed(2)} \\textrm{ or } ${x2.toFixed(2)}`} ${qed}
 	`;
 	return {
