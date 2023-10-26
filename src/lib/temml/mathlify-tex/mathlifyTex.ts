@@ -1,4 +1,4 @@
-import { mathlifyGen } from '../core';
+import { mathlifyGen } from '../core/mathlifyGen';
 
 const modules = {
 	math,

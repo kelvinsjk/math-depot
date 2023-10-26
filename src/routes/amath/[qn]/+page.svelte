@@ -101,7 +101,7 @@
 			{/if}
 		</main>
 		<footer class="p-4 mt-2 bg-goldenrod dark:bg-zinc-800 dark:text-zinc-200">
-			<div class="max-w-prose mx-auto text-lg" data-sveltekit-preload-data>
+			<div class="max-w-prose mx-auto px-4" data-sveltekit-preload-data>
 				<h2 class="mt-0 dark:text-goldenrod">More solutions</h2>
 				{#each topics ?? [topic] as t}
 					<h3 class="dark:text-zinc-100">

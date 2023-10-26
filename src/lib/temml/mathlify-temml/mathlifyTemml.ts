@@ -1,4 +1,4 @@
-import { mathlifyGen, type Modules } from '../core';
+import { mathlifyGen, type Modules } from '../core/mathlifyGen';
 import temml from 'temml';
 import type { Options } from 'temml';
 
@@ -11,21 +11,24 @@ const modules: Modules = {
 	hr: () => `<hr />`,
 	postProcess: (x: string) => {
 		// paragraphing
-		let pTagged = x.replace(/\r?\n[ \t]*\r?\n[ \t]*(?![ \t]*<(p|div))/g, '<p>');
-		if (!pTagged.trim().startsWith('<p>') && !pTagged.trim().startsWith('<div>')) {
+		let pTagged = x.replace(/\r?\n[ \t\r\n]*\r?\n[ \t]*(?![ \t]*<(p|div))/g, '<p>');
+		if (!pTagged.trim().startsWith('<p') && !pTagged.trim().startsWith('<div')) {
 			pTagged = `<p>${pTagged}`;
 		}
 		return pTagged;
 	},
 	mathEnvs: {
-		equation: (x: string, options?: Options) => display(insertEnv('equation', x), options),
+		equation: (x: string, options?: Options) =>
+			display(insertEnv('equation', x), options),
 		align: (x: string, options?: Options) => display(insertEnv('align', x), options),
 		gather: (x: string, options?: Options) => display(insertEnv('gather', x), options),
 		alignat: (eqnColumns: number, x: string, options?: Options) =>
 			display(insertEnv('alignat', x, `{${eqnColumns}}`), options),
-		equationStar: (x: string, options?: Options) => display(insertEnv('equation*', x), options),
+		equationStar: (x: string, options?: Options) =>
+			display(insertEnv('equation*', x), options),
 		alignStar: (x: string, options?: Options) => display(insertEnv('align*', x), options),
-		gatherStar: (x: string, options?: Options) => display(insertEnv('gather*', x), options),
+		gatherStar: (x: string, options?: Options) =>
+			display(insertEnv('gather*', x), options),
 		alignatStar: (eqnColumns: number, x: string, options?: Options) =>
 			display(insertEnv('alignat*', x, `{${eqnColumns}}`), options),
 	},

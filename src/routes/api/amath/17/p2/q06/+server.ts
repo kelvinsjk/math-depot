@@ -1,43 +1,127 @@
-import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { Polynomial, factorizeQuadratic } from 'mathlify';
+import { EquationWorking, xPolynomial, Expression, type Fraction } from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
+import { or } from '$lib/typesetting';
+
+const answer = new Answer();
+
+const b = new Expression([2, 'm'], 1);
+const y = new xPolynomial([9, b, [1, 'c']]);
+const line = new xPolynomial(['m', 'c']);
+let m: Fraction;
+let eqn: xPolynomial;
 
 // part a
-const a = new Polynomial([9]);
-const b = new Polynomial([2, 1]).minus(new Polynomial(1));
-const c1 = new Polynomial([1]);
-const discriminant = b.square().minus(a.times(c1).times(4));
-const cSolns = factorizeQuadratic(discriminant);
-const [m1, m2] = cSolns[2];
-const m = m1.isGreaterThan(0) ? m1 : m2;
+{
+	const working = new EquationWorking(y, line);
+	working.rhsZero();
+	const lhs = working.lhs as xPolynomial;
+	eqn = lhs;
+	const [c, b, a] = lhs.coeffs;
+	const d = lhs.quadraticDiscriminant();
+
+	const working2 = new EquationWorking(d, 0, { aligned: true });
+	const [m1, m2] = working2.factorizeQuadratic();
+	m = m2;
+
+	const soln = mathlify`
+		Equating the curve and the line,
+		~${'gather*'}
+		${working}
+
+		Since the line is a tangent to the curve,
+		~${'align*'}
+		\\text{discriminant} &= 0 \\\\
+		(${b})^2 - 4(${a})(${c}) &= 0 \\\\
+		${working2}
+
+		$${`m=${m1}`} ${or} ${`m=${m2}`}
+
+		Hence the positive value of ${`m=${m2} ${qed}`}
+	`;
+
+	const ans = mathlify`
+		${`m=${m2}`}.
+	`;
+	answer.addPart(ans, soln);
+}
 
 // part b
-const yMinusC = new Polynomial([9, m.times(2).plus(1), 1]);
-const c = yMinusC.subIn(-2).negative().plus(19);
-const quad = yMinusC.minus(new Polynomial(m));
-const xSolns = factorizeQuadratic(quad);
-const [x] = xSolns[2];
-const y = yMinusC.subIn(x).plus(c);
+{
+	const x0 = -2;
+	const y0 = 19;
 
-// typeset
-const aAns = `${math(`m=${m}.`)}`;
-const bAns = `${math(`\\left( ${x}, ${y} \\right).`)}`;
-const cAns = `${math(`L`)} is parallel to the ${math(`y`)}-axis.`;
+	const xPoly = y.subIntoCoeffs({ m }) as xPolynomial;
+	const rhs = xPoly.subIntoVariable(x0);
 
-// answer and solution
-const answer: AnswerObject = {
-	parts: [{ body: aAns }, { body: bAns }, { body: cAns }],
-	partLabelType: 'roman',
-};
+	const working = new EquationWorking(y0, rhs, { aligned: true });
+	const c = working.solveLinear();
+
+	const pEqn = eqn.subIntoCoeffs({ m });
+	const working2 = new EquationWorking(pEqn, 0);
+	const [xP] = working2.factorizeQuadratic();
+	const yP = y.subIntoCoeffs({ m, c }).subIn(xP);
+
+	const soln = mathlify`
+		Substituting ${`m=${m}`} 
+		into the equation of the curve,
+		$${`y= ${y.subIntoCoeffs({ m })}`}
+
+		When ${`x={${x0}}`},
+		${`y = ${y0}`}
+		~${'align*'}
+		${y0} &= ${y.subIntoCoeffs({ m }).replaceXWith(`({${x0}})`)} \\\\
+		${working}
+
+		At point ${'P,'}
+		$${eqn}=0
+
+		Substituting ${`m=${m}`},
+		~${'gather*'}
+		${working2} \\\\
+		x = {${xP}}
+
+		When ${`x={${xP}}`},
+		~${'align*'}
+		y &= mx + c \\\\
+		&= ${m} \\left({${xP}}\\right) + ${c} \\\\
+		&= ${yP}
+
+	Hence the coordinates of of ${'P'}
+	are
+	${`\\displaystyle \\left( {${xP}}, {${yP}} \\right) ${qed}`}
+	`;
+
+	const ans = mathlify`
+		${`\\left( {${xP}}, {${yP}} \\right)`}.
+	`;
+	answer.addPart(ans, soln);
+}
+
+// part c
+{
+	const soln = mathlify`
+		${'L'}
+		is a vertical line parallel to the
+		${'x'}\\text{-axis} ${qed}
+	`;
+
+	const ans = mathlify`
+		${'L'}
+		is a vertical line parallel to the
+		${'x'}\\text{-axis}.
+	`;
+	answer.addPart(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Quadratic Functions, Equations and Inequalities',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.quadratics,
 		}),
 	);
 }

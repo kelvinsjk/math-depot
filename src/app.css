@@ -78,9 +78,20 @@ input[type='number'] {
 	margin-top: 0;
 }
 
+.answers p:last-child {
+	margin-bottom: 0;
+}
+
 .mathlifier-display {
-	margin-block: 1.5rem;
+	margin-block: 1.25rem;
 }
 .mathlifier-display:first-child {
 	margin-top: 0;
+}
+math {
+	font-size: 1.2em;
+	color: hsl(var(--bc));
+}
+.dark math {
+	color: rgb(245, 245, 244);
 }

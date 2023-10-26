@@ -1,30 +1,53 @@
-import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { Polynomial, factorizeQuadratic } from 'mathlify';
+import { Polynomial, InequalityWorking, ExpressionProduct } from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed, or } from '$lib/typesetting';
+import { Topics } from '../../../topics';
+
+const answer = new Answer();
 
 // part a
-const y1 = new Polynomial([2, 1]).times(15);
-const y2 = new Polynomial([-2, 19, 0]);
-const quad = y1.minus(y2);
-const aSolns = factorizeQuadratic(quad);
-const [x1, x2] = aSolns[2];
+{
+	const lhs1 = 15;
+	const lhs2 = new Polynomial([1, 2], { ascending: true });
+	const rhs1 = new Polynomial([0, 1], { ascending: true });
+	const rhs2 = new Polynomial([19, -2], { ascending: true });
+	const lhs = new ExpressionProduct(lhs1, lhs2);
+	const rhs = new ExpressionProduct(rhs1, rhs2);
 
-// typeset
-const aAns = `${math(`x \\leq ${x1}`)} or ${math(`x \\geq ${x2}.`)}`;
+	const working = new InequalityWorking(lhs, rhs, { sign: '\\geq' });
+	working.expand();
+	working.rhsZero({ hide: true });
+	working.changeAscending(false);
+	const roots = working.factorizeQuadratic();
+	//const [x1, x2] = working.factorizeQuadratic();
 
-// answer and solution
-const answer: AnswerObject = {
-	parts: [{ body: aAns }],
-};
+	const soln = mathlify`
+	~${'gather*'}
+	${working}\\\\
+	${roots[0]} ${qed} ${or} ${roots[1]} ${qed}
+	`;
+
+	const ans = mathlify`
+		${roots[0]}
+		or ${roots[1]}.
+	`;
+	answer.addPart(ans, soln);
+}
+
+// part b
+{
+	const soln = 'Out of syllabus.';
+	const ans = soln;
+	answer.addPart(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Quadratic Functions, Equations and Inequalities',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.quadratics,
 		}),
 	);
 }

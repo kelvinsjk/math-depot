@@ -1,4 +1,4 @@
-import { mathlifyTex } from './index';
+import { mathlifyTex } from './mathlifyTex';
 import { expect, test } from 'vitest';
 
 const tex = mathlifyTex`
