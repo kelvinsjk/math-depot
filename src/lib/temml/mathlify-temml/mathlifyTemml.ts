@@ -12,7 +12,7 @@ const modules: Modules = {
 	postProcess: (x: string) => {
 		// paragraphing
 		let pTagged = x.replace(/\r?\n[ \t\r\n]*\r?\n[ \t]*(?![ \t]*<(p|div))/g, '<p>');
-		if (!pTagged.trim().startsWith('<p') && !pTagged.trim().startsWith('<div')) {
+		if (!pTagged.trim().startsWith('<')) {
 			pTagged = `<p>${pTagged}`;
 		}
 		return pTagged;

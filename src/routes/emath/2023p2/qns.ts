@@ -1,16 +1,14 @@
 import type { AnswerObject } from '$lib/interfaces';
 
 import {
-	Term,
-	RationalTerm,
 	Polynomial,
 	Expression,
 	Fraction,
-	factorizeQuadratic,
 	solveLinear,
 	solveQuadraticNumerical,
 	SLE,
-} from '../2023p1/mathlify-v3/src';
+	EquationWorking,
+} from './mathlify-v3b';
 
 import { mathlify } from '$lib/temml';
 import { Fraction as oFrac } from 'mathlify';
@@ -153,7 +151,12 @@ export const qn2: () => AnswerObject = () => {
 export const qn3: () => AnswerObject = () => {
 	// a
 	const body = mathlify`
-		Show qn
+		~${'align*'}
+		& \\text{Total surface area of hemisphere} \\\\
+		& = 2 \\pi r^2 + \\pi r^2 \\\\
+		& = 3 \\pi r^2 \\\\
+		& = 3 \\pi (3y)^2 \\\\
+		& = 27 \\pi y^2 ${qed}
 	`;
 	// b
 	const partB = mathlify`
@@ -200,12 +203,13 @@ export const qn4: () => AnswerObject = () => {
 
 	// b
 	const partB = mathlify`
-		To be updated
+	<div><img style="display:block;margin:auto;max-width:65vw;max-height:40vh"  alt="q4-graph1" src="/2023p2graph1.png" loading="lazy" /></div>
 	`;
 
 	// ci
 	const partCI = mathlify`
-		To be updated
+	<div><img style="display:block;margin:auto;max-width:65vw;max-height:40vh"  alt="q4-graph2" src="/2023p2graph2.png" loading="lazy" /></div>
+
 	`;
 
 	// cii
@@ -374,29 +378,130 @@ export const qn6: () => AnswerObject = () => {
 export const qn7: () => AnswerObject = () => {
 	// a
 	const body = mathlify`
-			To be updated
+			$${`4\\times 18 = ${4 * 18}`} ${qed}
 		`;
 	// b
-	const partB = mathlify`
-	To be updated
+	const partAII = mathlify`
+		<ul>
+			<li>
+				The teachers take a longer time to travel to school on average because
+				they have a higher median of 36 minutes compared to the students'
+				median time of 28 minutes. ${qed}
+			</li>
+			<li>
+				The distributions of times teachers and teachers take to travel to school 
+				are similar in consistency as they have the same 
+				interquartile range of 18 minutes. ${qed}
+			</li>
+		</ul>
+	`;
+	// b
+	const walk = 8,
+		cycle = 6,
+		total = 24,
+		bus = total - walk - cycle;
+	const pI = new Fraction(bus, total);
+	const pII = pI
+		.times(new Fraction(bus - 1, total - 1))
+		.plus(
+			new Fraction(walk, total)
+				.times(new Fraction(walk - 1, total - 1))
+				.plus(new Fraction(cycle, total).times(new Fraction(cycle - 1, total - 1))),
+		);
+	const noWalk = total - walk;
+	const pIII = new Fraction(walk, total)
+		.times(new Fraction(walk - 1, total - 1))
+		.times(new Fraction(noWalk, total - 2).times(3));
+	const partBI = mathlify`
+		$${`\\frac{${total}-${walk}-${cycle}}{${total}} = ${pI} ${qed}`}
+	`;
+	const partBII = mathlify`
+		~${'align*'}
+		& \\left( \\frac{${bus}}{${total}} \\right)
+		\\left( \\frac{${bus - 1}}{${total - 1}} \\right) +
+		\\left( \\frac{${walk}}{${total}} \\right)
+		\\left( \\frac{${walk - 1}}{${total - 1}} \\right) +
+		\\left( \\frac{${cycle}}{${total}} \\right)
+		\\left( \\frac{${cycle - 1}}{${total - 1}} \\right) \\\\
+		&= ${pII} ${qed}
+	`;
+	const partBIII = mathlify`
+		~${'align*'}
+		& \\left( \\frac{${walk}}{${total}} \\right)
+		\\left( \\frac{${walk - 1}}{${total - 1}} \\right)
+		\\left( \\frac{${noWalk}}{${total - 2}} \\right)
+		\\times 3 \\\\
+		&= ${pIII} ${qed}
 	`;
 	return {
-		parts: [{ body }, { body: partB }],
+		parts: [
+			{ parts: [{ body }, { body: partAII }] },
+			{ parts: [{ body: partBI }, { body: partBII }, { body: partBIII }] },
+		],
 	};
 };
 
 // Question 8
 export const qn8: () => AnswerObject = () => {
 	// a
+	const top = Polynomial.ofDegree(1);
+	const bottom = new Polynomial([1, 16]);
+	const rhs = 204;
+	const working = new EquationWorking(top.plus(bottom), rhs);
+	working.setAligned();
+	const x = working.solveLinear();
+	const left = new Polynomial([1, 7]);
+	const right = new Polynomial([1, 9]);
+	const center = new Polynomial([1, 8]);
 	const body = mathlify`
-			To be updated
+			Let the top number be ${'x'}.
+			@${'@br'}
+			The left number will be ${'x + 7,'}
+			the center number will be ${'x + 8,'}
+			the right number will be ${'x + 9,'}
+			and the bottom number will be ${'x + 16.'}
+
+			~${'align*'}
+			${top} + ${bottom} &= ${rhs} \\\\
+			${working}
+
+			$${''}\\boxed{\\begin{matrix} & ${x} & \\\\ ${left.subIn(x)} & ${center.subIn(
+		x,
+	)} & ${right.subIn(x)} \\\\ 
+				& ${bottom.subIn(x)} & 
+			\\end{matrix}} ${qed} 
 		`;
+	const partAII = mathlify`
+		~${'align*'}
+		& \\text{Difference between products } \\\\
+		& =  (${left}) (${right}) - ${top} (${bottom})\\\\
+		&= ${left.times(right)} - (${top.times(bottom)}) \\\\
+		&= 63 ${qed}
+	`;
 	// b
+	const num = new Polynomial([1, 0, -1], { variable: 'k' });
+	const den = new Polynomial([3, -1], { variable: 'k' });
+	const tk = new Fraction(15, 4);
+	const lhsB = num.times(tk.den);
+	const rhsB = den.times(tk.num);
+	const workingB = new EquationWorking(lhsB, rhsB);
+	workingB.setAligned();
+	workingB.rhsZero();
+	const [k1, k2] = workingB.factorizeQuadratic();
 	const partB = mathlify`
-	To be updated
+		~${'align*'}
+		\\frac{${num}}{${den}} &= ${tk} \\\\
+		${tk.den}(${num}) &= ${tk.num}(${den}) \\\\
+		${workingB}
+
+		$${`k = ${k1} \\text{ (NA)} \\text{ or } k=${k2}`}
+
+		~${'align*'}
+		T_{k+1} &= T_{${k2.plus(1)}} \\\\
+		&= ${num.subIn(k2.plus(1)).divide(den.subIn(k2.plus(1)))} ${qed}
 	`;
 	return {
-		parts: [{ body }, { body: partB }],
+		parts: [{ parts: [{ body }, { body: partAII }] }, { body: partB }],
 	};
 };
 
@@ -404,14 +509,126 @@ export const qn8: () => AnswerObject = () => {
 export const qn9: () => AnswerObject = () => {
 	// a
 	const body = mathlify`
-			To be updated
+			~${'align*'}
+			& \\text{Energy} \\\\
+			&= 165 \\times 5 \\text{ Wh} \\\\
+			&= ${165 * 5} \\text{ Wh} \\\\
+			&= ${(165 * 5) / 1000} \\text{ kWh} ${qed}
 		`;
 	// b
+	const peaks = [4.7, 4.9, 5, 4.7, 4.3, 4.2, 4.3, 4.4, 4.5, 4.4, 3.9, 4];
+	const mean = peaks.reduce((a, b) => a + b, 0) / peaks.length;
 	const partB = mathlify`
-	To be updated
+			~${'align*'}
+			& \\text{Average} \\\\
+			&= \\frac{${peaks.join('+')}}{${peaks.length}} \\\\
+			&= ${mean.toPrecision(3)} ${qed}
+		`;
+	const daily = 3050 / 365;
+	const wattA = 300,
+		wattB = 370,
+		wattC = 390,
+		wattD = 400;
+	const lengthA = 1.46,
+		widthA = 1.05,
+		lengthB = 1.96,
+		widthB = 1,
+		lengthC = 1.98,
+		widthC = 1,
+		lengthD = 1.69,
+		widthD = 1.05;
+	const areas = [
+		Math.ceil((daily * 1000) / (wattA * mean * 0.75)) * lengthA * widthA,
+		Math.ceil((daily * 1000) / (wattB * mean * 0.75)) * lengthB * widthB,
+		Math.ceil((daily * 1000) / (wattC * mean * 0.75)) * lengthC * widthC,
+		Math.ceil((daily * 1000) / (wattD * mean * 0.75)) * lengthD * widthD,
+	];
+	const meanAreas = areas.reduce((a, b) => a + b, 0) / areas.length;
+	const partC = mathlify`
+		We will use the highest cumulative usage of the 4 years to calculate a
+		conservative estimate. That is the usage of 3050 kWh in Year 4.
+
+		~${'align*'}
+		& \\text{Average amount of electricity in one day} \\\\
+		& = \\frac{${3050}}{365} \\text{ kWh} \\\\
+		& = ${daily.toPrecision(5)} \\text{ kWh}
+
+		For type A,
+		~${'align*'}
+		& \\text{Daily watt hours output} \\\\
+		&= ${wattA} \\times ${mean.toPrecision(5)} \\times 75\\% \\\\
+		&= ${wattA * mean * 0.75} \\text{ Wh} \\\\
+		& \\text{Panels needed} \\\\
+		&= \\frac{${daily.toPrecision(5)} \\times 1000}{${wattA * mean * 0.75}} \\\\
+		&= ${((daily * 1000) / (wattA * mean * 0.75)).toPrecision(3)} \\text{ panels} \\\\
+		&= ${Math.ceil((daily * 1000) / (wattA * mean * 0.75))} \\text{ panels (rounded up)} \\\\
+		& \\text{Area needed} \\\\
+		&= ${Math.ceil(
+			(daily * 1000) / (wattA * mean * 0.75),
+		)} \\times ${lengthA} \\times ${widthA} \\\\
+		&= ${Math.ceil((daily * 1000) / (wattA * mean * 0.75)) * lengthA * widthA} \\text{ m}^2
+
+		For type B,
+		~${'align*'}
+		& \\textrm{Daily watt hours output} \\\\
+		&= ${wattB} \\times ${mean.toPrecision(5)} \\times 75\\% \\\\
+		&= ${wattB * mean * 0.75} \\text{ Wh} \\\\
+		& \\text{Panels needed} \\\\
+		&= \\frac{${daily.toPrecision(5)} \\times 1000}{${wattB * mean * 0.75}} \\\\
+		&= ${((daily * 1000) / (wattB * mean * 0.75)).toPrecision(3)} \\text{ panels} \\\\
+		&= ${Math.ceil((daily * 1000) / (wattB * mean * 0.75))} \\text{ panels (rounded up)} \\\\
+		& \\text{Area needed} \\\\
+		&= ${Math.ceil(
+			(daily * 1000) / (wattB * mean * 0.75),
+		)} \\times ${lengthB} \\times ${widthB} \\\\
+		&= ${(Math.ceil((daily * 1000) / (wattB * mean * 0.75)) * lengthB * widthB).toPrecision(
+			5,
+		)} \\text{ m}^2
+
+
+		For type C,
+		~${'align*'}
+		& \\textrm{Daily watt hours output} \\\\
+		&= ${wattC} \\times ${mean.toPrecision(5)} \\times 75\\% \\\\
+		&= ${wattC * mean * 0.75} \\text{ Wh} \\\\
+		& \\text{Panels needed} \\\\
+		&= \\frac{${daily.toPrecision(5)} \\times 1000}{${wattC * mean * 0.75}} \\\\
+		&= ${((daily * 1000) / (wattC * mean * 0.75)).toPrecision(3)} \\text{ panels} \\\\
+		&= ${Math.ceil((daily * 1000) / (wattC * mean * 0.75))} \\text{ panels (rounded up)} \\\\
+		& \\text{Area needed} \\\\
+		&= ${Math.ceil(
+			(daily * 1000) / (wattC * mean * 0.75),
+		)} \\times ${lengthC} \\times ${widthC} \\\\
+		&= ${(Math.ceil((daily * 1000) / (wattC * mean * 0.75)) * lengthC * widthC).toPrecision(
+			5,
+		)} \\text{ m}^2
+
+		For type D,
+		~${'align*'}
+		& \\textrm{Daily watt hours output} \\\\
+		&= ${wattD} \\times ${mean.toPrecision(5)} \\times 75\\% \\\\
+		&= ${wattD * mean * 0.75} \\text{ Wh} \\\\
+		& \\text{Panels needed} \\\\
+		&= \\frac{${daily.toPrecision(5)} \\times 1000}{${wattD * mean * 0.75}} \\\\
+		&= ${((daily * 1000) / (wattD * mean * 0.75)).toPrecision(3)} \\text{ panels} \\\\
+		&= ${Math.ceil((daily * 1000) / (wattD * mean * 0.75))} \\text{ panels (rounded up)} \\\\
+		& \\text{Area needed} \\\\
+		&= ${Math.ceil(
+			(daily * 1000) / (wattD * mean * 0.75),
+		)} \\times ${lengthD} \\times ${widthD} \\\\
+		&= ${(Math.ceil((daily * 1000) / (wattD * mean * 0.75)) * lengthD * widthD).toPrecision(
+			5,
+		)} \\text{ m}^2
+		
+		We will take an average of the 4 calculated areas to give an estimate of
+		the area Chen will need
+		~${'align*'}
+		& \\text{Estimated total area needed} \\\\
+		&= \\frac{${areas.map((x) => x.toPrecision(5)).join('+')}}{${areas.length}} \\\\
+		&= ${meanAreas.toPrecision(3)} \\text{ m}^2 ${qed}
 	`;
 	return {
-		parts: [{ body }, { body: partB }],
+		parts: [{ body }, { body: partB }, { body: partC }],
 	};
 };
 
