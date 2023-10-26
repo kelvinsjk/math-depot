@@ -167,14 +167,14 @@ export const qn3: () => AnswerObject = () => {
 	const vol = 500;
 	const coeff = new Fraction(2, 3).times(3 ** 3);
 	const y3 = new Fraction(vol).divide(coeff);
-	const y = Math.pow(y3.valueOf(), 1 / 3);
+	const y = Math.pow(y3.valueOf() / Math.PI, 1 / 3);
 	const h = (y * 19) / 4;
 	const vol2 = Math.PI * (2 * y) ** 2 * h;
 	const partC = mathlify`
 		~${'gather*'}
-		\\frac{2}{3} \\left( 3y \\right)^3 = 500 \\\\
-		${coeff} y^3 = 500 \\\\
-		y^3 = ${y3} \\\\
+		\\frac{2}{3} \\pi \\left( 3y \\right)^3 = 500 \\\\
+		${coeff} \\pi y^3 = 500 \\\\
+		y^3 = \\frac{250}{9\\pi} \\\\
 		y = ${y.toPrecision(5)}
 
 		$${`h = ${h.toPrecision(5)}`}
