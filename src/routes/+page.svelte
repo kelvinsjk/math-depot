@@ -13,7 +13,12 @@
 		accessible anywhere in a mobile-friendly format.
 	</p>
 	<h2 class="dark:text-goldenrod">Latest</h2>
-	<a href="/emath/2023p1" class="btn btn-secondary">2023 E Math Paper 1</a>
+	<h3>2023 E Math</h3>
+	<div class="join">
+		<a href="/emath/2023p1" class="btn join-item btn-secondary">Paper 1</a>
+		<a href="/emath/2023p2" class="btn join-item btn-primary">Paper 2</a>
+	</div>
+
 	<h2 class="dark:text-goldenrod">Links</h2>
 	<ul class="list-none">
 		<li>
