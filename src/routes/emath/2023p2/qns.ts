@@ -239,6 +239,10 @@ export const qn5: () => AnswerObject = () => {
 	const BOC = 180 - 36 - 90;
 	const BCO = (180 - BOC) / 2;
 	const BAD = 180 - BCO - 43;
+	const r = 8;
+	const arc = ((360 - BOC) / 360) * 2 * Math.PI * r;
+	const BE = r * Math.tan((BOC / 180) * Math.PI);
+	const CE = Math.sqrt(r ** 2 + BE ** 2) - r;
 	const body = mathlify`
 				~${'align*'}
 				\\angle OBE &= 90^\\circ \\text{ (tangent} \\perp \\text{radius)} \\\\
@@ -250,8 +254,29 @@ export const qn5: () => AnswerObject = () => {
 				&= ${BAD}^\\circ ${qed}
 			`;
 	// b
+
 	const partB = mathlify`
-				to be updated
+				~${'align*'}
+				&\\text{Major arc } BADC \\\\
+				&= \\frac{360 - ${BOC}}{360} \\times 2 \\pi (${r}) \\\\
+				&= ${arc.toPrecision(5)}
+
+				~${'align*'}
+				\\tan ${BOC}^\\circ &= \\frac{BE}{${r}} \\\\
+				BE &= ${BE.toPrecision(5)}
+				
+				~${'align*'}
+				& CE \\\\
+				& = \\sqrt{${r}^2 + ${BE.toPrecision(5)}^2} - ${r} \\\\
+				& = ${CE.toPrecision(5)} 
+
+				~${'align*'}
+				& \\text{Perimeter} \\\\
+				&= ${arc.toPrecision(5)} + ${BE.toPrecision(5)} + ${CE.toPrecision(5)} \\\\
+				&= ${(arc + BE + CE).toPrecision(3)} ${qed}
+
+
+
 			`;
 	return {
 		parts: [{ body }, { body: partB }],
