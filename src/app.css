@@ -81,6 +81,8 @@ input[type='number'] {
 .mathlifier-display {
 	margin-block: 1.5rem;
 }
-.mathlifier-display:first-child {
+.mathlifier-display:first-child,
+ul:first-child,
+ul li:first-child {
 	margin-top: 0;
 }
