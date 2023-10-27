@@ -13,10 +13,23 @@
 		accessible anywhere in a mobile-friendly format.
 	</p>
 	<h2 class="dark:text-goldenrod">Latest</h2>
-	<h3>2023 E Math</h3>
-	<div class="join">
-		<a href="/emath/2023p1" class="btn join-item btn-secondary">Paper 1</a>
-		<a href="/emath/2023p2" class="btn join-item btn-primary">Paper 2</a>
+	<h3>2023 O Levels</h3>
+	<div class="flex gap-4">
+		<div>
+			<h4>E Math</h4>
+			<div class="join max-[600px]:join-vertical">
+				<a href="/emath/2023p1" class="btn join-item btn-secondary">Paper 1</a>
+				<a href="/emath/2023p2" class="btn join-item btn-primary">Paper 2</a>
+			</div>
+		</div>
+		<div class="mt-12 divider divider-horizontal" />
+		<div>
+			<h4>A Math</h4>
+			<div class="join max-[600px]:join-vertical">
+				<a href="/amath/2023p1" class="btn join-item btn-secondary">Paper 1</a>
+				<a href="/emath/2023p2" class="btn join-item btn-primary btn-disabled">Paper 2</a>
+			</div>
+		</div>
 	</div>
 
 	<h2 class="dark:text-goldenrod">Links</h2>
