@@ -27,6 +27,7 @@ export const qn1: () => AnswerObject = () => {
 	const working = new EquationWorking(curve, line);
 	working.rhsZero();
 	const eqn = curve.minus(line);
+	const [c, b, a] = eqn.coeffs;
 	const d = eqn.quadraticDiscriminant();
 	const working2 = new EquationWorking(d);
 	working2.setAligned();
@@ -39,6 +40,7 @@ export const qn1: () => AnswerObject = () => {
 		Since the line is a tangent to the curve,
 		~${'align*'}
 		\\text{Discriminant} &= 0 \\\\
+		${b}^2 - 4(${a})(${c}) &= 0 \\\\
 		${working2} ${qed}
 	`;
 	return {
@@ -273,6 +275,8 @@ export const qn9: () => AnswerObject = () => {
 	const dTwo = fPrime.differentiate();
 	const working = new EquationWorking(fPrime, 0);
 	working.setAligned();
+	working.times(-1, { hide: true });
+	working.changeOrder([2, 1, 0]);
 	const [x1, x2] = working.factorizeQuadratic();
 
 	const body = mathlify`
@@ -364,7 +368,7 @@ export const qn10: () => AnswerObject = () => {
 	const partC = mathlify`
 		~${'align*'}
 		& \\text{Gradient of } OC \\\\
-		& = \\frac{${yC}}{${xC}} \\\\
+		& = \\frac{${yC}-0}{${xC}-0} \\\\
 		& = ${m}
 
 		Hence the equation of line ${'OC'}
