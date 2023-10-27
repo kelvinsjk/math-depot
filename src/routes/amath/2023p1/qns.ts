@@ -8,7 +8,7 @@ import {
 	solveQuadraticNumerical,
 	SLE,
 	EquationWorking,
-} from './mathlify-v3b';
+} from '../../emath/2023p2/mathlify-v3b';
 
 import { mathlify } from '$lib/temml';
 import { Fraction as oFrac } from 'mathlify';
@@ -252,7 +252,7 @@ export const qn5: () => AnswerObject = () => {
 				\\angle OBE &= 90^\\circ \\text{ (tangent} \\perp \\text{radius)} \\\\
 				\\angle BOC &= 180^\\circ - 36^\\circ - 90^\\circ \\\\
 				&= ${BOC}^\\circ \\text{ (angle sum in triangle)}\\\\
-				\\angle BCO &= \\frac{180^\\circ - ${BOC}^\\circ}{2} \\text{ (base angles of isosceles triangle)} \\\\
+				\\angle BCO &= \\frac{180^\\circ - ${BOC}^\\circ}{2} \\text{ (base angles of triangle)} \\\\
 				&= ${BCO}^\\circ
 				\\angle BAD = 180^\\circ - ${BCO}^\\circ - 43^\\circ \\text{ (angles in opp. segments)} \\\\
 				&= ${BAD}^\\circ ${qed}
@@ -261,7 +261,7 @@ export const qn5: () => AnswerObject = () => {
 
 	const partB = mathlify`
 				~${'align*'}
-				&\\text{Major arc } BADC \\\\
+				&\\text{Major arc } \\\\
 				&= \\frac{360 - ${BOC}}{360} \\times 2 \\pi (${r}) \\\\
 				&= ${arc.toPrecision(5)}
 
