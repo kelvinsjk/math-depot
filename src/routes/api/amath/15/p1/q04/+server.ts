@@ -1,15 +1,8 @@
-import {
-	EquationWorking,
-	xPolynomial,
-	Polynomial,
-	Term,
-	completeSquare,
-	InequalityWorking,
-} from 'mathlify';
+import { xPolynomial, InequalityWorking, type Expression } from 'mathlify';
 import { Answer } from '$lib/components/answerObject';
 import { mathlify } from '$lib/temml';
 import { Topics } from '../../../topics';
-import { or, qed } from '$lib/typesetting';
+import { qed } from '$lib/typesetting';
 const answer = new Answer();
 
 const a = 'a',
@@ -20,9 +13,7 @@ let rhs: Expression;
 
 // part a
 {
-	console.log(`${y}`);
 	const d = y.quadraticDiscriminant();
-	console.log(`${d}`);
 	const working = new InequalityWorking(d, 0, { sign: '<', aligned: true });
 	working.moveTerm(1, { hide: true });
 	working.swap();

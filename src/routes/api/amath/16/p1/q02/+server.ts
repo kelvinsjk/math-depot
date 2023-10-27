@@ -1,33 +1,42 @@
-import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { SquareRoot, Expression } from 'mathlify';
+import { Expression, SquareRoot, ExpressionWorking, RationalTerm } from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
 
-// part c
 const root6 = new SquareRoot(6);
 const root2 = new SquareRoot(2);
 const base = new Expression(root6, root2);
-const area = base.square();
-const rationalized = area.times(area.conjugate()).terms[0].coeff;
-const vol = new Expression(16, new SquareRoot(3, 4));
-const h = vol.times(area.conjugate()).times(rationalized.reciprocal());
+const areaWorking = new ExpressionWorking(base, { aligned: true, equalStart: true });
+areaWorking.square();
 
-// typeset
-const body = `${math(`${h}.`)}
+const vol = new Expression(16, new SquareRoot(3, { coeff: 4 }));
+const h = new RationalTerm(vol, areaWorking.exp as Expression);
+const hWorking = new ExpressionWorking(h, { aligned: true, equalStart: true });
+hWorking.rationalize();
+
+const soln = mathlify`
+	~${'align*'}
+	& \\text{Area of the base} \\\\
+	${areaWorking} \\\\
+
+	~${'align*'}
+	& \\text{Volume} \\\\
+	${hWorking} ${qed}
 `;
 
-// answer and solution
-const answer: AnswerObject = {
-	body,
-};
+const ans = mathlify`
+	${hWorking.exp}.
+`;
+
+const answer = new Answer(ans, soln);
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Surds',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.surds,
 		}),
 	);
 }
