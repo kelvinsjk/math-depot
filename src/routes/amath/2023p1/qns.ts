@@ -2,633 +2,574 @@ import type { AnswerObject } from '$lib/interfaces';
 
 import {
 	Polynomial,
-	Expression,
 	Fraction,
 	solveLinear,
 	solveQuadraticNumerical,
-	SLE,
 	EquationWorking,
+	xPolynomial,
+	ExpressionProduct,
+	RationalTerm,
+	ExpFn,
+	InequalityWorking,
+	d2ydx2,
 } from '../../emath/2023p2/mathlify-v3b';
 
 import { mathlify } from '$lib/temml';
 import { Fraction as oFrac } from 'mathlify';
-import { line } from '$lib/utils/coordinate';
+import { dydx } from '$lib/utils/calculus';
 const qed = `\\; \\blacksquare`;
+const dx = `\\; \\mathrm{d}x`;
 
 // Question 1
 export const qn1: () => AnswerObject = () => {
-	// ai
+	const line = new xPolynomial([2, 'c']);
+	const curve = new xPolynomial([1, 3, 1]);
+	const working = new EquationWorking(curve, line);
+	working.rhsZero();
+	const eqn = curve.minus(line);
+	const d = eqn.quadraticDiscriminant();
+	const working2 = new EquationWorking(d);
+	working2.setAligned();
+	working2.solveLinear();
+
 	const body = mathlify`
-		$${`3.77 \\times 10^{6}`} ${qed}
-	`;
-	// aii
-	const twenty = 4044210;
-	const naught = 3273363;
-	const percentage = ((twenty - naught) / naught) * 100;
-	const partAII = mathlify`
-		~${`align*`}
-		& \\text{Percentage increase} \\\\
-		& = \\frac{${twenty}-${naught}}{${naught}} \\times 100\\% \\\\
-		&= ${percentage.toPrecision(3)}\\% ${qed}
-	`;
-	// a iii
-	const nonResident = 18.7;
-	const resident = 100 - nonResident;
-	const total = (naught / resident) * 100;
-	const partA3 = mathlify`
-		$${``}\\text{Resident percentage} = 100\\% - ${nonResident}\\% = ${resident}\\%
+		~${`gather*`}
+		${working}
 
+		Since the line is a tangent to the curve,
 		~${'align*'}
-		& \\text{Total population} \\\\
-		& = \\frac{${naught}}{${resident}} \\times 100 \\\\
-		&= ${Number(total.toPrecision(3)).toLocaleString()} ${qed}
-	`;
-
-	// b
-	const pop = 5.69;
-	const density = 7810;
-	const area = (pop * 10 ** 6) / density;
-	const partB = mathlify`
-		~${'align*'}
-			& \\text{Area} \\\\
-			&= \\frac{${pop} \\times 10^6}{${density}} \\\\
-			&= ${area.toPrecision(3)} \\textrm{ km}^2 ${qed}
-	`;
-
-	// c
-	const mini = 3.9;
-	const actual = 7.8;
-	const scale = (3.9 * 10 ** -2) / (actual * 10 ** -6);
-	const partCI = mathlify`
-		~${'align*'}
-		${mini} \\text{ cm} &: ${actual} \\times 10^{-6} \\text{ m} \\\\
-		${mini} \\times 10^{-2} \\text{ m} &: ${actual} \\times 10^{-6} \\text{ m} \\\\
-		${scale} &: 1 ${qed}
-	`;
-
-	// cii
-
-	const mm = 8;
-	const final = 8 / scale;
-	const partCII = mathlify`
-		~${'align*'}
-		& \\text{Actual diameter} \\\\
-		&= \\frac{${mm}}{${scale}} \\\\
-		&= ${final * 10 ** 3}\\times 10^{-3} \\text{ mm} ${qed}
+		\\text{Discriminant} &= 0 \\\\
+		${working2} ${qed}
 	`;
 	return {
-		parts: [
-			{ parts: [{ body }, { body: partAII }, { body: partA3 }] },
-			{ body: partB },
-			{ parts: [{ body: partCI }, { body: partCII }] },
-		],
+		body,
 	};
 };
 
 // Question 2
 export const qn2: () => AnswerObject = () => {
-	// a
-	const lhs = new Polynomial([-7, 6]);
-	const rhs = new Polynomial([-2, 1]).times(5);
-	const x = solveLinear(lhs, rhs);
+	const c = 18,
+		b = 11,
+		a = -2;
+	const num = new Polynomial([c, b, a], { ascending: true });
+	const d1 = new Polynomial([1, -1]);
+	const d2 = new Polynomial([1, 2]);
+	const den = new ExpressionProduct(d1, [d2, 2]);
+	const exp = new RationalTerm(num, den);
+
+	const x1 = solveLinear(d1);
+	const x2 = solveLinear(d2);
+	const A = num.subIn(x1).divide(d2.subIn(x1).square());
+	const C = num.subIn(x2).divide(d1.subIn(x2));
+	const B = num
+		.subIn(0)
+		.minus(d2.subIn(0).square().times(A))
+		.minus(d1.subIn(0).times(C))
+		.divide(d1.subIn(0))
+		.divide(d2.subIn(0));
+
 	const body = mathlify`
-		$${`x= {${x}}`} ${qed}
-	`;
+		~${`align*`}
+		${exp} &= \\frac{A}{${d1}} + \\frac{B}{${d2}} + \\frac{C}{(${d2})^2} \\\\
+		${num} &= A(${d2})^2 + B(${d1})(${d2}) + C(${d1})
 
-	// b
-	const partB = mathlify`
-		$${'y < {-2}'} ${qed}
-	`;
-
-	// ci
-	const a = 2,
-		b = 4;
-	const c1 = new Fraction(1, b).plus(new Fraction(a, 3 - a));
-	const partCI = mathlify`
-		$${`c = ${c1}`} ${qed}
-	`;
-
-	// cii
-	const num1 = new Expression(['b', 'c'], -1);
-	const den1 = new Expression(3, [-1, 'a']);
-	const lhs2 = num1.times(den1);
-	const partCII = mathlify`
+		When ${`x = ${x1},`}
 		~${'align*'}
-		c - \\frac{1}{b} &= \\frac{a}{3-a} \\\\
-		\\frac{bc-1}{b} &= \\frac{a}{3-a} \\\\
-		${lhs2} &= ab \\\\
-		ab + bca - a &= 3bc - 3 \\\\
-		a(b+bc-1) &= 3(bc-1) \\\\
-		a &= \\frac{3(bc-1)}{b+bc-1} ${qed}
-	`;
+		${`${num.subIn(x1)} &= A(${d2.subIn(x1)})^2`} \\\\
+		A &= ${A}
 
-	// d
-	const denA = new Polynomial([2, -1]);
-	const denB = new Polynomial([4, -1], { ascending: true });
-	const numA = new Polynomial([1, 0]).times(denB).minus(denA.times(6));
-	const poly = numA.minus(denA.times(denB).times(3));
-	const [x1, x2] = solveQuadraticNumerical(poly);
-	const partD = mathlify`
+		When ${`x = ${x2},`}
 		~${'align*'}
-		\\frac{x}{${denA}} - \\frac{6}{${denB}} &= 3 \\\\
-		\\frac{x(${denB}) - 6(${denA})}{(${denA})(${denB})} &= 3 \\\\
-		${numA} &= 3(${denA.times(denB)}) \\\\
-		${poly} &= 0
+		${`${num.subIn(x2)} &= C(${d1.subIn(x2)})`} \\\\
+		C &= ${C}
 
-		$${`x = ${x1.toFixed(2)} \\textrm{ or } ${x2.toFixed(2)}`} ${qed}
+		Comparing coefficients of ${`x^2`},
+		~${'align*'}
+		A + B &= ${a} \\\\
+		B &= ${B}
+
+		$${`${exp} = \\frac{${A}}{${d1}} - \\frac{${B.abs()}}{${d2}} + \\frac{${C}}{(${d2})^2}`} ${qed}
+
 	`;
 	return {
-		parts: [
-			{ body },
-			{ body: partB },
-			{ parts: [{ body: partCI }, { body: partCII }] },
-			{ body: partD },
-		],
+		body,
 	};
 };
 
 // Question 3
 export const qn3: () => AnswerObject = () => {
-	// a
 	const body = mathlify`
-		~${'align*'}
-		& \\text{Total surface area of hemisphere} \\\\
-		& = 2 \\pi r^2 + \\pi r^2 \\\\
-		& = 3 \\pi r^2 \\\\
-		& = 3 \\pi (3y)^2 \\\\
-		& = 27 \\pi y^2 ${qed}
-	`;
-	// b
-	const partB = mathlify`
-			~${'gather*'}
-				2 \\pi (2y) h + 2 \\pi (2y)^2 = 27 \\pi y^2 \\\\
-				4 \\pi h y + 8 \\pi y^2 = 27 \\pi y^2 \\\\
-				4 h y = 19 y62 \\\\
-				h = \\frac{19}{4} y ${qed}
-		`;
-	// c
-	const vol = 500;
-	const coeff = new Fraction(2, 3).times(3 ** 3);
-	const y3 = new Fraction(vol).divide(coeff);
-	const y = Math.pow(y3.valueOf() / Math.PI, 1 / 3);
-	const h = (y * 19) / 4;
-	const vol2 = Math.PI * (2 * y) ** 2 * h;
-	const partC = mathlify`
-		~${'gather*'}
-		\\frac{2}{3} \\pi \\left( 3y \\right)^3 = 500 \\\\
-		${coeff} \\pi y^3 = 500 \\\\
-		y^3 = \\frac{250}{9\\pi} \\\\
-		y = ${y.toPrecision(5)}
-
-		$${`h = ${h.toPrecision(5)}`}
-
-		~${'align*'}
-		& \\text{Volume of cylinder} \\\\
-		&= \\pi (2y)^2 h \\\\
-		&= ${Number(vol2.toPrecision(3))} ${qed}
+		~${`align*`}
+		& \\text{LHS} \\\\
+		& = \\frac{\\cos^2 \\theta}{\\cosec^2 \\theta - 1} + \\frac{\\sin^2}{\\sec^2 \\theta + 1} \\\\
+		& = \\frac{\\cos^2 \\theta}{\\cot^2 \\theta} + \\frac{\\sin^2}{\\tan^2 \\theta} \\\\
+		& = \\cos^2 \\theta \\div \\frac{\\cos^2 \\theta}{\\sin^2 \\theta} + \\sin^2 \\theta \\div \\frac{\\sin^2 \\theta}{\\cos^2 \\theta} \\\\
+		& = \\cos^2 \\theta \\times \\frac{\\sin^2 \\theta}{\\cos^2 \\theta} + \\sin^2 \\theta \\times \\frac{\\cos^2 \\theta}{\\sin^2 \\theta} \\\\
+		& = \\sin^2 \\theta + \\cos^2 \\theta \\\\
+		& = 1 \\\\
+		& = \\text{RHS} ${qed}
 	`;
 	return {
-		parts: [{ body }, { body: partB }, { body: partC }],
+		body,
 	};
 };
 
 // Question 4
 export const qn4: () => AnswerObject = () => {
 	// a
-	const x = -3;
-	const y1 = 2 / x ** 2 + 3 * x - 1;
+	const exp = new ExpFn(new Polynomial([-2, 0]));
+	const ddx = dydx('', 'x');
+
 	const body = mathlify`
-		$${`y = ${y1.toFixed(1)}`} ${qed}
+		~${'align*'}
+		& ${ddx} \\left( x ${exp} \\right) \\\\
+		&= (1) ${exp} + x ${exp} ({-2}) \\\\
+		&= ${exp} - 2x ${exp} ${qed}
 	`;
 
 	// b
 	const partB = mathlify`
-	<div><img style="display:block;margin:auto;max-width:65vw;max-height:40vh"  alt="q4-graph1" src="/2023p2graph1.png" loading="lazy" /></div>
-	`;
-
-	// ci
-	const partCI = mathlify`
-	<div><img style="display:block;margin:auto;max-width:65vw;max-height:40vh"  alt="q4-graph2" src="/2023p2graph2.png" loading="lazy" /></div>
-
-	`;
-
-	// cii
-	const partCII = mathlify`
-		$${`x = {-0.6} \\text{ or } 0.7`}
-	`;
-
-	// c iii
-	const partC3 = mathlify`
-		Substituting,
+		From answer to part (a),
 		~${'gather*'}
-		2 \\left( \\frac{2}{x^2} + 3x - 1 \\right) - 5x = 7 \\\\
-		4 + 6x^3 - 2x^2 - 5x^3 = 7x^2 \\\\
-		x^3 - 9x^2 + 4 = 0
-
-		$${`A = {-9}, B = 4`} ${qed}
+		\\int \\left( ${exp} - 2x ${exp} \\right) ${dx} = x ${exp} + C' \\\\
+		\\int ${exp} ${dx} - 2 \\int x ${exp}  ${dx} = x ${exp} + C' \\\\
+		2 \\int x ${exp} ${dx} = \\int ${exp} ${dx} - x ${exp} - C' \\\\
+		2 \\int x ${exp} ${dx} = \\frac{${exp}}{{-2}} - x ${exp} - C' \\\\
+		\\int x ${exp} ${dx} = {-\\frac{1}{4} ${exp}} - \\frac{1}{2} x ${exp} + C ${qed}
 	`;
 
 	return {
-		parts: [
-			{ body },
-			{ body: partB },
-			{ parts: [{ body: partCI }, { body: partCII }, { body: partC3 }] },
-		],
+		parts: [{ body }, { body: partB }],
 	};
 };
 
 // Question 5
 export const qn5: () => AnswerObject = () => {
-	// a
-	const BOC = 180 - 36 - 90;
-	const BCO = (180 - BOC) / 2;
-	const BAD = 180 - BCO - 43;
-	const r = 8;
-	const arc = ((360 - BOC) / 360) * 2 * Math.PI * r;
-	const BE = r * Math.tan((BOC / 180) * Math.PI);
-	const CE = Math.sqrt(r ** 2 + BE ** 2) - r;
+	const alpha = Math.acos(Math.sqrt(2 / 3));
+
 	const body = mathlify`
-				~${'align*'}
-				\\angle OBE &= 90^\\circ \\text{ (tangent} \\perp \\text{radius)} \\\\
-				\\angle BOC &= 180^\\circ - 36^\\circ - 90^\\circ \\\\
-				&= ${BOC}^\\circ \\text{ (angle sum in triangle)}\\\\
-				\\angle BCO &= \\frac{180^\\circ - ${BOC}^\\circ}{2} \\text{ (base angles of triangle)} \\\\
-				&= ${BCO}^\\circ
-				\\angle BAD = 180^\\circ - ${BCO}^\\circ - 43^\\circ \\text{ (angles in opp. segments)} \\\\
-				&= ${BAD}^\\circ ${qed}
-			`;
-	// b
+		~${`align*`}
+		\\frac{\\cos \\theta + 4 \\sin \\theta}{2 \\cos \\theta + \\sin \\theta} &= \\frac{\\cos \\theta}{\\sin \\theta} \\\\
+		\\cos \\theta \\sin \\theta + 4 \\sin^2 \\theta &= 2 \\cos^2 \\theta + \\sin \\theta \\cos \\theta \\\\
+		4 \\sin^2 \\theta &= 2 \\cos^2 \\theta \\\\
+		2 \\left( 1 - \\cos^2 \\theta \\right) &= \\cos^2 \\theta \\\\
+		\\cos^2 \\theta &= \\frac{2}{3} \\\\
+		\\cos \\theta &= \\pm \\sqrt{\\frac{2}{3}}
 
-	const partB = mathlify`
-				~${'align*'}
-				&\\text{Major arc } \\\\
-				&= \\frac{360 - ${BOC}}{360} \\times 2 \\pi (${r}) \\\\
-				&= ${arc.toPrecision(5)}
+		~${'align*'}
+		& \\text{Basic angle} \\\\
+		\\alpha & = ${alpha.toPrecision(5)}
 
-				~${'align*'}
-				\\tan ${BOC}^\\circ &= \\frac{BE}{${r}} \\\\
-				BE &= ${BE.toPrecision(5)}
-				
-				~${'align*'}
-				& CE \\\\
-				& = \\sqrt{${r}^2 + ${BE.toPrecision(5)}^2} - ${r} \\\\
-				& = ${CE.toPrecision(5)} 
+		Since ${`-\\frac{\\pi}{2} \\leq \\theta \\leq \\frac{\\pi}{2}`},
+		$${`\\theta = {-${alpha.toPrecision(3)}} \\text{ or } \\theta = ${alpha.toPrecision(
+			3,
+		)}`} ${qed}
 
-				~${'align*'}
-				& \\text{Perimeter} \\\\
-				&= ${arc.toPrecision(5)} + ${BE.toPrecision(5)} + ${CE.toPrecision(5)} \\\\
-				&= ${(arc + BE + CE).toPrecision(3)} ${qed}
-
-
-
-			`;
+	`;
 	return {
-		parts: [{ body }, { body: partB }],
+		body,
 	};
 };
 
 // Question 6
 export const qn6: () => AnswerObject = () => {
 	// a
-	const [m, n] = new SLE(
-		[
-			[-4, 2],
-			[5, -3],
-		],
-		[-4, 1],
-		{ variables: ['m', 'n'] },
-	).solve();
 	const body = mathlify`
 		~${'align*'}
-		\\overrightarrow{XY} &= \\overrightarrow{OY} - \\overrightarrow{OX} \\\\
-		&= \\begin{pmatrix} 3 \\\\ 4 \\end{pmatrix} - \\begin{pmatrix} 7 \\\\ 3 \\end{pmatrix} \\\\
-		&= \\begin{pmatrix} -4 \\\\ 1 \\end{pmatrix} ${qed}
-
-		~${'align*'}
-		& m${'\\mathbf{p}'} + n\\mathbf{q}  \\\\
-		&= \\begin{pmatrix} -4m + 2n \\\\ 5m -3n \\end{pmatrix} 
-
-		~${'align'}
-		-4m + 2n &= -4 \\\\
-		5m - 3n &= 1 \\tag{(2)}
-		
-		Solving simultaneously,
-		$${`${m}, ${n}`} ${qed}
+		& f'(x) \\\\
+		& = \\frac{2ax(x-a) - ax^2(1)}{(x-a)^2} \\\\
+		& = \\frac{ax(2x-2a-x)}{(x-a)^2} \\\\
+		& = \\frac{ax(x-2a)}{(x-a)^2} ${qed}
 	`;
+
 	// b
-	const xA = 4,
-		yA = 6,
-		xB = -5,
-		yB = -3,
-		xC = 8,
-		yC = -4;
-	const xD = -1;
-	const gradient_AB = new Fraction(yB - yA, xB - xA);
-	const yD = gradient_AB.times(xD - xA).plus(yA);
 	const partB = mathlify`
-		Since ${'D'}
-		lies on ${'AB'},
-		the gradient of ${'AD'}
-		and ${'AB'}
-		are the same.
+		When ${`g`}
+		decreases,
 
 		~${'align*'}
-		\\frac{y - ${yA}}{{${xD}} - ${xA}} &= \\frac{{${yB}} - ${yA}}{{${xB}} - ${xA}} \\\\
-		y &= ${yD} ${qed}
+		g'(x) &< 0 \\\\
+		(x-a)^2 \\cdot \\frac{ax(x-2a)}{(x-a)^2} &< 0 \\\\
+		ax(x-2a) &< 0 
+
+		Since ${`a > 0`},
+		$${`0 < x < 2a`}
+
+		Since ${`x > a`},
+		$${`a < x < 2a`}
+
+		Hence ${`a=4`} ${qed}
 	`;
 
-	const length_DC = Math.sqrt((xC - xD) ** 2 + (yC - yD.valueOf()) ** 2);
-	const partBII = mathlify`
-		~${'align*'}
-		& \\text{Length of } ${'DC'} \\\\
-		&= \\sqrt{(${xC} - ({${xD}}))^2 + (${yC} - ${yD})^2} \\\\
-		&= ${length_DC.toPrecision(3)} ${qed}
-	`;
-
-	// c
-	const lhsX = (3 * (8 - 4)) / 2;
-	const lhsY = (3 * (-4 - 6)) / 2;
-	const xE = lhsX + xA;
-	const yE = lhsY + yA;
-	const gradient = new oFrac(yE - yB, xE - xB);
-	const BE = line(gradient, xE, yE);
-	const partC = mathlify`
-		~${'gather*'}
-		\\overrightarrow{AC} = \\frac{2}{3} \\overrightarrow{AE} \\\\
-		3\\overrightarrow{AC}  = 2(\\overrightarrow{OE} - \\overrightarrow{OA}) \\\\
-		3 \\begin{pmatrix} ${xC} - ${xA} \\\\ {${yC}} - ${yA}  \\end{pmatrix} = 2\\left(\\overrightarrow{OE} - \\begin{pmatrix} ${xA} \\\\ ${yA} \\end{pmatrix}\\right) \\\\
-		\\overrightarrow{OE} = \\begin{pmatrix} ${lhsX} \\\\ ${lhsY} \\end{pmatrix} + \\begin{pmatrix} ${xA} \\\\ ${yA} \\end{pmatrix} \\\\
-		\\overrightarrow{OE} = \\begin{pmatrix} ${xE} \\\\ ${yE} \\end{pmatrix}
-
-		~${'align*'}
-		& \\textrm{Gradient of } BE \\\\
-		&= \\frac{${yE} - ({${yB}})}{${xE} - ({${xB}})} \\\\
-
-		$${`y - ({${yB}})`} = ${gradient} (${`x - ({${xB}})`})
-
-		Equation of line ${'BE'}:
-		$${`y=${BE}`} ${qed}
-	`;
 	return {
-		parts: [{ body }, { parts: [{ body: partB }, { body: partBII }] }, { body: partC }],
+		parts: [{ body }, { body: partB }],
 	};
 };
 
 // Question 7
 export const qn7: () => AnswerObject = () => {
-	// a
+	const poly = new xPolynomial(['k', 4, ['k', -3]]);
+	const d = poly.quadraticDiscriminant();
+	const [c, b, a] = poly.coeffs;
+	const working = new InequalityWorking(d, 0, { sign: '<' });
+	working.divide(4);
+	working.changeOrder([1, 2, 0]);
+	working.times(-1);
+	const roots = working.factorizeQuadratic();
+
 	const body = mathlify`
-			$${`4\\times 18 = ${4 * 18}`} ${qed}
-		`;
-	// b
-	const partAII = mathlify`
-		<ul>
-			<li>
-				The teachers take a longer time to travel to school on average because
-				they have a higher median of 36 minutes compared to the students'
-				median time of 28 minutes. ${qed}
-			</li>
-			<li>
-				The distributions of times teachers and teachers take to travel to school 
-				are similar in consistency as they have the same 
-				interquartile range of 18 minutes. ${qed}
-			</li>
-		</ul>
-	`;
-	// b
-	const walk = 8,
-		cycle = 6,
-		total = 24,
-		bus = total - walk - cycle;
-	const pI = new Fraction(bus, total);
-	const pII = pI
-		.times(new Fraction(bus - 1, total - 1))
-		.plus(
-			new Fraction(walk, total)
-				.times(new Fraction(walk - 1, total - 1))
-				.plus(new Fraction(cycle, total).times(new Fraction(cycle - 1, total - 1))),
-		);
-	const noWalk = total - walk;
-	const pIII = new Fraction(walk, total)
-		.times(new Fraction(walk - 1, total - 1))
-		.times(new Fraction(noWalk, total - 2).times(3));
-	const partBI = mathlify`
-		$${`\\frac{${total}-${walk}-${cycle}}{${total}} = ${pI} ${qed}`}
-	`;
-	const partBII = mathlify`
-		~${'align*'}
-		& \\left( \\frac{${bus}}{${total}} \\right)
-		\\left( \\frac{${bus - 1}}{${total - 1}} \\right) +
-		\\left( \\frac{${walk}}{${total}} \\right)
-		\\left( \\frac{${walk - 1}}{${total - 1}} \\right) +
-		\\left( \\frac{${cycle}}{${total}} \\right)
-		\\left( \\frac{${cycle - 1}}{${total - 1}} \\right) \\\\
-		&= ${pII} ${qed}
-	`;
-	const partB3 = mathlify`
-		~${'align*'}
-		& \\left( \\frac{${walk}}{${total}} \\right)
-		\\left( \\frac{${walk - 1}}{${total - 1}} \\right)
-		\\left( \\frac{${noWalk}}{${total - 2}} \\right)
-		\\times 3 \\\\
-		&= ${pIII} ${qed}
+		For the curve to be entirely below the ${'x'}\\text{-axis},
+		$${'k < 0'} \\quad \\text{ and } \\quad \\text{discriminant} < 0
+
+		~${`gather*`}
+		${b}^2 - 4${a}(${c}) \\\\
+		${working} \\\\
+		${roots[0]} \\quad \\text{ or } \\quad ${roots[1]}
+
+		Since ${`k < 0`},
+		$${roots[0]} ${qed}
 	`;
 	return {
-		parts: [
-			{ parts: [{ body }, { body: partAII }] },
-			{ parts: [{ body: partBI }, { body: partBII }, { body: partB3 }] },
-		],
+		body,
 	};
 };
 
 // Question 8
 export const qn8: () => AnswerObject = () => {
-	// a
-	const top = Polynomial.ofDegree(1);
-	const bottom = new Polynomial([1, 16]);
-	const rhs = 204;
-	const working = new EquationWorking(top.plus(bottom), rhs);
-	working.setAligned();
-	const x = working.solveLinear();
-	const left = new Polynomial([1, 7]);
-	const right = new Polynomial([1, 9]);
-	const center = new Polynomial([1, 8]);
+	const line = new Polynomial([2, 12]);
+	const x = Polynomial.ofDegree(1);
+	const poly = x.square().minus(line.times(x)).plus(line.square().minus(63));
+	const working = new EquationWorking(poly, 0);
+	working.divide(3);
+	const [x1, x2] = working.factorizeQuadratic();
+	const [y1, y2] = [x1, x2].map((x) => line.subIn(x));
 	const body = mathlify`
-			Let the top number be ${'x'}.
-			@${'@br'}
-			The left number will be ${'x + 7,'}
-			the center number will be ${'x + 8,'}
-			the right number will be ${'x + 9,'}
-			and the bottom number will be ${'x + 16.'}
+		Solving the two equations simultaneously,
+		~${'gather*'}
+		x^2 - x (${line}) + (${line})^2 = 63 \\\\
+		x^2 - 2x^2 - 12x + ${line.square()} = 63 \\\\
+		${working} \\\\
 
-			~${'align*'}
-			${top} + ${bottom} &= ${rhs} \\\\
-			${working}
+		~${'alignat*{3}'}
+		x &= {${x1}} \\quad &\\text{ or }&& \\quad x &= {${x2}} \\\\
+		y &= ${line.replaceXWith(`({${x1}})`)} \\quad &&& \\quad  y &= ${line.replaceXWith(
+		`({${x2}})`,
+	)} \\\\
+		&= {${y1}} &&& &= ${y2}
 
-			$${''}\\boxed{\\begin{matrix} & ${x} & \\\\ ${left.subIn(x)} & ${center.subIn(
-		x,
-	)} & ${right.subIn(x)} \\\\ 
-				& ${bottom.subIn(x)} & 
-			\\end{matrix}} ${qed} 
-		`;
-	const partAII = mathlify`
-		~${'align*'}
-		& \\text{Difference between products } \\\\
-		& =  (${left}) (${right}) - ${top} (${bottom})\\\\
-		&= ${left.times(right)} - (${top.times(bottom)}) \\\\
-		&= 63 ${qed}
-	`;
-	// b
-	const num = new Polynomial([1, 0, -1], { variable: 'k' });
-	const den = new Polynomial([3, -1], { variable: 'k' });
-	const tk = new Fraction(15, 4);
-	const lhsB = num.times(tk.den);
-	const rhsB = den.times(tk.num);
-	const workingB = new EquationWorking(lhsB, rhsB);
-	workingB.setAligned();
-	workingB.rhsZero();
-	const [k1, k2] = workingB.factorizeQuadratic();
-	const partB = mathlify`
-		~${'align*'}
-		\\frac{${num}}{${den}} &= ${tk} \\\\
-		${tk.den}(${num}) &= ${tk.num}(${den}) \\\\
-		${workingB}
-
-		$${`k = ${k1} \\text{ (NA)} \\text{ or } k=${k2}`}
-
-		~${'align*'}
-		T_{k+1} &= T_{${k2.plus(1)}} \\\\
-		&= ${num.subIn(k2.plus(1)).divide(den.subIn(k2.plus(1)))} ${qed}
+		Hence the coordinates of the points are ${`({${x1}}, {${y1}})`} ${qed}
+		and ${`({${x2}}, ${y2})`} ${qed}
 	`;
 	return {
-		parts: [{ parts: [{ body }, { body: partAII }] }, { body: partB }],
+		body,
 	};
 };
 
 // Question 9
 export const qn9: () => AnswerObject = () => {
 	// a
+	const y = new Polynomial([1, 1, new Fraction(-1, 2), -2], { ascending: true });
+	const fPrime = y.differentiate();
+	const dTwo = fPrime.differentiate();
+	const working = new EquationWorking(fPrime, 0);
+	working.setAligned();
+	const [x1, x2] = working.factorizeQuadratic();
+
 	const body = mathlify`
-			~${'align*'}
-			& \\text{Energy} \\\\
-			&= 165 \\times 5 \\text{ Wh} \\\\
-			&= ${165 * 5} \\text{ Wh} \\\\
-			&= ${(165 * 5) / 1000} \\text{ kWh} ${qed}
-		`;
+		$${dydx()} = ${fPrime}
+
+		At stationary points,
+		~${'align*'}
+		${dydx()} &= 0 \\\\
+		${working}
+
+		$${`x = {${x1}}`} ${qed} \\quad \\text{ or } \\quad ${`x = ${x2}`} ${qed}
+	`;
+
 	// b
-	const peaks = [4.7, 4.9, 5, 4.7, 4.3, 4.2, 4.3, 4.4, 4.5, 4.4, 3.9, 4];
-	const mean = peaks.reduce((a, b) => a + b, 0) / peaks.length;
+	const working2 = new EquationWorking(dTwo, 0);
+	working2.setAligned();
+	const xP = working2.solveLinear();
+	const mid = x1.plus(x2).divide(2);
 	const partB = mathlify`
-			~${'align*'}
-			& \\text{Average} \\\\
-			&= \\frac{${peaks.join('+')}}{${peaks.length}} \\\\
-			&= ${mean.toPrecision(3)} ${qed}
-		`;
-	const daily = 3050 / 365;
-	const wattA = 300,
-		wattB = 370,
-		wattC = 390,
-		wattD = 400;
-	const lengthA = 1.46,
-		widthA = 1.05,
-		lengthB = 1.96,
-		widthB = 1,
-		lengthC = 1.98,
-		widthC = 1,
-		lengthD = 1.69,
-		widthD = 1.05;
-	const areas = [
-		Math.ceil((daily * 1000) / (wattA * mean * 0.75)) * lengthA * widthA,
-		Math.ceil((daily * 1000) / (wattB * mean * 0.75)) * lengthB * widthB,
-		Math.ceil((daily * 1000) / (wattC * mean * 0.75)) * lengthC * widthC,
-		Math.ceil((daily * 1000) / (wattD * mean * 0.75)) * lengthD * widthD,
-	];
-	const meanAreas = areas.reduce((a, b) => a + b, 0) / areas.length;
+		$${d2ydx2()} = ${dTwo}
+
+		At point of maximum gradient,
+		~${'align*'}
+		${d2ydx2()} &= 0 \\\\
+		${working2}
+
+		Hence the ${'x'}\\text{-coordinate}
+		of ${'P'}
+		is ${`{${xP}}`}
+
+		~${'align*'}
+		\\frac{\\mathrm{d}^3 y}{\\mathrm{d}x^3}	& = {${dTwo.differentiate()}} \\\\
+		& < 0
+
+		so the gradient is a maximum
+
+		${'x'}\\text{-coordinate}
+		of midpoint of ${'AB'}
+		is ${''}\\frac{{${x1}} + ${x2}}{2} = {${mid}} 
+
+		Hence ${'P'}
+		and the midpoint of ${'AB'}
+		have the same ${'x'}\\text{-coordinate} ${qed}
+	`;
+	return {
+		parts: [{ body }, { body: partB }],
+	};
+};
+
+// Question 10
+export const qn10: () => AnswerObject = () => {
+	// a
+	const xC = -5,
+		yC = 12,
+		r = 13;
+	const body = mathlify`
+		~${'gather*'}
+		x^2 + y^2 + 10x - 24y = 0 \\\\
+		(x+5)^2 - 5^2 + (y-12)^2 - 12^2 = 0 \\\\
+		(x+5)^2 + (y-12)^2 = 169
+
+		Hence the coordinates of ${'C'}
+		are ${`({${xC}}, {${yC}})`} ${qed}
+		and the radius is ${`{${r}}`} ${qed}
+	`;
+
+	// b
+	const partB = mathlify`
+		When ${'x = 0'},
+		~${'gather*'}
+		y^2 - 24y = 0 \\\\
+		y(y-24) = 0 \\\\
+		y = 0 \\quad \\text{ or } \\quad y = 24
+
+		Coordinates of points at which the circle cuts the ${'y'}\\text{-axis}
+		are ${`({${0}}, {${0}})`} ${qed}
+		and ${`({${0}}, {${24}})`} ${qed}
+	`;
+
+	const m = new oFrac(yC, xC);
+	const poly1 = new Polynomial([1, 5]);
+	const poly2 = new Polynomial([new Fraction(-12, 5), -12]);
+	const working = new EquationWorking(poly1.square().plus(poly2.square()), 9 * 169);
+	working.setAligned();
+	working.rhsZero();
+	working.times(25).divide(169);
+	const [x1, x2] = working.factorizeQuadratic();
+	const [y1, y2] = [x1, x2].map((x) => x.times(new Fraction(-12, 5)));
 	const partC = mathlify`
-		We will use the highest cumulative usage of the 4 years to calculate a
-		conservative estimate. That is the usage of 3050 kWh in Year 4.
+		~${'align*'}
+		& \\text{Gradient of } OC \\\\
+		& = \\frac{${yC}}{${xC}} \\\\
+		& = ${m}
+
+		Hence the equation of line ${'OC'}
+		is ${'y = '}${m}x
+
+		Since ${'X'}
+		lies on ${'OC'},
+		let the coordinates of ${'X'}
+		be ${`\\left( {x}, {${m}x} \\right)`}
 
 		~${'align*'}
-		& \\text{Average amount of electricity in one day} \\\\
-		& = \\frac{${3050}}{365} \\text{ kWh} \\\\
-		& = ${daily.toPrecision(5)} \\text{ kWh}
+		\\text{Distance } CX &= 3 \\times \\text{Distance } OC \\\\
+		\\sqrt{(x+5)^2 + \\left(${m}x-12 \\right)^2} &= 3(13) \\\\
+		${poly1.square()} + ${poly2.square()} &= 39^2 \\\\
+		${working}
 
-		For type A,
-		~${'align*'}
-		& \\text{Daily watt hours output} \\\\
-		&= ${wattA} \\times ${mean.toPrecision(5)} \\times 75\\% \\\\
-		&= ${wattA * mean * 0.75} \\text{ Wh} \\\\
-		& \\text{Panels needed} \\\\
-		&= \\frac{${daily.toPrecision(5)} \\times 1000}{${wattA * mean * 0.75}} \\\\
-		&= ${((daily * 1000) / (wattA * mean * 0.75)).toPrecision(3)} \\text{ panels} \\\\
-		&= ${Math.ceil((daily * 1000) / (wattA * mean * 0.75))} \\text{ panels (rounded up)} \\\\
-		& \\text{Area needed} \\\\
-		&= ${Math.ceil(
-			(daily * 1000) / (wattA * mean * 0.75),
-		)} \\times ${lengthA} \\times ${widthA} \\\\
-		&= ${Math.ceil((daily * 1000) / (wattA * mean * 0.75)) * lengthA * widthA} \\text{ m}^2
+		~${'alignat*{3}'}
+		x &= {${x1}} \\quad &\\text{ or }&& \\quad x &= {${x2}} \\\\
+		y &= {${m}}\\left({${x1}}\\right) \\quad &&& \\quad y &= {${m}}\\left({${x2}}\\right) \\\\
+		&= ${y1} \\quad &&& \\quad &= ${y2}
 
-		For type B,
-		~${'align*'}
-		& \\textrm{Daily watt hours output} \\\\
-		&= ${wattB} \\times ${mean.toPrecision(5)} \\times 75\\% \\\\
-		&= ${wattB * mean * 0.75} \\text{ Wh} \\\\
-		& \\text{Panels needed} \\\\
-		&= \\frac{${daily.toPrecision(5)} \\times 1000}{${wattB * mean * 0.75}} \\\\
-		&= ${((daily * 1000) / (wattB * mean * 0.75)).toPrecision(3)} \\text{ panels} \\\\
-		&= ${Math.ceil((daily * 1000) / (wattB * mean * 0.75))} \\text{ panels (rounded up)} \\\\
-		& \\text{Area needed} \\\\
-		&= ${Math.ceil(
-			(daily * 1000) / (wattB * mean * 0.75),
-		)} \\times ${lengthB} \\times ${widthB} \\\\
-		&= ${(Math.ceil((daily * 1000) / (wattB * mean * 0.75)) * lengthB * widthB).toPrecision(
-			5,
-		)} \\text{ m}^2
-
-
-		For type C,
-		~${'align*'}
-		& \\textrm{Daily watt hours output} \\\\
-		&= ${wattC} \\times ${mean.toPrecision(5)} \\times 75\\% \\\\
-		&= ${wattC * mean * 0.75} \\text{ Wh} \\\\
-		& \\text{Panels needed} \\\\
-		&= \\frac{${daily.toPrecision(5)} \\times 1000}{${wattC * mean * 0.75}} \\\\
-		&= ${((daily * 1000) / (wattC * mean * 0.75)).toPrecision(3)} \\text{ panels} \\\\
-		&= ${Math.ceil((daily * 1000) / (wattC * mean * 0.75))} \\text{ panels (rounded up)} \\\\
-		& \\text{Area needed} \\\\
-		&= ${Math.ceil(
-			(daily * 1000) / (wattC * mean * 0.75),
-		)} \\times ${lengthC} \\times ${widthC} \\\\
-		&= ${(Math.ceil((daily * 1000) / (wattC * mean * 0.75)) * lengthC * widthC).toPrecision(
-			5,
-		)} \\text{ m}^2
-
-		For type D,
-		~${'align*'}
-		& \\textrm{Daily watt hours output} \\\\
-		&= ${wattD} \\times ${mean.toPrecision(5)} \\times 75\\% \\\\
-		&= ${wattD * mean * 0.75} \\text{ Wh} \\\\
-		& \\text{Panels needed} \\\\
-		&= \\frac{${daily.toPrecision(5)} \\times 1000}{${wattD * mean * 0.75}} \\\\
-		&= ${((daily * 1000) / (wattD * mean * 0.75)).toPrecision(3)} \\text{ panels} \\\\
-		&= ${Math.ceil((daily * 1000) / (wattD * mean * 0.75))} \\text{ panels (rounded up)} \\\\
-		& \\text{Area needed} \\\\
-		&= ${Math.ceil(
-			(daily * 1000) / (wattD * mean * 0.75),
-		)} \\times ${lengthD} \\times ${widthD} \\\\
-		&= ${(Math.ceil((daily * 1000) / (wattD * mean * 0.75)) * lengthD * widthD).toPrecision(
-			5,
-		)} \\text{ m}^2
-		
-		We will take an average of the 4 calculated areas to give an estimate of
-		the area Chen will need
-		~${'align*'}
-		& \\text{Estimated total area needed} \\\\
-		&= \\frac{${areas.map((x) => x.toPrecision(5)).join('+')}}{${areas.length}} \\\\
-		&= ${meanAreas.toPrecision(3)} \\text{ m}^2 ${qed}
+		Hence the possible coordinates of ${'X'}
+		are ${`\\left( {${x1}}, {${y1}} \\right)`} ${qed}
+		and ${`\\left( {${x2}}, {${y2}} \\right)`} ${qed}
 	`;
 	return {
 		parts: [{ body }, { body: partB }, { body: partC }],
+	};
+};
+
+// Question 11
+export const qn11: () => AnswerObject = () => {
+	// a
+	const drdt = dydx('r', 't');
+	const r0 = 1;
+	const drdt0 = 0.5;
+	const k = drdt0;
+
+	const body = mathlify`
+		When ${`t=0,`}
+		${`${drdt}=${drdt0}`}
+
+		~${'align*'}
+		${drdt0} &= \\frac{k}{2(0)+1} \\\\
+		k &= ${k} ${qed}
+	`;
+
+	// b
+	const dt = `\\; \\mathrm{d}t`;
+	const C = r0;
+	const partB = mathlify`
+		~${'align*'}
+		r &= \\int \\frac{${k}}{2t+1} ${dt} \\\\
+		&= \\frac{${k} \\ln (2t+1)}{2} + C \\\\
+		&= \\frac{\\ln (2t+1)}{4} + C
+
+		When ${`t=0, r=${r0}`},
+		~${'align*'}
+		${r0} &= \\frac{\\ln (2(0)+1)}{4} + C \\\\
+		C &= ${C}
+
+		Hence
+		$${`r = \\frac{\\ln (2t+1)}{4} + ${C}`} ${qed}
+	`;
+
+	// c
+	const dAdr = dydx('A', 'r');
+	const t = 3;
+	const dAdt = dydx('A', 't');
+	const rate = (Math.PI * 2 * (Math.log(7) / 4 + C) * k) / (2 * t + 1);
+
+	const partC = mathlify`
+		After expanding for ${t}
+		seconds,
+
+		~${'align*'}
+		r &= \\frac{\\ln (2(3)+1)}{4} + ${C} \\\\
+		&= \\frac{\\ln 7}{4} + ${C} \\\\
+
+		~${'align*'}
+		A &= \\pi r^2 \\\\
+		${dAdr} &= 2 \\pi r
+
+		~${'align*'}
+		${dAdt} &= ${dAdr} \\times ${drdt} \\\\
+		&= 2 \\pi r \\times \\frac{${k}}{2t+1} \\\\
+		&= 2 \\pi \\left( \\frac{\\ln 7}{4} + ${C} \\right) \\times \\frac{${k}}{2(3)+1} \\\\
+		&= ${rate.toPrecision(3)} \\text{ cm}^2\\text{/s} ${qed}
+	`;
+	return {
+		parts: [{ body }, { body: partB }, { body: partC }],
+	};
+};
+
+// Question 12
+export const qn12: () => AnswerObject = () => {
+	// a
+	const body = mathlify`
+	When ${`t = 0`},
+		$${'h = 1.75'} ${qed}
+	`;
+
+	// b
+	const a = new Fraction(-1, 2).square().times(5).plus(new Fraction(7, 4));
+	const partB = mathlify`
+		~${'align*'}
+		h &= 1.75 + 5t - 5t^2 \\\\
+		&= -5 (t^2 - t) + 1.75 \\\\
+		&= -5 \\Big( (t - 0.5)^2 - 0.5^2 \\Big) + 1.75 \\\\
+		&= ${a} - 5 (t - 0.5)^2
+
+		~${'align*'}
+		a &= ${a} ${qed} \\\\
+		b &= {-5} ${qed} \\\\
+		c &= {-0.5} ${qed}
+	`;
+
+	// c
+	const partC = mathlify`
+		Hence the maximum height attained by the ball is ${a} \\text{m} ${qed}
+		and this occurs at ${`t = -0.5 \\text{s}`} ${qed}
+	`;
+
+	const partD = mathlify`
+		Since the ball did not start from ${'h = 0'},
+		it will take longer than twice the time taken in part (c) to reach the ground ${qed}
+	`;
+
+	const poly = new Polynomial([new Fraction(7, 4), 5, -5], {
+		variable: 't',
+		ascending: true,
+	});
+	const rhs = 2;
+	const working = new EquationWorking(poly, rhs, { aligned: true });
+	working.rhsZero();
+	working.times(-4);
+	const [t1, t2] = solveQuadraticNumerical(working.lhs);
+	const partE = mathlify`
+		When ${`h = ${rhs}`},
+		~${'align*'}
+		${working}
+
+		~${'align*'}
+		t &= \\frac{20 \\pm \\sqrt{20^2 - 4(20)}}{2(1)} \\\\
+		&= {${t1.toPrecision(5)}} \\text{ or } {${t2.toPrecision(5)}}
+
+		~${'align*'}
+		& \\text{Length of time ball is at least 2m } \\\\
+		&= ${t2.toPrecision(5)} - ${t1.toPrecision(5)} \\\\
+		&= ${(t2 - t1).toPrecision(3)} \\text{s} ${qed} 
+	`;
+	return {
+		parts: [{ body }, { body: partB }, { body: partC }, { body: partD }, { body: partE }],
+	};
+};
+
+// Question 13
+export const qn13: () => AnswerObject = () => {
+	// a
+	const xA = 2;
+	const xB = -8;
+	const yB = -7;
+	const yX = new Fraction(-13, 2);
+	const body = mathlify`
+		~${'align*'}
+		& \\text{Gradient of } AB \\\\
+		& = \\frac{{${yB}} - h}{${xB} - {${xA}}} \\\\
+		& = \\frac{7+h}{10}
+
+		~${'align*'}
+		& \\text{Gradient of perpendicular bisector} \\\\
+		&= {-\\frac{10}{7+h}} ${qed}
+	`;
+
+	// b
+	const lhs = new Polynomial([-6, -1], { variable: 'h', ascending: true });
+	const den = new Polynomial([7, 1], { variable: 'h', ascending: true });
+	const num = new Polynomial([1, 3], { variable: 'h' }).times(20).negative();
+	const lhs2 = lhs.times(den);
+	const working = new EquationWorking(lhs2, num);
+	working.swap({ hide: true });
+	working.rhsZero();
+	const [h1, h2] = working.factorizeQuadratic();
+
+	const partB = mathlify`
+		~${'align*'}
+		& \\text{Midpoint of } AB \\\\
+		& = \\left( \\frac{${xA} + ({${xB}})}{2}, \\frac{{${yB}} + h}{2} \\right) \\\\
+		& = \\left( {-3}, \\frac{h-7}{2} \\right)
+
+		Equation of perpendicular bisector of ${'AB'}
+		~${'gather*'}
+		y - \\left( \\frac{h-7}{2} \\right) = {-\\frac{10}{7+h}} \\left( x + 3 \\right) \\\\
+
+		Substituting ${`\\left( h, {${yX}} \\right)`}
+		into the equation of the perpendicular bisector,
+		~${'gather*'}
+		{${yX}} - \\left( \\frac{h-7}{2} \\right) = {-\\frac{10}{7+h}} \\left( h + 3 \\right) \\\\
+		-13 - h + 7 = - \\frac{20(h+3)}{7+h} \\\\
+		(${lhs})(${den}) = ${num} \\\\
+		${working} \\\\
+		h = {${h1}} ${qed} \\quad \\text{ or } \\quad h = {${h2}} ${qed}
+	`;
+	return {
+		parts: [{ body }, { body: partB }],
 	};
 };
 
@@ -642,4 +583,8 @@ export const answers: AnswerObject[] = [
 	qn7(),
 	qn8(),
 	qn9(),
+	qn10(),
+	qn11(),
+	qn12(),
+	qn13(),
 ];

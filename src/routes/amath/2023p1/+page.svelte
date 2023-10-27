@@ -3,17 +3,17 @@
 	import QnNavContents from '$lib/components/QnNavContents.svelte';
 
 	import { answers } from './qns';
-	const title = '2023 Elementary Mathematics Paper 2';
+	const title = '2023 Additional Mathematics Paper 1';
 </script>
 
 <svelte:head>
 	<title>{title}</title>
-	<meta property="og:title" content={`2023 Elementary Mathematics Paper 2`} />
+	<meta property="og:title" content={`2023 Additional Mathematics Paper 1`} />
 	<meta property="og:description" content={`Digital-friendly solutions`} />
 	<meta property="og:site_name" content={`Math Depot`} />
 	<meta
 		name="description"
-		content={`Digital-friendly solutions for O Level E Math 2023 Paper 2`}
+		content={`Digital-friendly solutions for O Level A Math 2023 Paper 1`}
 	/>
 </svelte:head>
 
