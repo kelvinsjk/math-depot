@@ -27,7 +27,7 @@
 			<h4>A Math</h4>
 			<div class="join max-[600px]:join-vertical">
 				<a href="/amath/2023p1" class="btn join-item btn-secondary">Paper 1</a>
-				<a href="/emath/2023p2" class="btn join-item btn-primary">Paper 2</a>
+				<a href="/amath/2023p2" class="btn join-item btn-primary">Paper 2</a>
 			</div>
 		</div>
 	</div>
