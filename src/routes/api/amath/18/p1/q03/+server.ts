@@ -1,36 +1,45 @@
-import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { Polynomial, solveLinear } from 'mathlify';
+import { Polynomial, partialFractionsWorking, ExpressionProduct } from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
 
 const den1 = new Polynomial([2, -1]);
 const den2 = new Polynomial([1, 0, 4]);
-const root1 = solveLinear(den1);
+const den = new ExpressionProduct(den1, den2);
 const num = new Polynomial([7, -12, 17]);
+// const root1 = solveLinear(den1);
+const {
+	working: { start, substitutions, comparing },
+	result,
+} = partialFractionsWorking(num, [den1, den2]);
 
-// cover up rule
-const A = num.subIn(root1).divide(den2.subIn(root1));
+const soln = mathlify`
+		~${'align*'}
+		${start}
 
-// from manual calculation
-const r = new Polynomial([2, -5]);
+		When ${`x=${substitutions[0][0]}`}, 
+		~${'align*'}
+		${substitutions[0][1]}
 
-// typeset
-const body = `
-	${math(`\\frac{${A}}{${den1}} + \\frac{${r}}{${den2}}.`)}
+		Comparing coefficients,
+		~${'alignat*{2}'}
+		${comparing}
+
+		$${``}\\frac{${num}}{${den}} = ${result} ${qed}
+	`;
+const ans = mathlify`
+		${result}.
 `;
 
-// answer and solution
-const answer: AnswerObject = {
-	body,
-};
+const answer = new Answer(ans, soln);
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Polynomials, Cubic Equations and Partial Fractions',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.polynomials,
 		}),
 	);
 }

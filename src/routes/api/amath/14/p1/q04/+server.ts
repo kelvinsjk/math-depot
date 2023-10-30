@@ -1,43 +1,47 @@
-import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { Polynomial } from 'mathlify';
+import { ExpressionProduct, Polynomial, partialFractionsWorking } from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
 
 const num = new Polynomial([1, 2]).square();
-const x = new Polynomial(1);
-const x2 = x.square();
-const den = new Polynomial([1, -2]);
+const den2 = new Polynomial([1, -2]);
+const den = new ExpressionProduct(Polynomial.ofDegree(2), den2);
+const {
+	working: { start, substitutions, comparing },
+	result,
+} = partialFractionsWorking(num, [['x', 2], den2]);
 
-// cover up rule
-const A = num.subIn(2).divide(x2.subIn(2));
-const CFull = num.subIn(0).divide(den.subIn(0));
-const CSign = CFull.isGreaterThan(0) ? '+' : '-';
-const C = CFull.abs();
-// by manual calculation
-const B = 3;
+const soln = mathlify`
+	~${'gather*'}
+	${start}
 
-// typeset
-const body = `
-	${math(
-		`
-		\\frac{${A}}{${den}} - \\frac{${B}}{${x}} ${CSign} \\frac{${C}}{${x2}}.
-	`,
-		{ wrap: true },
-	)}
+	When ${`x=${substitutions[0][0]}`}, 
+	~${'align*'}
+	${substitutions[0][1]}
+
+	When ${`x=${substitutions[1][0]}`}, 
+	~${'align*'}
+	${substitutions[1][1]}
+
+	Comparing coefficients,
+	~${'alignat*{2}'}
+	${comparing}
+
+	$${``}\\frac{${num}}{${den}} = ${result} ${qed}
+`;
+const ans = mathlify`
+	${result}.
 `;
 
-// answer and solution
-const answer: AnswerObject = {
-	body,
-};
+const answer = new Answer(ans, soln);
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Polynomials, Cubic Equations and Partial Fractions',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.polynomials,
 		}),
 	);
 }

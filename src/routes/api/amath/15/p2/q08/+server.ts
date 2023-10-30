@@ -1,55 +1,120 @@
 import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { Polynomial, Fraction, factorizeCubic } from 'mathlify';
+	Polynomial,
+	partialFractionsWorking,
+	factorizeCubicWorking,
+	solveLinear,
+	factorizeQuadratic,
+	factorizeQuadraticIntoPolynomials,
+} from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
+
+const answer = new Answer();
+
+const den = new Polynomial([2, -3, 0, 1]);
+let factor: Polynomial;
+let root: number;
+let otherFactors: Polynomial[];
 
 // part a
-const poly = new Polynomial([2, -3, 0, -5]);
-const negHalf = new Fraction(-1, 2);
-const remainder = poly.subIn(negHalf);
+{
+	const poly = new Polynomial([2, -3, 0, -5]);
+	const factor = new Polynomial([2, 1]);
+	const x = solveLinear(factor);
+	const soln = mathlify`
+		Let ${`f(x)=${poly}`}
+
+		By the Remainder Theorem,
+		~${'align*'}
+		& \\text{Remainder} \\\\
+		& = f\\left({${x}}\\right) \\\\
+		&= ${poly.replaceXWith(`\\left({${x}}\\right)`)} \\\\
+		&= ${poly.subIn(x)} ${qed}
+	`;
+
+	const ans = mathlify`
+		${poly.subIn(x)}.
+	`;
+	answer.addPart(ans, soln);
+}
 
 // part b
-const root1 = 1;
-const poly2 = new Polynomial([2, -3, 0, 1]);
-const [factors, otherRoots] = factorizeCubic(poly2, root1);
-const factor2 = factors[1];
+{
+	root = 1;
+	factor = Polynomial.fromRoot(root);
+	const { working, exp, quadratic } = factorizeCubicWorking(den, root);
+	const factors = factorizeQuadratic(quadratic);
+	otherFactors = factorizeQuadraticIntoPolynomials(quadratic);
+
+	const soln = mathlify`
+		Let ${`g(x)=${den}`}
+
+		Consider
+		~${'align*'}
+		g(${root}) &= ${den.replaceXWith(`(${root})`)} \\\\
+		&= ${den.subIn(root)}
+
+		By the Factor Theorem, ${factor}
+		is a factor of ${den},
+
+		$${den}=(${factor})(ax^2+bx+c)
+
+		Comparing coefficients,		
+		~${'align*'}
+		${working}
+
+		~${'align*'}
+		& ${den} \\\\
+		&= (${factor})(${quadratic}) \\\\
+		&= (${factor})${factors} \\\\
+		&= ${exp}
+	`;
+	const ans = mathlify`
+		${exp}.
+`;
+	answer.addPart(ans, soln);
+}
 
 // part c
-// eslint-disable-next-line
-const root2 = otherRoots![0];
-const num = new Polynomial([-8, -5, 4]);
-const factor1 = new Polynomial([1, -root1]);
-const A = num.subIn(root2).divide(factor1.subIn(root2).square());
-const CFull = num.subIn(root1).divide(factor2.subIn(root1));
-const CSign = CFull.isGreaterThan(0) ? '+' : '-';
-const C = CFull.abs();
-// manual calculation
-const B = 5;
+{
+	const num = new Polynomial([4, -5, -8], { ascending: true });
+	const {
+		working: { start, substitutions, comparing },
+		result,
+	} = partialFractionsWorking(num, [factor, ...otherFactors]);
 
-// typeset
-const body = `Remainder ${math(`=${remainder}.`)}`;
-const partB = `${math(`(${factor2})(${factor1})^2.`)}`;
-const partC = `${math(
-	`
-	\\frac{${A}}{${factor2}} - \\frac{${B}}{${factor1}}
-	${CSign} \\frac{${C}}{(${factor1})^2}.
-`,
-	{ wrap: true },
-)}`;
+	const soln = mathlify`
+		~${'gather*'}
+		${start}
 
-// answer and solution
-const answer: AnswerObject = {
-	parts: [{ body }, { body: partB }, { body: partC }],
-	partLabelType: 'roman',
-};
+		When ${`x=${substitutions[0][0]}`}, 
+		~${'align*'}
+		${substitutions[0][1]}
+
+		When ${`x=${substitutions[1][0]}`},
+		~${'align*'}
+		${substitutions[1][1]}
+
+		Comparing coefficients,
+		~${'alignat*{2}'}
+		${comparing}
+
+		$${``}\\frac{${num}}{${den}} = ${result} ${qed}
+	`;
+	const ans = mathlify`
+		${result}.
+`;
+	answer.addPart(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Polynomials, Cubic Equations and Partial Fractions',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.polynomials,
 		}),
 	);
 }

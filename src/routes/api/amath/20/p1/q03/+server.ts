@@ -1,33 +1,48 @@
-import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { Polynomial, longDivide, partialFractions } from 'mathlify';
+import { Polynomial, longDivide, partialFractionsWorking, Expression } from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
 
-// part c
 const num = new Polynomial([4, -7, 9]);
 const den = new Polynomial([2, -1, -3]);
-const { quotient, remainder } = longDivide(num, den);
-const [f1, f2] = partialFractions(den, { numerators: remainder });
-// from observation
-const f1Neg = f1.negative();
+const { exp, quotient, remainder } = longDivide(num, den);
+const {
+	working: { start, substitutions },
+	result,
+} = partialFractionsWorking(remainder, den);
 
-// typeset
-const body = `
-	${math(`${quotient} - ${f1Neg} + ${f2}.`)}
+const final = new Expression(quotient.cast.toFraction()).plus(result);
+
+const soln = mathlify`
+By long division,
+$${`\\frac{${num}}{${den}} = ${exp}`}
+
+~${'gather*'}
+${start}
+
+When ${`x=${substitutions[0][0]}`}, 
+~${'align*'}
+${substitutions[0][1]}
+
+When ${`x=${substitutions[1][0]}`},
+~${'align*'}
+${substitutions[1][1]}
+
+$${``}\\frac{${num}}{${den}} = ${final} ${qed}
+`;
+const ans = mathlify`
+${final}.
 `;
 
-// answer and solution
-const answer: AnswerObject = {
-	body,
-};
+const answer = new Answer(ans, soln);
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Polynomials, Cubic Equations and Partial Fractions',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.polynomials,
 		}),
 	);
 }

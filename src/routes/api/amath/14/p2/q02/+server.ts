@@ -1,33 +1,79 @@
-import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { Polynomial, factorizeCubic } from 'mathlify';
+import { Polynomial, factorizeCubicWorking, solveLinear } from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
+import { or } from '$lib/typesetting';
 
-// part i
-const cubic = new Polynomial([2, -3, -11, 6]);
-const r = cubic.subIn(2);
+const answer = new Answer();
 
-// part ii
-// eslint-disable-next-line
-const [x2, x3] = factorizeCubic(cubic, -2)[1]!;
+const fx = new Polynomial([2, -3, -11, 6]);
+const x = 2;
+// const divisor = Polynomial.fromRoot(x);
+const root = -2;
+const factor = Polynomial.fromRoot(root);
 
-// typeset
-const body = `Remainder ${math(`= ${r}.`)}`;
-const partII = `${math(`x=-2,`)} ${math(`x=${x2}`)} or ${math(`x=${x3}.`)}`;
+// part a
+{
+	const soln = mathlify`
+		By the Remainder Theorem,
+		~${'align*'}
+		& \\text{Remainder} \\\\
+		&= f(${x}) \\\\
+		&= ${fx.replaceXWith(`(${x})`)} \\\\
+		&= ${fx.subIn(x)} ${qed}
+	`;
 
-// answer and solution
-const answer: AnswerObject = {
-	parts: [{ body }, { body: partII }],
-	partLabelType: 'roman',
-};
+	const ans = mathlify`
+		${fx.subIn(x)}.
+	`;
+	answer.addPart(ans, soln);
+}
+
+// part b
+{
+	const { working, exp, quadratic, factors } = factorizeCubicWorking(fx, root);
+	const [x1, x2, x3] = factors.map((f) => {
+		if (f) {
+			return solveLinear(f);
+		}
+	});
+
+	const soln = mathlify`
+		~${'align*'}
+		f({${root}}) &= ${fx.replaceXWith(`({${root}})`)} \\\\
+		&= ${fx.subIn(root)}
+
+		By the Factor Theorem, ${`${factor}`}
+		is a factor of ${`f(x)`} ${qed}
+
+		$${`${fx}`} = (${factor})(ax^2+bx+c)
+
+		~${'align*'}
+		${working}
+
+		~${'align*'}
+		${fx} &= 0 \\\\
+		(${factor})(${quadratic}) &= 0 \\\\
+		${exp} &= 0
+
+		$${`x={${x1}}`} ${qed} ${or} ${`x=${x2}`} ${qed} ${or} ${`x=${x3}`} ${qed}
+
+	`;
+	const ans = mathlify`
+		${`x={${x1}}`},
+		${`x=${x2}`}
+		or ${`x=${x3}`}.
+`;
+	answer.addPart(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Polynomials, Cubic Equations and Partial Fractions',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.polynomials,
 		}),
 	);
 }

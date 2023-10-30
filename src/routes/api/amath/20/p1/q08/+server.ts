@@ -1,37 +1,87 @@
 import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { Polynomial, solveLinear, factorizeCubic, solveQuadraticSurd } from 'mathlify';
+	EquationWorking,
+	Polynomial,
+	factorizeCubicWorking,
+	solveQuadraticSurd,
+	xPolynomial,
+} from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
+import { or } from '$lib/typesetting';
+
+const answer = new Answer();
 
 // part a
-const lhs = new Polynomial([2, Math.pow(2, 3)]);
-const rhs = new Polynomial([-1, Math.pow(-1, 3)]);
-const a = solveLinear(lhs.minus(rhs));
+{
+	const fx = new xPolynomial([1, 0, 'a', 0]);
+	const x1 = 2;
+	const x2 = -1;
+	const working = new EquationWorking(fx.subIn({ x: x1 }), fx.subIn({ x: x2 }), {
+		aligned: true,
+	});
+	const a = working.solveLinear();
+	const soln = mathlify`
+		By the Remainder Theorem,
+		~${'align*'}
+		f(${x1}) &= f({${x2}}) \\\\
+		${working} ${qed}
+	`;
+
+	const ans = mathlify`
+		${`a={${a}}`}.
+	`;
+	answer.addPart(ans, soln);
+}
 
 // part b
-const root1 = 3; // by manual calculation
-const poly = new Polynomial([1, -2, -4, 3]);
-const quadratic = factorizeCubic(poly, root1)[0][1];
-const [surd1, surd2] = solveQuadraticSurd(quadratic);
+{
+	const fx = new Polynomial([1, -2, -4, 3]);
+	const x = 3;
+	const factor = Polynomial.fromRoot(x);
+	const { working, quadratic, exp } = factorizeCubicWorking(fx, factor);
+	const [c, b, a] = quadratic.coeffs;
+	const [x2, x3] = solveQuadraticSurd(quadratic);
+	const soln = mathlify`
+		Consider ${`x=${x}`}
+		~${'align*'}
+		f(${x}) &= ${fx.replaceXWith(`(${x})`)} \\\\
+		&= ${fx.subIn(x)}
 
-// typeset
-const body = `${math(`a=${a}.`)}`;
-const partB = `${math(`x=${root1},`)}
-	${math(`x=${surd1}`)} or ${math(`x=${surd2}.`)}
+		Hence by the Factor Theorem, ${factor}
+		is a factor of ${fx}.
+		$${`${fx}`} = (${factor})(ax^2+bx+c)
+
+		Comparing coefficients,
+		~${'align*'}
+		${working}
+
+		~${'align*'}
+		${fx} &= 0 \\\\
+		${exp} &= 0
+
+		~${'alignat*{3}'}
+		x&=${x} ${qed} & \\quad &${or} \\quad && ${quadratic} = 0 \\\\
+		&&&&& \\begin{aligned}
+			x &= \\frac{-${b} \\pm \\sqrt{${b}^2-4(${a})(${c})}}{2(${a})} \\\\
+			&= ${x2} ${qed} ${or} ${x3} ${qed}
+			\\end{aligned}
+	`;
+	const ans = mathlify`
+		${`x=${x}`},
+		${`x=${x2}`}
+		or ${`x=${x3}`}.
 `;
-
-// answer and solution
-const answer: AnswerObject = {
-	parts: [{ body }, { body: partB }],
-};
+	answer.addPart(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Polynomials, Cubic Equations and Partial Fractions',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.polynomials,
 		}),
 	);
 }

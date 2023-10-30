@@ -1,40 +1,90 @@
-import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { Polynomial } from 'mathlify';
+import { Polynomial, partialFractionsWorking, factorizeCubicWorking } from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
+
+const answer = new Answer();
+
+const den = new Polynomial([1, 1, -1, -1]);
+const root = 1;
+const factor = Polynomial.fromRoot(root);
+
+// part a
+{
+	const soln = mathlify`
+		Let ${`f(x)=${den}`}
+
+		~${'align*'}
+		f(${root}) &= ${den.replaceXWith(`${root}`)} \\\\
+		&= ${den.subIn(root)}
+
+		Hence ${`x=${root}`}
+		is a root of ${`f(x)=0`}
+		@${`@br`}
+		By the Factor Theorem, ${`${factor}`}
+		is a factor of ${`${den}`} ${qed}
+	`;
+
+	const ans = mathlify`
+		${`f(${root}) = 0`}.
+	`;
+	answer.addPart(ans, soln);
+}
 
 // part b
-const den1 = new Polynomial([1, -1]);
-const den2 = new Polynomial([1, 1]);
-const den2Square = den2.square();
+{
+	const num = 4;
+	const { working, exp, quadratic } = factorizeCubicWorking(den, root);
+	const {
+		working: { start, substitutions, comparing },
+		result,
+	} = partialFractionsWorking(num, exp);
 
-// cover up rule
-const A = den2Square.subIn(1).reciprocal().times(4);
-const CFull = den1.subIn(-1).reciprocal().times(4);
-const signC = CFull.isGreaterThan(0) ? '+' : '-';
-const C = CFull.abs();
+	const soln = mathlify`
+		Since ${factor}
+		is a factor of ${den},
 
-// from manual calculation
-const B = 1;
+		$${den}=(${factor})(ax^2+bx+c)
 
-// typeset
-const body = `
-	${math(`\\frac{${A}}{${den1}} - \\frac{${B}}{${den2}} 
-		${signC} \\frac{${C}}{(${den2})^2}.`)}
+		Comparing coefficients,		
+		~${'align*'}
+		${working}
+
+		~${'align*'}
+		& ${den} \\\\
+		&= (${factor})(${quadratic}) \\\\
+		&= ${exp}
+
+		~${'align*'}
+		${start}
+
+		When ${`x=${substitutions[0][0]}`}, 
+		~${'align*'}
+		${substitutions[0][1]}
+
+		When ${`x=${substitutions[1][0]}`},
+		~${'align*'}
+		${substitutions[1][1]}
+
+		Comparing coefficients,
+		~${'alignat*{2}'}
+		${comparing}
+
+		$${``}\\frac{${num}}{${den}} = ${result} ${qed}
+	`;
+	const ans = mathlify`
+		${result}.
 `;
-
-// answer and solution
-const answer: AnswerObject = {
-	parts: [{ body, partNo: 2 }],
-};
+	answer.addPart(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Polynomials, Cubic Equations and Partial Fractions',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.polynomials,
 		}),
 	);
 }
