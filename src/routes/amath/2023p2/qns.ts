@@ -3,32 +3,22 @@ import type { AnswerObject } from '$lib/interfaces';
 import {
 	Polynomial,
 	Fraction,
-	solveLinear,
-	solveQuadraticNumerical,
 	EquationWorking,
 	xPolynomial,
-	ExpressionProduct,
-	RationalTerm,
-	ExpFn,
-	InequalityWorking,
 	d2ydx2,
-	longDivision,
 	Expression,
 	SquareRoot,
-	SLE,
 	cramersRule,
 } from '../../emath/2023p2/mathlify-v3b';
 
 import { mathlify } from '$lib/temml';
 import {
 	longDivide,
-	Fraction as oFrac,
 	Polynomial as oPolynomial,
 	factorizeQuadratic as fQ,
 } from 'mathlify';
 import { dydx } from '$lib/utils/calculus';
 const qed = `\\; \\blacksquare`;
-const dx = `\\; \\mathrm{d}x`;
 
 // Question 1
 export const qn1: () => AnswerObject = () => {
@@ -248,7 +238,7 @@ export const qn6: () => AnswerObject = () => {
 	const fx2 = new Polynomial([6, -7, -1, 2]);
 	const root = new Fraction(-1, 2);
 	const factor = new oPolynomial([2, 1]);
-	const { quotient, remainder } = longDivide(fx, factor);
+	const { quotient } = longDivide(fx, factor);
 	const [f2, f3] = fQ(quotient);
 	const body = mathlify`
 		~${'align*'}
@@ -258,7 +248,20 @@ export const qn6: () => AnswerObject = () => {
 		By the Factor Theorem, ${factor}
 		is a factor of ${fx} ${qed}
 
-		$${`(${factor})`}(${f2})(${f3}) ${qed} 
+		$${''} ${fx} = (${factor})(ax^2 + bx + c)
+
+		Comparing coefficients,
+		~${'alignat*{2}'}
+		&x^3: \\quad & 2a &= 6 \\\\
+		&& a &= 3 \\\\
+		&x^2: \\quad & 2b + a &= -7 \\\\
+		&& b &= -5 \\\\
+		&x^0: & c &= 2
+
+		~${'align*'}
+		& ${fx} \\\\
+		&= (${factor}) (${quotient}) \\\\
+		&= ${`(${factor})`}(${f2})(${f3}) ${qed} 
 	`;
 
 	// b
@@ -381,7 +384,11 @@ export const qn8: () => AnswerObject = () => {
 	`;
 
 	const partC = mathlify`
-		To be updated
+		~${'gather*'}
+		AE = 2r \\cos \\theta \\\\
+		4r + 3 (2r \\cos \\theta) = 8r \\sin theta \\\\
+		8r \\sin \\theta - 6r \\cos \\theta = 4r \\\\
+		4 \\sin \\theta - 3 \\cos \\theta = 2 ${qed}
 	`;
 
 	const theta = (Math.asin(2 / 5) / Math.PI) * 180 + alpha;
