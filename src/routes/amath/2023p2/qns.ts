@@ -89,13 +89,13 @@ export const qn3: () => AnswerObject = () => {
 
 	// c
 	const T2 = 82;
-	const lambda = Math.log(T2 / initial) * -1;
+	const lambda = (Math.log(T2 / initial) * -1) / 60;
 	const partCI = mathlify`
 		~${'gather*'}
-		${initial} \\mathrm{e}^{-\\lambda (1)} = ${T2} \\\\
-		\\mathrm{e}^{-\\lambda} = \\frac{${T2}}{${initial}} \\\\
-		\\ln \\mathrm{e}^{-\\lambda} = \\ln \\frac{${T2}}{${initial}} \\\\
-		- \\lambda = \\ln \\frac{${T2}}{${initial}} \\\\
+		${initial} \\mathrm{e}^{-\\lambda (60)} = ${T2} \\\\
+		\\mathrm{e}^{-60\\lambda} = \\frac{${T2}}{${initial}} \\\\
+		\\ln \\mathrm{e}^{-60\\lambda} = \\ln \\frac{${T2}}{${initial}} \\\\
+		- 60\\lambda = \\ln \\frac{${T2}}{${initial}} \\\\
 		\\lambda = ${lambda.toPrecision(3)} ${qed}
 	`;
 
