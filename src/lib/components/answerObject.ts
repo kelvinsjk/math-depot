@@ -19,4 +19,9 @@ export class Answer {
 		if (answerBody) this.answer['parts'].push({ body: answerBody });
 		if (solutionBody) this.solution['parts'].push({ body: solutionBody });
 	}
+
+	addBody(answerBody?: string, solutionBody?: string) {
+		if (answerBody) this.answer['body'] = answerBody;
+		if (solutionBody) this.solution['body'] = solutionBody;
+	}
 }

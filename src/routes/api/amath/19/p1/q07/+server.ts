@@ -1,39 +1,73 @@
 import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { Polynomial, Fraction, solveLinear } from 'mathlify';
-//import { coeffAt } from '$lib/utils/binomial';
+	EquationWorking,
+	Polynomial,
+	xPolynomial,
+	Fraction,
+	binomialExpansionWorking,
+	expansionWorking,
+} from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
 
-// part i
+const answer = new Answer();
+
 const poly = new Polynomial([2, new Fraction(-1, 8)], { ascending: true });
-const expansion = poly.pow(6).concatenate(2);
+const n = 6;
+const expansion = poly.pow(n).slice(3);
 
-// part ii
-const [a, b] = expansion.coeffs;
-const expansion2 = expansion.times(new Polynomial([1, 0, 4])).concatenate(2);
-const [B, C] = expansion2.coeffs.slice(1);
-const poly2 = new Polynomial([a.plus(b), B.plus(C)]);
-const k = solveLinear(poly2);
+// part a
+{
+	const working = binomialExpansionWorking(poly, n, 3);
+	const soln = mathlify`
+		~${'align*'}
+		& \\left( ${poly} \\right)^${n} \\\\
+		& = ${working} \\\\
+		& = ${expansion} + \\dotsb ${qed}
+	`;
 
-// typeset
-const body = `
-	${math(`${expansion}+\\ldots`)}
-`;
-const partII = `${math(`k=${k}.`)}`;
+	const ans = mathlify`
+		${expansion} + \\dotsb
+	`;
+	answer.addPart(ans, soln);
+}
 
-// answer and solution
-const answer: AnswerObject = {
-	parts: [{ body }, { body: partII }],
-	partLabelType: 'roman',
-};
+// part b
+{
+	const firstExp = new xPolynomial([4, 'k', 1], { ascending: true });
+	const result = firstExp.times(expansion).slice(3);
+	const working = expansionWorking(firstExp, expansion).filter(5, 7, 8);
+	const [, b, a] = result.coeffs;
+	const working2 = new EquationWorking(b.plus(a));
+	working2.setAligned(true);
+	const k = working2.solveLinear();
+	const soln = mathlify`
+		~${'align*'}
+		& \\left( ${firstExp} \\right) \\left( ${poly} \\right)^${n} \\\\
+		& = \\left( ${firstExp} \\right) \\left( ${expansion} + \\dotsb \\right) \\\\
+		& = ${working} + \\dotsb \\\\
+		& = ${result} + \\dotsb
+
+		Since the sum of the coefficients of ${'x'}
+		and ${'x^2'} 
+		is zero,
+		~${'align*'}
+		\\left(${a}\\right) + \\left(${b}\\right) &= 0 \\\\
+		${working2} ${qed}
+	`;
+	const ans = mathlify`
+		${`k={${k}}`}.
+	`;
+	answer.addPart(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Binomial Theorem',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.binomial,
 		}),
 	);
 }
