@@ -107,12 +107,43 @@ const binomial: Checklist = {
 	},
 };
 
+const exp: Checklist = {
+	13: {
+		p1: [8],
+		p2: [8],
+	},
+	14: {
+		p2: [1, 5],
+	},
+	15: {
+		p1: [2, 3],
+	},
+	16: {
+		p2: [7],
+	},
+	17: {
+		p2: [5, 7],
+	},
+	18: {
+		p1: [1, 6],
+	},
+	19: {
+		p1: [5, 10],
+		p2: [4],
+	},
+	20: {
+		p1: [2],
+		p2: [8],
+	},
+};
+
 // unit 1: quadratics completed
 // unit 2: surds completed
 // unit 3: polynomials completed
-// unit 4: binomial completed
+// unit 4: binomial completed (35)
+// unit 5: exponential completed (49)
 
-const all = [quadratics, surds, polynomials, binomial];
+const all = [quadratics, surds, polynomials, binomial, exp];
 
 import { union } from 'lodash-es';
 

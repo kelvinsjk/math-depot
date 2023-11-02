@@ -1,35 +1,78 @@
-import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-//import { Fraction, Polynomial, solveQuadratic } from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { e, qed } from '$lib/typesetting';
+import { Topics } from '../../../topics';
+
+const answer = new Answer();
+
+// a
+const c = 20;
+const T0 = 80;
+const A = T0 - c;
+let k: number;
+
+// part a
+{
+	const soln = mathlify`
+		When ${`t=0`},
+		${`T = ${T0}`}
+		~${'align*'}
+		${c} + A ${e}^{k(0)} &= ${T0} \\\\
+		A &= ${T0} - ${c} \\\\
+		&= ${A} ${qed}
+	`;
+	const ans = mathlify`
+		${`A = ${A}`}.
+	`;
+	answer.addPart(ans, soln);
+}
 
 // part b
-const k = Math.log(45 / 60) * -1;
+{
+	const t1 = 1;
+	const T1 = 65;
+	k = Math.log((T1 - c) / A) / t1 / -1;
+	const soln = mathlify`
+		When ${`t=${t1}`},
+		${`T = ${T1}`}
+		~${'align*'}
+		${c} + ${A} ${e}^{-k(${t1})} &= ${T1} \\\\
+		${A} ${e}^{-k} &= ${T1} - ${c} \\\\
+		${e}^{-k} &= \\frac{${T1 - c}}{${A}} \\\\
+		-k &= \\ln \\frac{${T1 - c}}{${A}} \\\\
+		k &= ${k.toPrecision(3)} ${qed}
+	`;
+	const ans = mathlify`
+		${`k = ${k.toPrecision(3)}`}.
+	`;
+	answer.addPart(ans, soln);
+}
 
 // part c
-const T = 20 + 60 * Math.exp(-k * 4);
-const safe = T < 40 ? `Safe.` : `Not safe.`;
+{
+	const t2 = 4;
+	const T2 = c + A * Math.exp(-k * t2);
+	const TSafe = 40;
+	const soln = mathlify`
+		When ${`t=${t2}`},
+		~${'align*'}
+		T &= ${c} + ${A} ${e}^{-k(${t2})} \\\\
+		&= ${T2.toPrecision(5)} < ${TSafe}
 
-// typeset
-const body = `${math(`k=${k.toPrecision(3)}.`)}`;
-const partIII = safe;
-
-// answer and solution
-const answer: AnswerObject = {
-	parts: [
-		{ body, partNo: 2 },
-		{ body: partIII, partNo: 3 },
-	],
-	partLabelType: 'roman',
-};
+		Therefore, it is safe to give the food ${qed}
+	`;
+	const ans = mathlify`
+		Safe as ${T2.toPrecision(5)} < ${TSafe}.
+	`;
+	answer.addPart(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Exponential and Logarithmic Functions',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.exp,
 		}),
 	);
 }
