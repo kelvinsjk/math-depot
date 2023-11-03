@@ -1,57 +1,148 @@
 import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { SquareRoot } from 'mathlify';
-import {
-	circleEqn,
-	line,
-	gradient,
-	circlePropsFromStandard,
-	distance,
-} from '$lib/utils/coordinate';
+	Circle,
+	Point,
+	Polynomial,
+	completeSquare,
+	gradientWorking,
+	lineWorking,
+	midPointWorking,
+} from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
 
-// part i
-const [[ax, ay], r2] = circlePropsFromStandard(-4, -2, -95);
-const r = new SquareRoot(r2);
+const answer = new Answer();
 
-// part iii
-const px = 10,
-	py = 7;
-const m1 = gradient(ax, ay, px, py, true);
-const l1 = line(m1, px, py);
+const xCoeff = -4,
+	yCoeff = -2,
+	coeff = 95;
 
-// part iv
-const mx = ax.plus(px).divide(2);
-const my = ay.plus(py).divide(2);
-const radius = distance(mx, my, px, py);
-const c2 = circleEqn(mx, my, radius);
+const circle = Circle.fromGeneralForm(xCoeff, yCoeff, -coeff);
+const A = circle.center;
+const r = circle.radius;
 
-// typeset
-const body = `${math(`A\\left(${ax},${ay}\\right).`)}
-	<br>Radius ${math(`=${r} \\textrm{ units}.`)}
-`;
-const partIII = `${math(`y=${l1}.`)}`;
-const partIV = `${math(`${c2}.`)}`;
-const partV = `${math(`y=${l1}.`)}`;
+// part a
+{
+	const soln = mathlify`
+		~${'gather'}
+		${circle.toGeneralForm({ rhsConstant: true }).eqn} \\notag \\\\
+		${completeSquare(new Polynomial([1, xCoeff, 0]))} + ${completeSquare(
+			new Polynomial([1, yCoeff, 0]),
+		)} = ${coeff} \\notag \\\\
+		${circle}
 
-// answer and solution
-const answer: AnswerObject = {
-	parts: [
-		{ body },
-		{ body: partIII, partNo: 3 },
-		{ body: partIV, partNo: 4 },
-		{ body: partV, partNo: 5 },
-	],
-	partLabelType: 'roman',
-};
+		~${'align*'}
+		\\text{Coordinates of } A &= ${A} ${qed} \\\\
+		\\text{Radius} &= \\sqrt{${r.square()}} \\\\
+			&= ${r} ${qed}
+	`;
+	const ans = mathlify`
+		${`A ${A}`}.
+		@${'@br'}
+		${'\\text{Radius}='}${r}.
+	`;
+	answer.addPart(ans, soln);
+}
+
+// part b
+const P = new Point(10, 7);
+{
+	const soln = mathlify`
+		Substituting ${`x=${P.x}`}
+		and ${`y=${P.y}`}
+		into ${'(1)'},
+		~${'align*'}
+		\\text{LHS} &= \\left( ${P.x} ${xCoeff / 2} \\right)^2 + \\left( ${P.y} ${
+			yCoeff / 2
+		} \\right)^2 \\\\
+		&= ${P.x.minus(-xCoeff / 2).square()} + ${P.y.minus(-yCoeff / 2).square()} \\\\
+		&= ${P.x
+			.minus(-xCoeff / 2)
+			.square()
+			.plus(P.y.minus(-yCoeff / 2).square())} \\\\
+		&= \\text{RHS} \\phantom{1}
+
+		Hence ${`P ${P}`}
+		lies on the circle ${qed}
+	`;
+	const ans = mathlify`
+		${'\\text{LHS} = \\text{RHS}'}.
+	`;
+	answer.addPart(ans, soln);
+}
+
+// part c
+let tangent: Polynomial;
+{
+	const mWorking = gradientWorking(A, P);
+	const m = mWorking.gradient.negativeReciprocal();
+	const lWorking = lineWorking({ m, pt: P });
+	tangent = lWorking.eqn;
+	const soln = mathlify`
+		~${'align*'}
+		\\text{Gradient of } AP	& = ${mWorking.working} \\\\
+		& = ${mWorking.gradient} \\\\
+		\\text{Gradient of tangent} &= ${m}
+
+		Equation of ${'PC:'}
+		~${'gather*'}
+		${lWorking.working} \\\\
+		y = ${tangent} ${qed}
+	`;
+	const ans = mathlify`
+		${`y=${tangent}`}.
+	`;
+	answer.addPart(ans, soln);
+}
+
+const mWorking = midPointWorking(A, P);
+const M = mWorking.midPoint;
+const C2 = new Circle(M, A);
+// part d
+{
+	const soln = mathlify`
+		~${'align*'}
+		\\text{Midpoint of } AP	& = ${mWorking.working} \\\\
+		& = ${M} \\\\
+		\\text{Radius of circle} &= \\frac{${r}}{2} \\\\
+		& = ${r.divide(2)}
+
+		Equation of circle:
+		$${C2} ${qed}
+	`;
+	const ans = mathlify`
+		${C2}.
+	`;
+	answer.addPart(ans, soln);
+}
+
+// part e
+{
+	const soln = mathlify`
+		We observe the the tangent to ${'C_1'}
+		at ${'P'}
+		is the same as the tangent to ${'C_2'}
+		at ${'P'}
+
+		Hence the equation of the tangent to ${'C_2'}
+		at ${'P'}
+		is
+		$${`y=${tangent}`} ${qed}
+		
+	`;
+	const ans = mathlify`
+		${`y=${tangent}`}.
+	`;
+	answer.addPart(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Coordinate Geometry',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.coordinate,
 		}),
 	);
 }

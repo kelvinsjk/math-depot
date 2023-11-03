@@ -24,7 +24,7 @@ const circle = Circle.fromGeneralForm(xCoeff, yCoeff, constant);
 	const yWorking = completeSquare(new Polynomial([1, yCoeff, 0]));
 	const soln = mathlify`
 		~${'gather*'}
-		${circle.generalForm} = 0 \\\\ 
+		${circle.toGeneralForm()} = 0 \\\\ 
 		${xWOrking} + ${yWorking} ${constant} = 0 \\\\
 		${circle}
 

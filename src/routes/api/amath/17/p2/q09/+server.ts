@@ -1,57 +1,131 @@
 import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { solveLinear } from 'mathlify';
-import { area, gradient, line } from '$lib/utils/coordinate';
+	EquationWorking,
+	Expression,
+	Fraction,
+	Point,
+	RationalTerm,
+	areaWorking,
+	lineWorking,
+} from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
 
-// part i
-const gradientAB = `\\frac{p-1}{2}`;
-const gradientCB = `3-p`;
+const answer = new Answer();
 
-// part ii
-const p = 5;
-const ax = -2,
-	ay = 1;
-const bx = 0,
-	by = p;
-const cx = 1,
-	cy = 3;
-const mCD = gradient(ax, ay, bx, by); // parallel to AB
-const mAD = mCD.reciprocal().negative(); // perpendicular to AB
-const lAD = line(mAD, ax, ay);
-const lCD = line(mCD, cx, cy);
-const eqn = lAD.minus(lCD);
-const dx = solveLinear(eqn);
-const dy = lAD.subIn(dx);
+const A = new Point(-2, 1);
+const C = new Point(1, 3);
+const xB = 0;
+let p: Fraction;
+let mABExp: RationalTerm;
+// part a
+{
+	mABExp = new RationalTerm(new Expression('p', A.y.negative()), A.x.negative().plus(xB));
+	const mCB = new RationalTerm(
+		new Expression('p', C.y.negative()),
+		C.x.negative().plus(xB),
+	);
+	const working = new EquationWorking(mABExp, mCB.negative(), { aligned: true });
+	working.crossMultiply();
+	p = working.solveLinear();
+	const soln = mathlify`
+		~${'align*'}
+		& \\text{Gradient of } AB	\\\\
+		& = \\frac{p-1}{0-({-2})} \\\\
+		& = ${mABExp} ${qed}
+		
+		~${'align*'}
+		& \\text{Gradient of } CB	\\\\
+		& = \\frac{p-3}{0-1} \\\\
+		& = ${mCB} ${qed}
 
-// part iii
-const A = area([
-	[ax, ay],
-	[bx, by],
-	[cx, cy],
-	[dx, dy],
-]);
+		Since ${'\\angle ABO = \\angle CBO'},
+		~${'align*'}
+		m_{AB} &= - m_{CB} \\\\
+		${working} ${qed}
+	`;
+	const ans = mathlify`
+		Gradient of ${'AB = '} ${mABExp}.
+		@${'@br'}
+		Gradient of ${'CB = '} ${mCB}.
+		@${'@br'}
+		${`p=${p}`}.
+	`;
+	answer.addPart(ans, soln);
+}
 
-// typeset
-const body = `Gradient of ${math(`AB = ${gradientAB}.`)}
-	<br>Gradient of ${math(`CB = ${gradientCB}.`)}
-`;
-const partII = `${math(`D\\left(${dx}, ${dy}\\right).`)}`;
-const partIII = `${math(`${A} \\textrm{ units}^2.`)}`;
+// part b
+let D: Point;
+{
+	const mAB = mABExp.subIn({ p }).cast.toFraction();
+	const lDcWorking = lineWorking({ m: mAB, pt: C });
+	const mAD = mAB.negativeReciprocal();
+	const lADWorking = lineWorking({ m: mAD, pt: A });
+	const AD = lADWorking.eqn;
+	const DC = lDcWorking.eqn;
+	const working = new EquationWorking(AD, DC);
+	working.setAligned();
+	const xD = working.solveLinear();
+	const yD = DC.subIn(xD);
+	D = new Point(xD, yD);
+	const soln = mathlify`
+		Substituting ${`p=${p}`},
+		~${'align*'}
+		&\\text{Gradient of AB} \\\\
+		&= \\frac{${p}-1}{2} \\\\
+		&= ${mAB}
 
-// answer and solution
-const answer: AnswerObject = {
-	parts: [{ body }, { body: partII }, { body: partIII }],
-	partLabelType: 'roman',
-};
+		Since ${'AB \\parallel DC'},
+		equation of DC:
+		~${'gather*'}
+		${lDcWorking.working} \\\\
+		y = ${DC} 
+		
+		Since ${'AB \\perp AD'},
+		equation of AD:
+		~${'gather*'}
+		${lADWorking.working} \\\\
+		y = ${AD}
+		
+		Equating the equations of lines ${'AD'}
+		and ${'DC'},
+		~${'align*'}
+		${working} \\\\
+		y &= ${AD.replaceXWith(`\\left( {${xD}} \\right)`)} \\\\
+		&= ${yD}
+
+		$${''} \\text{Coordinates of } \\text{D} = ${D} ${qed}
+	`;
+	const ans = mathlify`
+		${'D'} ${D}.
+	`;
+	answer.addPart(ans, soln);
+}
+
+// part c
+const B = new Point(0, p);
+{
+	const { matrix, working, area } = areaWorking(A, D, C, B);
+	const soln = mathlify`
+		~${'align*'}
+		& \\text{Area of } ABCD \\\\
+		&= ${matrix} \\\\
+		&= ${working} \\\\
+		&= ${area} \\text{ units}^2 ${qed}
+	`;
+	const ans = mathlify`
+	${area} \\text{ units}^2
+	`;
+	answer.addPart(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Coordinate Geometry',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.coordinate,
 		}),
 	);
 }

@@ -1,48 +1,114 @@
 import {
-	math,
-	//display
-} from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { solveLinear, Fraction, Polynomial } from 'mathlify';
-import { line } from '$lib/utils/coordinate';
+	EquationWorking,
+	Expression,
+	Fraction,
+	Point,
+	lineWorking,
+	Polynomial,
+	midPointWorking,
+} from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
 
-// part i
-const mBC = new Fraction(-3, 2);
-const lBC = new Polynomial([mBC, new Fraction(45, 2)]);
-const mAB = mBC.reciprocal().negative();
-const ax = -2,
-	ay = 6;
-const lAB = line(mAB, ax, ay);
-const bx = solveLinear(lBC.minus(lAB));
-const by = lAB.subIn(bx);
+const answer = new Answer();
 
-// part ii
-const cy = 0;
-const cx = 45 / 3;
-const mx = new Fraction(ax + cx, 2);
-const my = new Fraction(ay + cy, 2);
-// M is mid point of BD
-// (bx + dx) / 2 = mx
-const dx = mx.times(2).minus(bx);
-const dy = my.times(2).minus(by);
+const A = new Point(-2, 6);
+const xCoeff = 3,
+	yCoeff = 2;
+const lineLHS = new Expression([yCoeff, 'y'], [xCoeff, 'x']);
+const lineRHS = 45;
+const lineGradient = new Fraction(-xCoeff, yCoeff);
+const m = lineGradient.negativeReciprocal();
+const lWorking = lineWorking({ m, pt: A });
+const AB = lWorking.eqn;
+const BC = new Polynomial([lineGradient, new Fraction(lineRHS, yCoeff)]);
+const working = new EquationWorking(AB, BC);
+working.setAligned();
+const xB = working.solveLinear();
+const yB = AB.subIn(xB);
+const B = new Point(xB, yB);
 
-// typeset
-const body = `${math(`B\\left(${bx},${by}\\right).`)}`;
-const partII = `${math(`M\\left(${mx},${my}\\right),`)}
-	${math(`D\\left(${dx},${dy}\\right),`)}
-`;
+// part a
+{
+	const lineBCWorking = new EquationWorking(lineLHS, lineRHS);
+	lineBCWorking.moveTerm(1, { hide: true });
+	lineBCWorking.changeOrder([1, 0], { side: 'rhs' });
+	lineBCWorking.divide(2);
+	const soln = mathlify`
+		Considering equation of ${'BC'},
+		~${'gather*'}
+		${lineBCWorking}
 
-// answer and solution
-const answer: AnswerObject = {
-	parts: [{ body }, { body: partII }],
-	partLabelType: 'roman',
-};
+		$${`\\text{Gradient of}`} AB = ${m}
+
+		Equation of ${'AB'}:
+		~${'gather*'}
+		${lWorking.working} \\\\
+		y = ${lWorking.eqn} 
+
+		Solving the equations of ${'AB'}
+		and ${'BC'}
+		simultaneously,
+		~${'align*'}
+		${working} \\\\
+		y &= ${AB.replaceXWith(`(${xB})`)} \\\\
+		&= ${yB}
+
+		$${`\\text{Coordinates of } B = ${B}`} ${qed}
+	`;
+	const ans = mathlify`
+		${`B ${B}`}.
+	`;
+	answer.addPart(ans, soln);
+}
+
+// part b
+{
+	const C = new Point(new Fraction(lineRHS, xCoeff), 0);
+	const mWorking = midPointWorking(A, C);
+	const M = mWorking.midPoint;
+	const D = new Point(M.x.times(2).minus(B.x), M.y.times(2).minus(B.y));
+	const soln = mathlify`
+		At ${'C, y=0'}
+		@${'@br'}
+		Substituting into equation of ${'BC'},
+		~${'gather*'}
+		${yCoeff} y + ${xCoeff}x = ${lineRHS} \\\\
+		x = ${C.x}
+
+		~${'align*'}
+		& \\text{Coordinates of } M \\\\
+		& = ${mWorking.working} \\\\
+		& = ${M} ${qed}
+
+		Let the coordinates of ${'D'}
+		be ${`(x,y)`}
+
+		We observe that ${'M'}
+		is the midpoint of ${'BD'}
+		~${'align*'}
+		\\left( \\frac{${B.x}+x}{2}, \\frac{${B.y}+y}{2} \\right) &= ${M} \\\\
+			x &= ${D.x} \\\\
+			y &= {${D.y}}
+
+		$${`\\text{Coordinates of } D = ${D}`} ${qed}
+	`;
+	const ans = mathlify`
+		${`M ${M}`}.
+		@${'@br'}
+		${`D ${D}`}.
+	`;
+	answer.addPart(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Coordinate Geometry',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.coordinate,
 		}),
 	);
 }

@@ -137,13 +137,48 @@ const exp: Checklist = {
 	},
 };
 
+const coordinate: Checklist = {
+	13: {
+		p1: [10],
+		p2: [10],
+	},
+	14: {
+		p1: [7],
+		p2: [10],
+	},
+	15: {
+		p2: [7],
+	},
+	16: {
+		p1: [8],
+		p2: [11],
+	},
+	17: {
+		p1: [12],
+		p2: [9],
+	},
+	18: {
+		p1: [9],
+		p2: [11],
+	},
+	19: {
+		p1: [9],
+		p2: [6],
+	},
+	20: {
+		p1: [9],
+		p2: [9],
+	},
+};
+
 // unit 1: quadratics completed
 // unit 2: surds completed
 // unit 3: polynomials completed
 // unit 4: binomial completed (35)
 // unit 5: exponential completed (49)
+// unit 6: coordinate geometry completed (64)
 
-const all = [quadratics, surds, polynomials, binomial, exp];
+const all = [quadratics, surds, polynomials, binomial, exp, coordinate];
 
 import { union } from 'lodash-es';
 
