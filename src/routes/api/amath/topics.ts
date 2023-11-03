@@ -4,4 +4,5 @@ export enum Topics {
 	polynomials = 'Polynomials, Cubic Equations and Partial Fractions', // 3
 	binomial = 'Binomial Theorem', // 4
 	exp = 'Exponential and Logarithmic Functions', // 5
+	coordinate = 'Coordinate Geometry', // 6
 }
