@@ -1,42 +1,72 @@
-import { linebreak, math } from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { SquareRoot } from 'mathlify';
-import { Laurent } from '$lib/utils/calculus';
+import { PolynomialLike, EquationWorking, SquareRoot, dydx, d2ydx2 } from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
 
-// x^2 + 4/x^2
-const y = new Laurent([1, 0, 0], [0, 4]);
-const dydx = y.differentiate();
-const eqn = dydx.multiplyDenom();
-// eqn of the form ax^4 + b = 0;
-const coeffs = eqn.coeffs;
-const a = coeffs[4];
-const b = coeffs[0];
-const xSquare = new SquareRoot(b.negative().divide(a)).coeff;
+const answer = new Answer();
+
+const y = new PolynomialLike([
+	[1, 2],
+	[4, -2],
+]);
+const dy = y.differentiate();
+const working = new EquationWorking(dy);
+working.setAligned();
+working.moveTerm(1);
+working.crossMultiply();
+working.divide(2);
+
+const xFour = working.rhs.cast.toFraction();
+const xSquare = new SquareRoot(xFour).cast.toFraction();
 const x1 = new SquareRoot(xSquare);
 const x2 = x1.negative();
-const y1 = y.subInSurd(x1);
-const y2 = y.subInSurd(x2);
-const dTwo = dydx.differentiate();
-const dTwo1 = dTwo.subInSurd(x1);
-const dTwo2 = dTwo.subInSurd(x2);
-const max1 = dTwo1.valueOf() > 0 ? 'Minimum point' : 'Maximum point';
-const max2 = dTwo2.valueOf() > 0 ? 'Minimum point' : 'Maximum point';
+const y1 = xSquare.plus(xSquare.reciprocal().times(4));
 
-// typeset
-const body = `${max1} ${math(` \\left(${x1}, ${y1}\\right),`)}
-	${linebreak}${max2} ${math(` \\left(${x2}, ${y2}\\right).`)}
-`;
+const coord1 = `\\left( {${x1}}, ${y1}  \\right)`;
+const coord2 = `\\left( {${x2}}, ${y1}  \\right)`;
 
-// answer and solution
-const answer: AnswerObject = {
-	body,
-};
+const dTwo = dy.differentiate();
+
+{
+	const soln = mathlify`
+		$${'align*'}
+		y &= ${y} \\\\
+		${dydx()} &= ${dy} 
+
+		At stationary points,
+		$${'align*'}
+		${working} \\\\
+		x &= {\\pm \\sqrt[4]{${xFour}}} \\\\
+		&= {\\pm ${x1}} \\\\
+		y &= ({\\pm ${x1}})^2 + \\frac{4}{({\\pm ${x1}})^2} \\\\
+		&= ${y1}
+
+		Coordinates of the stationary points are
+		$${coord1} ${qed} \\quad \\text{and} \\quad ${coord2} ${qed}
+
+		$${'align*'}
+		${d2ydx2()} &= ${dTwo}
+		\\\\ &> 0 \\text{ for all } x \\in \\mathbb{R}
+
+		Hence both ${coord1}
+		and ${coord2}
+		are #${'b{minimum}'} points ${qed}
+	`;
+	const ans = mathlify`
+		Minimum point ${coord1}.
+		--newline--
+		Minimum point ${coord2}.
+	`;
+	answer.addBody(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Applications of Differentiation',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.diffApp,
 		}),
 	);
 }

@@ -48,39 +48,39 @@ let xC: Fraction;
 	const m2 = gWorking2.gradient;
 	console.assert(m1.times(m2).is.equalTo(-1), `Warning AMath 13P1Q10: m1*m2 != -1`);
 	const soln = mathlify`
-		~${'gather'}
+		$${'gather'}
 		${l2LHS} = ${l2RHS} \\\\
 		${l1LHS} = ${l1RHS} \\\\
 
 		From ${`(2)`},
-		~${'gather*'}
+		$${'gather*'}
 		${working1}
 
-		~${'equation'}
+		$${'equation'}
 		${working1.lhs} = ${working1.rhs}
 
 		Taking ${'(1)+(3)'}
-		~${'gather*'}
+		$${'gather*'}
 		${working2}
 
 		Substituting ${`y=${yA}`}
 		into ${`(1)`},
-		~${'align*'}
+		$${'align*'}
 		${working3}
 
 		Hence the coordinates of ${`A = ${A}`}
-		~${'align*'}
+		$${'align*'}
 		& \\text{Coordinates of } M \\\\
 		&  = ${mWorking.working} \\\\
 		&  = ${M}
 
 		At ${'C, y= 0'}
-		~${'align*'}
+		$${'align*'}
 		${l2RHS} &= 0 \\\\
 		x &= ${xC}
 
 		Hence the coordinates of ${`C = ${C}`}
-		~${'align*'}
+		$${'align*'}
 		& \\text{Gradient of } OM \\\\
 		&  = ${gWorking1.working} \\\\
 		&  = ${m1} \\\\
@@ -106,12 +106,12 @@ let xC: Fraction;
 	const ratio = areaOAB.divide(areaOAC);
 	const soln = mathlify`
 		At ${`B, x=0`}
-		~${'align*'}
+		$${'align*'}
 		${working}
 
 		$${`\\text{Coordinates of } B = \\left( 0, ${yB} \\right)`}
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{Area of } OAB \\\\
 		&= \\frac{1}{2} \\times y_B \\times x_A \\\\
 		&= \\frac{1}{2} \\times ${yB} \\times ${xA} \\\\
@@ -123,7 +123,7 @@ let xC: Fraction;
 
 		$${''}\\frac{\\text{Area of } OAB}{\\text{Area of } OAC} = ${ratio}
 
-		~${'align*'}
+		$${'align*'}
 		\\text{Area of OAB} &: \\text{ Area of OAC} \\\\
 		= ${ratio.num} &: ${ratio.den} ${qed}
 	`;

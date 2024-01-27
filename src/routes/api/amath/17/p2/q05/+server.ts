@@ -27,7 +27,7 @@ const answer = new Answer();
 	working.crossMultiply();
 	const xVal = working.solveLinear();
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		${t1} - ${t2} &= 1 + ${t3} \\\\
 		${t1.minus(t2).exp} - ${t3} &= 1 \\\\
 		\\log_5 \\left( ${arg} \\div ${t3.fx} \\right) &= 1 \\\\
@@ -50,7 +50,7 @@ const answer = new Answer();
 	const y1 = Math.pow(10, -sqrt2.valueOf());
 	const y2 = Math.pow(10, sqrt2.valueOf());
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		${logY100} &= ${lgY} \\\\
 		${rational} &= ${lgY} \\\\
 		\\left( ${lgY} \\right)^2 &= ${num} \\\\

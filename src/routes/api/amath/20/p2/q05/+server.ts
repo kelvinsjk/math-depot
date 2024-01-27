@@ -23,7 +23,7 @@ const answer = new Answer();
 	//const [x1, x2] = working.factorizeQuadratic();
 
 	const soln = mathlify`
-	~${'gather*'}
+	$${'gather*'}
 	${working}\\\\
 	${roots[0]} ${qed} ${or} ${roots[1]} ${qed}
 	`;

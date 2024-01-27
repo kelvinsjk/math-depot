@@ -13,15 +13,15 @@ const alive = alivePercentage / 100;
 	const soln = mathlify`Every minute, 
 		${`100\\% - ${destroy}\\% = ${alivePercentage}\\% = ${alive}`}
 		of germs will be alive.
-		@${'@br'}
+		--newline--
 		After 1 minute there will be 
 		${`(${alive}) N`}
 		germs alive.
-		@${'@br'}
+		--newline--
 		After 2 minutes there will be
 		${`(${alive})^2 N`}
 		germs alive.
-		@${'@br'} 
+		--newline--
 		After ${'n'}
 		minutes,
 		$${`\\text{Germs alive} = (${alive})^n N`} ${qed}
@@ -38,12 +38,12 @@ const alive = alivePercentage / 100;
 	const aliveVal = Math.pow(alive, n);
 	const percentage = (1 - aliveVal) * 100;
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\text{Germs alive} \\\\
 		& = (${alive})^{${n}} N \\\\
 		&= ${aliveVal.toPrecision(5)} N
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{Percentage of germs destroyed} \\\\
 		& = \\frac{N - ${aliveVal.toPrecision(5)} N}{N} \\times 100\\% \\\\
 		& = ${percentage.toPrecision(5)} \\% \\\\
@@ -58,7 +58,7 @@ const alive = alivePercentage / 100;
 // part c
 {
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		N ${e}^{kn} &= (${alive})^n N \\\\
 		${e}^{kn} &= (${alive})^n \\\\
 		\\ln ${e}^{kn} &= \\ln (${alive})^n \\\\

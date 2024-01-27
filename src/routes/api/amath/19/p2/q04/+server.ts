@@ -17,7 +17,7 @@ const x = new Polynomial('x');
 	const pow = rhs.divide(coeff);
 	const xVal = new Fraction(2).pow(pow);
 	const soln = mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		${log2X} + ${log16X} = {${rhs.valueOf()}} \\\\
 		${log2X} + ${changedBase.rational} = {${rhs.valueOf()}} \\\\
 		${log2X} + \\frac{${changedBase.num}}{\\log_2 2^4} = {${rhs.valueOf()}} \\\\
@@ -41,7 +41,7 @@ const x = new Polynomial('x');
 	const lgZPlusY = new LnFn('(z + y)', { base: 10 });
 	const diff = lgZ.minus(lgY);
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		${lgZ} - ${lgY} &= ${lgZPlusY} \\\\		
 		${diff.exp} &= ${lgZPlusY} \\\\
 		${diff.arg} &= z + y \\\\
@@ -63,7 +63,7 @@ const x = new Polynomial('x');
 			Since ${`z > 0`}
 			and ${`y > 0`},
 			by considering ${`z = \\frac{y^2}{1 - y}`},
-			~${'align*'}
+			$${'align*'}
 			1 - y &> 0 \\\\
 			y &< 1
 

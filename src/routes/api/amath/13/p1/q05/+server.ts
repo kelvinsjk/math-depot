@@ -33,19 +33,19 @@ const exp2 = poly2.pow(n2).slice(4);
 	const rhs = coeffWorking.rhs.cast.toFraction().valueOf();
 	a = new SquareRoot(rhs).valueOf();
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\left( ${poly1} \\right)^${n1} \\\\
 		& = ${working1} \\\\
 		& = ${exp1} + \\dotsb
 		
-		~${'align*'}
+		$${'align*'}
 		& \\left( ${poly2} \\right)^${n2} \\\\
 		& = ${working2} \\\\
 		& = ${exp2} + \\dotsb
 
 		Since coefficient of ${'x^3'}
 		is ${coeff},
-		~${'align*'}
+		$${'align*'}
 		${coeffWorking}
 
 		Since ${'a'}
@@ -68,7 +68,7 @@ const exp2 = poly2.pow(n2).slice(4);
 
 	const soln = mathlify`
 		When ${`a={${a}}`},
-		~${'align*'}
+		$${'align*'}
 		& \\text{Coefficient of } x^2 \\\\
 		&= ${coeff2a.replaceXWith(`({${a}})`)} + ${coeff2b} \\\\
 		&= ${coeff2aVal} + ${coeff2b} \\\\

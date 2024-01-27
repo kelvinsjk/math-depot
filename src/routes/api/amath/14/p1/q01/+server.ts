@@ -25,19 +25,19 @@ const answer = new Answer();
 	const rhs = coeffWorking.rhs.cast.toFraction().valueOf();
 	const k = Math.sign(rhs) * Math.pow(Math.abs(rhs), 1 / 3);
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\left( ${poly1} \\right)^${n1} \\\\
 		& = ${working1} \\\\
 		& = ${exp1} + \\dotsb
 		
-		~${'align*'}
+		$${'align*'}
 		& \\left( ${poly2} \\right)^${n2} \\\\
 		& = ${working2} \\\\
 		& = ${exp2} + \\dotsb
 
 		Since coefficient of ${'x^3'}
 		is ${coeff},
-		~${'align*'}
+		$${'align*'}
 		${coeffWorking} \\\\
 		k &= {${k}} ${qed}
 	`;

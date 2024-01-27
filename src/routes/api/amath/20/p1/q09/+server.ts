@@ -23,12 +23,12 @@ const circle = Circle.fromGeneralForm(xCoeff, yCoeff, constant);
 	const xWOrking = completeSquare(new Polynomial([1, xCoeff, 0]));
 	const yWorking = completeSquare(new Polynomial([1, yCoeff, 0]));
 	const soln = mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		${circle.toGeneralForm()} = 0 \\\\ 
 		${xWOrking} + ${yWorking} ${constant} = 0 \\\\
 		${circle}
 
-		~${'align*'}
+		$${'align*'}
 		\\text{Centre} &= ${circle.center} ${qed} \\\\
 		\\text{Radius} &= \\sqrt{${circle.radius.square()}} \\\\
 			&= ${circle.radius} ${qed}
@@ -51,13 +51,13 @@ const circle = Circle.fromGeneralForm(xCoeff, yCoeff, constant);
 		We denote the centre of the circle by ${'C'}
 		and the point ${pt}
 		by ${'A'}
-		~${'align*'}
+		$${'align*'}
 		\\text{Gradient of } CA &= ${gWorking.working} \\\\
 		&= ${gWorking.gradient} \\\\
 		\\text{Gradient of tangent } & = ${gradientTangent}
 
 		Equation of tangent:
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${lWorking.eqn} ${qed}
 	`;

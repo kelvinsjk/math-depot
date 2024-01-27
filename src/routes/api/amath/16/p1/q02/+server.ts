@@ -16,11 +16,11 @@ const hWorking = new ExpressionWorking(h, { aligned: true, equalStart: true });
 hWorking.rationalize();
 
 const soln = mathlify`
-	~${'align*'}
+	$${'align*'}
 	& \\text{Area of the base} \\\\
 	${areaWorking} \\\\
 
-	~${'align*'}
+	$${'align*'}
 	& \\text{Volume} \\\\
 	${hWorking} ${qed}
 `;

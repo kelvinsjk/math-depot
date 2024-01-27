@@ -24,7 +24,7 @@ const answer = new Answer();
 	const a = working.solveLinear();
 	const soln = mathlify`
 		By the Remainder Theorem,
-		~${'align*'}
+		$${'align*'}
 		f(${x1}) &= f({${x2}}) \\\\
 		${working} ${qed}
 	`;
@@ -45,7 +45,7 @@ const answer = new Answer();
 	const [x2, x3] = solveQuadraticSurd(quadratic);
 	const soln = mathlify`
 		Consider ${`x=${x}`}
-		~${'align*'}
+		$${'align*'}
 		f(${x}) &= ${fx.replaceXWith(`(${x})`)} \\\\
 		&= ${fx.subIn(x)}
 
@@ -54,14 +54,14 @@ const answer = new Answer();
 		$${`${fx}`} = (${factor})(ax^2+bx+c)
 
 		Comparing coefficients,
-		~${'align*'}
+		$${'align*'}
 		${working}
 
-		~${'align*'}
+		$${'align*'}
 		${fx} &= 0 \\\\
 		${exp} &= 0
 
-		~${'alignat*{3}'}
+		$${'alignat*{3}'}
 		x&=${x} ${qed} & \\quad &${or} \\quad && ${quadratic} = 0 \\\\
 		&&&&& \\begin{aligned}
 			x &= \\frac{-${b} \\pm \\sqrt{${b}^2-4(${a})(${c})}}{2(${a})} \\\\

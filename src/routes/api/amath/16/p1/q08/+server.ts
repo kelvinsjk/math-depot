@@ -38,20 +38,20 @@ const B = new Point(xB, yB);
 	lineBCWorking.divide(2);
 	const soln = mathlify`
 		Considering equation of ${'BC'},
-		~${'gather*'}
+		$${'gather*'}
 		${lineBCWorking}
 
 		$${`\\text{Gradient of}`} AB = ${m}
 
 		Equation of ${'AB'}:
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${lWorking.eqn} 
 
 		Solving the equations of ${'AB'}
 		and ${'BC'}
 		simultaneously,
-		~${'align*'}
+		$${'align*'}
 		${working} \\\\
 		y &= ${AB.replaceXWith(`(${xB})`)} \\\\
 		&= ${yB}
@@ -72,13 +72,13 @@ const B = new Point(xB, yB);
 	const D = new Point(M.x.times(2).minus(B.x), M.y.times(2).minus(B.y));
 	const soln = mathlify`
 		At ${'C, y=0'}
-		@${'@br'}
+		--newline--
 		Substituting into equation of ${'BC'},
-		~${'gather*'}
+		$${'gather*'}
 		${yCoeff} y + ${xCoeff}x = ${lineRHS} \\\\
 		x = ${C.x}
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{Coordinates of } M \\\\
 		& = ${mWorking.working} \\\\
 		& = ${M} ${qed}
@@ -88,7 +88,7 @@ const B = new Point(xB, yB);
 
 		We observe that ${'M'}
 		is the midpoint of ${'BD'}
-		~${'align*'}
+		$${'align*'}
 		\\left( \\frac{${B.x}+x}{2}, \\frac{${B.y}+y}{2} \\right) &= ${M} \\\\
 			x &= ${D.x} \\\\
 			y &= {${D.y}}
@@ -97,7 +97,7 @@ const B = new Point(xB, yB);
 	`;
 	const ans = mathlify`
 		${`M ${M}`}.
-		@${'@br'}
+		--newline--
 		${`D ${D}`}.
 	`;
 	answer.addPart(ans, soln);

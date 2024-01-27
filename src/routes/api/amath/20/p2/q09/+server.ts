@@ -37,13 +37,13 @@ let BE: Polynomial;
 	working.times(4);
 	working.moveTerm(2);
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		&\\text{Gradient of } BE \\\\
 		& = ${gWorking.working} \\\\
 		& = ${m}
 
 		Equation of ${'BE:'}
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${BE}
 
@@ -52,17 +52,17 @@ let BE: Polynomial;
 		let the coordinates of ${'D'}
 		be ${`\\left( x, ${BE} \\right)`}
 
-		~${'align*'}
+		$${'align*'}
 		&\\text{Distance of } AD \\\\
 		& = ${dWorking.working} \\\\
 		& = ${d}
 
 		Since the perimeter is ${'46'}\\text{ units},
-		~${'align*'}
+		$${'align*'}
 		AD &= \\frac{${perimeter}-2(${d})}{2} \\\\
 		&= ${AD}
 
-		~${'gather*'}
+		$${'gather*'}
 		\\sqrt{ \\left( x - ({${A.x}}) \\right)^2 + \\left( ${BE} - ${
 			A.y
 		} \\right)^2} = ${AD} \\\\
@@ -85,18 +85,18 @@ let D: Point;
 	const y = BE.subIn(x2);
 	D = new Point(x2, y);
 	const soln = mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		${working} \\\\
 		x = {${x1}} ${or} x = {${x2}}
 
 		The diagram is necessary to determine which is the correct value for the
 		${'x'}\\text{-coordinate}
 		of ${'D'}
-		@${'@br'}
+		--newline--
 		From the diagram, ${'x_D > 0'}
 		so ${`x = {${x2}}`}
 
-		~${'align*'}
+		$${'align*'}
 		y &= ${BE.replaceXWith(`(${x2})`)} \\\\
 		&= ${y}
 
@@ -118,17 +118,17 @@ let D: Point;
 	const soln = mathlify`
 		Let ${'M'}
 		denote the midpoint of ${'BD'}
-		~${'align*'}
+		$${'align*'}
 		&\\text{Coordinates of } M \\\\
 		&= ${mWorking.working} \\\\
 		&= ${M}
 
 		${'M'}
 		is also the midpoint of ${'AC'}
-		@${'@br'}
+		--newline--
 		Let the coordinates of ${'C'}
 		be ${`\\left( x, y \\right)`}
-		~${'align*'}
+		$${'align*'}
 		\\left( \\frac{${A.x} + x}{2}, \\frac{${A.y} + y}{2} \\right) &= ${M} \\\\
 		x &= ${xC} \\\\
 		y &= ${yC}

@@ -30,7 +30,7 @@ const line = new Polynomial([1, -2]);
 	$${`y=${y1}`}
 
 	When the curve lies completely above the line,
-	~${'gather*'}
+	$${'gather*'}
 	${working} \\\\
 	${roots[0]} ${qed} ${or} ${roots[1]} ${qed}
 	`;
@@ -55,11 +55,11 @@ const line = new Polynomial([1, -2]);
 		$${`y=${y1}`}.
 
 		Equating the curve and the line,
-		~${'gather*'}
+		$${'gather*'}
 		${y1} = ${line} \\\\
 		${lhs} = 0
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{discriminant} \\\\
 		& = ${b1}^2 - 4(${a1})(${c1}) \\\\
 		&= ${d}
@@ -88,11 +88,11 @@ const line = new Polynomial([1, -2]);
 
 	const soln = mathlify`
 		Equating the curve and the line for a general value of ${'a'},
-		~${'gather*'}
+		$${'gather*'}
 		${working}
 
 		If the line is a tangent to the curve,
-		~${'align*'}
+		$${'align*'}
 		\\text{discriminant} &= 0 \\\\
 		(${b})^2 - 4${a}\\left(${c}\\right) &= 0 \\\\
 		${working2}

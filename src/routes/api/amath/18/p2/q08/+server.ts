@@ -16,7 +16,7 @@ const root = solveLinear(factor);
 	const x = solveLinear(divisor);
 	const soln = mathlify`
 		By the Remainder Theorem,
-		~${'align*'}
+		$${'align*'}
 		& \\text{Remainder} \\\\
 		&= p({${x}}) \\\\
 		&= ${px.replaceXWith(`({${x}})`)} \\\\
@@ -32,7 +32,7 @@ const root = solveLinear(factor);
 // part b
 {
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		p\\left(${root}\\right) &= ${px.replaceXWith(`\\left({${root}}\\right)`)} \\\\
 		&= ${px.subIn(root)}
 
@@ -55,22 +55,22 @@ const root = solveLinear(factor);
 		$${`${px}`} = (${factor})(ax^2+bx+c)
 
 		Comparing coefficients,
-		~${'align*'}
+		$${'align*'}
 		${working}
 
-		~${'gather*'}
+		$${'gather*'}
 		${px} = 0 \\\\
 		${exp} = 0 \\\\
 		x=${root} ${or} \\quad ${quadratic} = 0 \\\\
 
 		For ${quadratic},
-		~${'align*'}
+		$${'align*'}
 		& \\text{Discriminant} \\\\
 		&= ${b}^2 - 4(${a})(${c}) \\\\
 		&= ${d} < 0
 
 		Hence there are no real roots for ${quadratic} = 0
-		@${'@br'}
+		--newline--
 		Hence the equation ${'p(x)=0'}
 		has only one real root ${qed}
 	`;
@@ -84,7 +84,7 @@ const root = solveLinear(factor);
 {
 	const y = Math.log(root.valueOf()) / Math.log(2);
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		2^{3y} \\cdot 2^1 + 5 \\left( 2^{2y} \\right) &= 18 \\\\
 		2 \\left( 2^{y} \\right)^3 + 5 \\left( 2^{y} \\right)^2 - 18 &= 0
 
@@ -93,7 +93,7 @@ const root = solveLinear(factor);
 		$${px} = 0
 
 		From parts (ii) and (iii),
-		~${'align*'}
+		$${'align*'}
 		x &= ${root} \\\\
 		2^y &= ${root} \\\\
 		\\ln 2^y &= \\ln ${root} \\\\

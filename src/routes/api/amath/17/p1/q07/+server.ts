@@ -32,7 +32,7 @@ const angle = 60;
 	//const rationalized = den.times(den.conjugate()).terms[0].coeff;
 	//const AC = area.times(den.conjugate()).times(rationalized.reciprocal());
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		\\frac{1}{2} AC \\left( ${AB} \\right) \\sin ${angle} \\degree &= ${area} \\\\
 		\\frac{1}{2} AC \\left( ${AB} \\right) \\frac{${root3}}{2} &= ${area} \\\\
 		${root3} \\left( ${AB} \\right) AC &= ${area.times(4)} \\\\
@@ -65,7 +65,7 @@ const angle = 60;
 	const bc2 = ab2.plus(ac2).minus(product);
 
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& BC^2 \\\\
 		&= AB^2 + AC^2 - 2 (AB) (AC) \\cos ${angle} \\degree \\\\
 		&= \\left( ${AB} \\right)^2 + \\left( ${AC} \\right)^2 - 2 \\left( ${AB} \\right) \\left( ${AC} \\right) \\frac{1}{2} \\\\

@@ -18,15 +18,15 @@ const soln = mathlify`
 By long division,
 $${`\\frac{${num}}{${den}} = ${exp}`}
 
-~${'gather*'}
+$${'gather*'}
 ${start}
 
 When ${`x=${substitutions[0][0]}`}, 
-~${'align*'}
+$${'align*'}
 ${substitutions[0][1]}
 
 When ${`x=${substitutions[1][0]}`},
-~${'align*'}
+$${'align*'}
 ${substitutions[1][1]}
 
 $${``}\\frac{${num}}{${den}} = ${final} ${qed}

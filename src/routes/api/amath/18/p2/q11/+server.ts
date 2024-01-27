@@ -22,21 +22,21 @@ const C = new Point(7, 12);
 	const m1 = gradientWorking(A, B);
 	const m2 = gradientWorking(C, B);
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\text{Gradient of } AB	\\\\
 		& = ${m1.working} \\\\
 		& = ${m1.gradient}
 		
-		~${'align*'}
+		$${'align*'}
 		& \\text{Gradient of } CB	\\\\
 		& = ${m2.working} \\\\
 		& = {${m2.gradient}}
 		
 		Since gradient of ${'AB \\times'}
 		gradient of ${'CB'} = {-1},
-		@${'@br'}
+		--newline--
 		${'AB \\perp CB'}
-		@${'@br'}
+		--newline--
 		Hence ${'\\angle ABC = 90 \\degree'} ${qed}
 	`;
 	const ans = mathlify`
@@ -70,12 +70,12 @@ let circle: Circle;
 	circle = new Circle(center, r);
 	const soln = mathlify`
 		The centre of the circle is the midpoint of ${'AC'}
-		~${'align*'}
+		$${'align*'}
 		& \\text{Midpoint of } AC \\\\
 		& = ${mWorking.working} \\\\
 		& = ${center}
 		
-		~${'align*'}
+		$${'align*'}
 		& \\text{Radius of circle} \\\\
 		& = ${dWorking.working} \\\\
 		& = ${r}
@@ -122,7 +122,7 @@ let circle: Circle;
 	const lWorking = lineWorking({ m, pt: C });
 	const tangent = lWorking.eqn;
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\text{Gradient of } PC	\\\\
 		& = ${gWorking.working} \\\\
 		& = ${gWorking.gradient} \\\\
@@ -130,7 +130,7 @@ let circle: Circle;
 		& = {${m}}
 
 		Equation of tangent at ${'C:'}
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${tangent} ${qed}
 	`;

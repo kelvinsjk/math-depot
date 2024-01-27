@@ -35,26 +35,26 @@ const root = solveLinear(factor);
 
 	const soln = mathlify`
 		By the Factor Theorem,
-		~${'align'}
+		$${'align'}
 		f({${root}}) &= 0 \\notag \\\\
 		${fx.replaceXWith(`({${root}})`)} &= 0 \\notag \\\\
 		${fx.subIn({ x: root })} &= 0 \\notag \\\\
 		-3a + b &= 27
 
 		By the Remainder Theorem,
-		~${'align'}
+		$${'align'}
 		f({${x1}}) &= ${remainder} \\notag \\\\
 		${fx.replaceXWith(`({${x1}})`)} &= ${remainder} \\notag \\\\
 		${fx.subIn({ x: x1 })} &= ${remainder} \\notag \\\\
 		4a + b &= ${remainder - 64}
 
 		Considering ${`(2) - (1)`},
-		~${'align*'}
+		$${'align*'}
 		${working1} ${qed}
 
 		Substituting ${`a=${a}`}
 		into ${`(1)`},
-		~${'align*'}
+		$${'align*'}
 		${working2} ${qed}
 	`;
 
@@ -75,24 +75,24 @@ const root = solveLinear(factor);
 		$${`${poly}`} = (${factor})(ax^2+bx+c)
 
 		Comparing coefficients,
-		~${'align*'}
+		$${'align*'}
 		${working}
 
-		~${'align*'}
+		$${'align*'}
 		${poly} &= 0 \\\\
 		${exp} &= 0
 
 		$${''} x=${root} ${or} ${quadratic} = 0
 
 		For ${quadratic},
-		~${'align*'}
+		$${'align*'}
 		& \\text{Discriminant} \\\\
 		&= ({${b1}})^2 - 4({${a1}})({${c1}}) \\\\
 		&= ${d} < 0
 
 		Hence ${quadratic}
 		has no real roots.
-		@${'@br'}
+		--newline--
 		Therefore ${poly}
 		has 1 real root, ${`x={${root}}`} ${qed}
 

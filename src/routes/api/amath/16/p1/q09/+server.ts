@@ -1,46 +1,85 @@
-import { linebreak, math } from 'mathlifier';
-import type { AnswerObject } from '$lib/interfaces';
-import { SquareRoot } from 'mathlify';
-import { Laurent } from '$lib/utils/calculus';
+import { PolynomialLike, EquationWorking, SquareRoot, dydx, d2ydx2 } from 'mathlify';
+import { Answer } from '$lib/components/answerObject';
+import { mathlify } from '$lib/temml';
+import { qed } from '$lib/typesetting/qed';
+import { Topics } from '../../../topics';
 
-// x^2 + 4/x^2
-const y = new Laurent([-1, 0, 2], [0, -16]);
-const dydx = y.differentiate();
-const eqn = dydx.multiplyDenom();
-// eqn of the form ax^4 + b = 0;
-const coeffs = eqn.coeffs;
-const a = coeffs[4];
-const b = coeffs[0];
-const xSquare = new SquareRoot(b.negative().divide(a)).coeff;
-const x1 = new SquareRoot(xSquare);
+const answer = new Answer();
+
+const y = new PolynomialLike([
+	[2, 0],
+	[-1, 2],
+	[-16, -2],
+]);
+const dy = y.differentiate();
+const working = new EquationWorking(dy);
+working.setAligned();
+working.moveTerm(0);
+working.crossMultiply({ hide: true });
+working.swap();
+working.divide(2);
+
+const x1 = new SquareRoot(
+	new SquareRoot(working.rhs.cast.toFraction()).cast.toFraction(),
+).cast.toFraction();
 const x2 = x1.negative();
-const y1 = y.subInSurd(x1);
-const y2 = y.subInSurd(x2);
-const dTwo = dydx.differentiate();
-const dTwo1 = dTwo.subInSurd(x1);
-const dTwo2 = dTwo.subInSurd(x2);
-const max1 = dTwo1.valueOf() > 0 ? 'Minimum point' : 'Maximum point';
-const max2 = dTwo2.valueOf() > 0 ? 'Minimum point' : 'Maximum point';
+const y1 = y.subIn(x1);
 
-// typeset
-const body = `${math(` \\left(${x1}, ${y1}\\right),`)}
-	${math(` \\left(${x2}, ${y2}\\right).`)}
-`;
-const partII = `${max1} ${math(` \\left(${x1}, ${y1}\\right),`)}
-	${linebreak}${max2} ${math(` \\left(${x2}, ${y2}\\right).`)}
-`;
+const coord1 = `\\left( {${x1}}, {${y1}}  \\right)`;
+const coord2 = `\\left( {${x2}}, {${y1}}  \\right)`;
 
-// answer and solution
-const answer: AnswerObject = {
-	parts: [{ body }, { body: partII }],
-	partLabelType: 'roman',
-};
+const dTwo = dy.differentiate();
+
+// part a
+{
+	const soln = mathlify`
+		$${'align*'}
+		y &= ${y} \\\\
+		${dydx()} &= ${dy} 
+
+		At stationary points,
+		$${'align*'}
+		${working} \\\\
+		x &= {\\pm \\sqrt[4]{${working.rhs}}} \\\\
+		&= {\\pm ${x1}} \\\\
+		y &= 2 - \\left( {\\pm ${x1}} \\right)^2 - \\frac{16}{\\left( {\\pm ${x1}} \\right)^2} \\\\
+		&= {${y1}}
+
+		Coordinates of the stationary points are
+		$${coord1} ${qed} \\quad \\text{and} \\quad ${coord2} ${qed}
+	`;
+	const ans = mathlify`
+		${coord1},
+		${coord2}.
+	`;
+	answer.addPart(ans, soln);
+}
+
+{
+	const soln = mathlify`		
+		$${'align*'}
+		${dydx()} &= ${dy} \\\\
+		${d2ydx2()} &= ${dTwo}
+		\\\\ &< 0 \\text{ for all } x \\in \\mathbb{R}
+
+		Hence both ${coord1}
+		and ${coord2}
+		are #${'b{maximum}'} points ${qed}
+	`;
+	const ans = mathlify`
+		Maximum point ${coord1}.
+		--newline--
+		Maximum point ${coord2}.
+	`;
+	answer.addPart(ans, soln);
+}
 
 export async function GET() {
 	return new Response(
 		JSON.stringify({
-			answer,
-			topic: 'Applications of Differentiation',
+			answer: answer.answer,
+			solution: answer.solution,
+			topic: Topics.diffApp,
 		}),
 	);
 }

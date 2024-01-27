@@ -23,7 +23,7 @@ const root3 = new SquareRoot(3);
 	working.rationalize();
 
 	const soln = mathlify`
-	~${'align*'}
+	$${'align*'}
 	& \\text{Length} \\\\
 	&= \\frac{${t1} - \\sqrt{16 \\times 3}}{${width}} \\\\
 	${working} ${qed}
@@ -44,12 +44,12 @@ const root3 = new SquareRoot(3);
 	terms = [terms[2], terms[1], terms[0], terms[3]];
 	const poly = new Expression(...terms);
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\left( ${side} \\right)^2 \\\\
 		&= (2 ${root3})^2 + 4${root3} + c^2 \\\\
 		&= ${sq}
 
-		~${'gather*'}
+		$${'gather*'}
 		${sq} = ${area} \\\\
 		${poly} = 0 \\\\
 		c^2 + c - c + 4${root3}c - 1 + 4${root3} = 0 \\\\

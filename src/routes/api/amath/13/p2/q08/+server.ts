@@ -28,7 +28,7 @@ const answer = new Answer();
 	working.rationalize();
 
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		${working} ${qed}
 	`;
 	const ans = mathlify`
@@ -51,15 +51,15 @@ const answer = new Answer();
 	const x = Math.log(u2.valueOf()) / Math.log(base);
 
 	const soln = mathlify`
-		~${'gather*'}	
+		$${'gather*'}	
 		${base}^{2x} = ${base}^${pow} \\cdot ${base}^x + ${c} \\\\
 		${lhs.minus(rhs).replaceXWith(`(${sub})`)} = 0 ${qed}
 
 		Let ${`u=${sub}`}
-		~${'gather*'}
+		$${'gather*'}
 		${working} \\\\
 
-		~${'alignat*{3}'}
+		$${'alignat*{3}'}
 		u &= {${u1}} &&${or}& u &= ${u2} \\\\
 		${sub} &= {${u1}} \\text{ (NA)} &&& ${sub} &= ${u2} \\\\
 		&&&& \\ln ${sub} &= \\ln ${u2} \\\\

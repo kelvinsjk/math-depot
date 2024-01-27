@@ -24,10 +24,10 @@ const line = new Polynomial([-2, 12]);
 	const soln = mathlify`
 		Substituting ${`k=${k}`}
 		and equating the equations of the curve and the line,
-		~${'align*'}
+		$${'align*'}
 		${working}
 
-		~${`alignat*{3}`}
+		$${`alignat*{3}`}
 		x &= {${x1}} & ${or} && x &= ${x2} \\\\
 		y &= ${line.replaceXWith(`({${x1}})`)} \\quad &&& \\quad y &= ${line.replaceXWith(
 			`(${x2})`,
@@ -60,10 +60,10 @@ const line = new Polynomial([-2, 12]);
 		For general values of ${'k'},
 		equating the equations of the curve and the line,
 
-		~${'gather*'}
+		$${'gather*'}
 		${working}
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{discriminant} \\\\
 		& = ({${b}})^2 - 4(${a})(${c}) \\\\
 		& = ${d} \\\\

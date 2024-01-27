@@ -28,7 +28,7 @@ const k = normal.subIn({ x: circle.center.x, y: circle.center.y });
 	const xWOrking = completeSquare(new Polynomial([1, xCoeff, 0]));
 	const yWorking = completeSquare(new Polynomial([1, yCoeff, 0]));
 	const soln = mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		${circle.toGeneralForm()} = 0 \\\\ 
 		${xWOrking} + ${yWorking} ${constant} = 0 \\\\
 		${circle}
@@ -36,7 +36,7 @@ const k = normal.subIn({ x: circle.center.x, y: circle.center.y });
 		$${''}\\text{Centre} = ${circle.center}
 
 		The normal will pass through the centre of the circle
-		~${'align*'}
+		$${'align*'}
 		k &= ${normalY}(${circle.center.y}) + ${normalX} ({${circle.center.x}})  \\\\
 		&= ${k} ${qed}
 	`;
@@ -56,14 +56,14 @@ const k = normal.subIn({ x: circle.center.x, y: circle.center.y });
 	const RS = l.cast.toFraction().minus(circle.radius.cast.toFraction());
 	const soln = mathlify`
 		At point ${'S'}, y=0
-		~${'gather*'}
+		$${'gather*'}
 		${working1} 
 
 		$${'S'}=${S}
 
 		We denote the centre of the circle by ${'C'}
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{Distance } CS \\\\
 		&= ${dWorking.working} \\\\
 		&= ${l} \\\\

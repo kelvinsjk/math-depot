@@ -15,7 +15,7 @@ const answer = new Answer();
 	const soln = mathlify`
 		When ${`t=${time}`},
 		${`N = ${multiple}N_0`}
-		~${'align*'}
+		$${'align*'}
 		N_0 ${e}^{k(${time})} &= ${multiple}N_0 \\\\
 		${e}^{k(${time})} &= ${multiple} \\\\
 		${time}k &= \\ln ${multiple} \\\\

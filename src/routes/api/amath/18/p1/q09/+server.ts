@@ -27,13 +27,13 @@ let OB: Polynomial;
 	OB = lWorking.eqn;
 
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		\\text{Gradient of } AC	& = ${gWorking.working} \\\\
 		& = ${gWorking.gradient} \\\\
 		\\text{Gradient of } OB &= ${m}
 		
 		Equation of ${'OB:'}
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${OB} ${qed}
 	`;
@@ -55,13 +55,13 @@ let OB: Polynomial;
 	const yB = yM.times(2);
 	const soln = mathlify`
 		Equation of ${'AC:'}
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${AC}
 
 		Equating the equations of ${'OB'}
 		and ${'AC'},
-		~${'align*'}
+		$${'align*'}
 		${working} \\\\
 		y &= ${OB.replaceXWith(`(${xM})`)} \\\\
 		&= ${yM}

@@ -29,21 +29,21 @@ const r = C1.radius;
 // part a
 {
 	const soln = mathlify`
-		~${'gather'}
+		$${'gather'}
 		${C1.toGeneralForm({ rhsConstant: true }).eqn} \\notag \\\\
 		${completeSquare(new Polynomial([1, xCoeff, 0]))} + ${completeSquare(
 			new Polynomial([1, yCoeff, 0]),
 		)} = ${coeff} \\notag \\\\
 		${C1}
 
-		~${'align*'}
+		$${'align*'}
 		\\text{Coordinates of centre } &= ${center} ${qed} \\\\
 		\\text{Radius} &= \\sqrt{${r.square()}} \\\\
 			&= ${r} ${qed}
 	`;
 	const ans = mathlify`
 		${`\\text{Centre} = ${center}`}.
-		@${'@br'}
+		--newline--
 		${'\\text{Radius}='}${r}.
 	`;
 	answer.addPart(ans, soln);
@@ -67,20 +67,20 @@ let B: Point;
 	const yB = AB.subIn(xB);
 	B = new Point(xB, yB);
 	const soln = mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		${working}
 		
-		~${'align*'}
+		$${'align*'}
 		\\text{Gradient of tangent} &= ${mTangent} \\\\
 		\\text{Gradient of } AB &= {${mAB}}
 
 		Equation of ${'AB'}:
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${AB} ${qed}
 
 		Equating the equations of the tangent and ${'AB'},
-		~${'align*'}
+		$${'align*'}
 		${working2} \\\\
 		y &= ${AB.replaceXWith(`(${xB})`)} \\\\
 		&= ${yB}
@@ -89,7 +89,7 @@ let B: Point;
 	`;
 	const ans = mathlify`
 		${`y = ${AB}`}.
-		@${'@br'}
+		--newline--
 		${`B ${B}`}.
 	`;
 	answer.addPart(ans, soln);
@@ -103,13 +103,13 @@ let tangent: Polynomial;
 	const lWorking = lineWorking({ m, pt: A });
 	tangent = lWorking.eqn;
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		\\text{Gradient of } AP	& = ${mWorking.working} \\\\
 		& = ${mWorking.gradient} \\\\
 		\\text{Gradient of tangent} &= ${m}
 
 		Equation of ${'PC:'}
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${tangent} ${qed}
 	`;
@@ -127,7 +127,7 @@ const C2 = new Circle(M, r2);
 // part d
 {
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		\\text{Centre of circle }	& = ${mWorking.working} \\\\
 		& = ${M} ${qed} \\\\
 		\\text{Radius of circle} &= ${dWorking.working} \\\\
@@ -135,7 +135,7 @@ const C2 = new Circle(M, r2);
 	`;
 	const ans = mathlify`
 		${`\\text{Centre} = ${M}`}.
-		@${'@br'}
+		--newline--
 		${'\\text{Radius}='}${r2}.
 	`;
 	answer.addPart(ans, soln);
@@ -148,13 +148,13 @@ const C2 = new Circle(M, r2);
 	const rhs2 = C2.center.x.minus(P.x).square().plus(C2.center.y.minus(P.y).square());
 	const soln = mathlify`
 		Equation of ${'C_2'}:
-		~${'equation'}
+		$${'equation'}
 		${`${C2}`}
 
 		Substituting ${`x=${P.x}`}
 		and ${`y=${P.y}`}
 		into ${`(1)`},
-		~${'align*'}
+		$${'align*'}
 		& \\text{LHS} \\\\
 		& = \\left( ${P.x} - ({${C1.center.x}}) \\right)^2 + \\left( ${P.y} - {${
 			C1.center.y
@@ -169,7 +169,7 @@ const C2 = new Circle(M, r2);
 		Substituting ${`x=${P.x}`}
 		and ${`y=${P.y}`}
 		into ${`(2)`},
-		~${'align*'}
+		$${'align*'}
 		& \\text{LHS} \\\\
 		& = \\left( ${P.x} - ({${C2.center.x}}) \\right)^2 + \\left( ${P.y} - {${
 			C2.center.y

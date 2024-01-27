@@ -21,7 +21,7 @@ const expansion = poly.pow(n).slice(3);
 {
 	const working = binomialExpansionWorking(poly, n, 3);
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\left( ${poly} \\right)^${n} \\\\
 		& = ${working} \\\\
 		& = ${expansion} + \\dotsb ${qed}
@@ -43,7 +43,7 @@ const expansion = poly.pow(n).slice(3);
 	working2.setAligned(true);
 	const k = working2.solveLinear();
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\left( ${firstExp} \\right) \\left( ${poly} \\right)^${n} \\\\
 		& = \\left( ${firstExp} \\right) \\left( ${expansion} + \\dotsb \\right) \\\\
 		& = ${working} + \\dotsb \\\\
@@ -52,7 +52,7 @@ const expansion = poly.pow(n).slice(3);
 		Since the sum of the coefficients of ${'x'}
 		and ${'x^2'} 
 		is zero,
-		~${'align*'}
+		$${'align*'}
 		\\left(${a}\\right) + \\left(${b}\\right) &= 0 \\\\
 		${working2} ${qed}
 	`;

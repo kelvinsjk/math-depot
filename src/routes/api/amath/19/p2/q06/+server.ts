@@ -38,31 +38,31 @@ let circle: Circle;
 	const soln = mathlify`
 		Let ${'P'}
 		denote the point ${P}
-		~${'align*'}
+		$${'align*'}
 		\\text{Gradient of } OP & = ${gWorking.working} \\\\
 		& = ${gWorking.gradient} \\\\
 		\\text{Gradient of normal at } P &= ${m}
 
 		Equation of normal at ${'P'}:
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${l1}
 
 		The intersection between the normals gives us the centre of the circle
-		~${'align'}
+		$${'align'}
 		${lineLHS} &= ${lineRHS} \\\\
 		y &= ${l1}
 
 		Considering ${`(1)`}
 		and ${`3 \\times (2)`},
-		~${'align*'}
+		$${'align*'}
 		${working} \\\\
 		y &= ${l1.replaceXWith(`\\left({${x}}\\right)`)} \\\\
 		&= ${y}
 
 		$${`\\text{Centre of circle} = ${center}`}
 
-		~${'align*'}
+		$${'align*'}
 		&\\text{Radius} \\\\
 		&= ${dWorking.working} \\\\
 		&= \\sqrt{${radius.square()}}
@@ -83,7 +83,7 @@ let circle: Circle;
 		The point on the circle nearest to the ${'x'}\\text{-axis}
 		is the point vertically below the centre
 
-		~${'align*'}
+		$${'align*'}
 		&\\text{Coordinates of point} \\\\
 		&= \\left( ${circle.center.x}, ${
 			circle.center.x

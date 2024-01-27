@@ -28,7 +28,7 @@ let diagonal: Expression;
 	diagonal = working.expression;
 
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		${working} ${qed}
 	`;
 	const ans = mathlify`
@@ -54,7 +54,7 @@ let bc2: Expression;
 	bc2 = ac2.minus(ab2);
 
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& BC^2 \\\\
 		& = AC^2 - AB^2 \\\\
 		& = \\left( ${diagonal} \\right)^2 - \\left( ${AB} \\right)^2 \\\\
@@ -82,12 +82,12 @@ let bc2: Expression;
 		denote the side of the square base.
 
 		By Pythagoras Theorem,
-		~${'align*'}
+		$${'align*'}
 		x^2 + x^2 &= BC^2 \\\\
 		2x^2 &= BC^2 \\\\
 		x^2 &= \\frac{1}{2} BC^2
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{Volume} \\\\
 		&= x^2 \\times AB \\\\
 		& = ${half} \\left( ${bc2} \\right) \\left( ${AB} \\right) \\\\

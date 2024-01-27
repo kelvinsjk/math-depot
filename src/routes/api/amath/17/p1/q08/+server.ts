@@ -37,15 +37,15 @@ console.assert(remainder.is.equalTo(0), 'remainder is not 0');
 	} = partialFractionsWorking(num, [divisor, quotient]);
 
 	const soln = mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		${start}
 
 		When ${`x=${substitutions[0][0]}`}, 
-		~${'align*'}
+		$${'align*'}
 		${substitutions[0][1]}
 
 		Comparing coefficients,
-		~${'alignat*{2}'}
+		$${'alignat*{2}'}
 		${comparing}
 
 		$${``}\\frac{${num}}{${den}} = ${result} ${qed}

@@ -27,7 +27,7 @@ let otherFactors: Polynomial[];
 		Let ${`f(x)=${poly}`}
 
 		By the Remainder Theorem,
-		~${'align*'}
+		$${'align*'}
 		& \\text{Remainder} \\\\
 		& = f\\left({${x}}\\right) \\\\
 		&= ${poly.replaceXWith(`\\left({${x}}\\right)`)} \\\\
@@ -52,7 +52,7 @@ let otherFactors: Polynomial[];
 		Let ${`g(x)=${den}`}
 
 		Consider
-		~${'align*'}
+		$${'align*'}
 		g(${root}) &= ${den.replaceXWith(`(${root})`)} \\\\
 		&= ${den.subIn(root)}
 
@@ -62,10 +62,10 @@ let otherFactors: Polynomial[];
 		$${den}=(${factor})(ax^2+bx+c)
 
 		Comparing coefficients,		
-		~${'align*'}
+		$${'align*'}
 		${working}
 
-		~${'align*'}
+		$${'align*'}
 		& ${den} \\\\
 		&= (${factor})(${quadratic}) \\\\
 		&= (${factor})${factors} \\\\
@@ -86,19 +86,19 @@ let otherFactors: Polynomial[];
 	} = partialFractionsWorking(num, [factor, ...otherFactors]);
 
 	const soln = mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		${start}
 
 		When ${`x=${substitutions[0][0]}`}, 
-		~${'align*'}
+		$${'align*'}
 		${substitutions[0][1]}
 
 		When ${`x=${substitutions[1][0]}`},
-		~${'align*'}
+		$${'align*'}
 		${substitutions[1][1]}
 
 		Comparing coefficients,
-		~${'alignat*{2}'}
+		$${'alignat*{2}'}
 		${comparing}
 
 		$${``}\\frac{${num}}{${den}} = ${result} ${qed}

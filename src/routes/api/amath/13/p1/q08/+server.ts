@@ -15,7 +15,7 @@ const k = -0.6;
 {
 	const soln = mathlify`
 		When ${`t=0`},
-		~${'align*'}
+		$${'align*'}
 		T &= ${c} - ${A} ${e}^{{${k}}(0)} \\\\
 		&= {${c - A}} \\degree\\text{C} ${qed}
 	`;
@@ -31,7 +31,7 @@ const k = -0.6;
 	const T = c - A * Math.exp(k * t);
 	const soln = mathlify`
 		When ${`t=${t}`},
-		~${'align*'}
+		$${'align*'}
 		T &= ${c} - ${A} ${e}^{{${k}}(${t})} \\\\
 		&= {${T.toPrecision(3)}} \\degree\\text{C} ${qed}
 	`;
@@ -49,7 +49,7 @@ const formula = new Expression(c, [-A, `${e}^{{${k}}t}`]);
 	working.moveTerm(0);
 	const coeff = new Fraction(k * 10, 10).reciprocal();
 	const soln = mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		${working} \\\\
 		${e}^{{${k}}t} = \\frac{20-T}{38} \\\\
 		{${k}}t = \\ln    \\left( \\frac{20-T}{38} \\right) \\\\

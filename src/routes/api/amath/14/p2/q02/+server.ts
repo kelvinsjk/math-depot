@@ -17,7 +17,7 @@ const factor = Polynomial.fromRoot(root);
 {
 	const soln = mathlify`
 		By the Remainder Theorem,
-		~${'align*'}
+		$${'align*'}
 		& \\text{Remainder} \\\\
 		&= f(${x}) \\\\
 		&= ${fx.replaceXWith(`(${x})`)} \\\\
@@ -40,7 +40,7 @@ const factor = Polynomial.fromRoot(root);
 	});
 
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		f({${root}}) &= ${fx.replaceXWith(`({${root}})`)} \\\\
 		&= ${fx.subIn(root)}
 
@@ -49,10 +49,10 @@ const factor = Polynomial.fromRoot(root);
 
 		$${`${fx}`} = (${factor})(ax^2+bx+c)
 
-		~${'align*'}
+		$${'align*'}
 		${working}
 
-		~${'align*'}
+		$${'align*'}
 		${fx} &= 0 \\\\
 		(${factor})(${quadratic}) &= 0 \\\\
 		${exp} &= 0

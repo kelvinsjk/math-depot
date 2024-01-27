@@ -15,7 +15,7 @@ const poly = polyGeneral.subIntoCoeffs({ k }) as Polynomial;
 {
 	// part a i
 	const soln = mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		2^{2x} \\cdot 2^{-1} = 2^{x} \\cdot 2^{2} - 6 \\\\
 		\\frac{1}{2} \\cdot 2^{2x} - 4 \\cdot 2^{x} + 6 = 0 \\\\
 		${poly} = 0 ${qed}
@@ -34,7 +34,7 @@ const poly = polyGeneral.subIntoCoeffs({ k }) as Polynomial;
 	const x1 = Math.log(u1.valueOf()) / Math.log(2);
 	const x2 = Math.log(u2.valueOf()) / Math.log(2);
 	const soln = mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		${working} \\\\
 		\\begin{aligned}
 			u &= ${u1} & ${or} && u &= ${u2} \\\\
@@ -61,17 +61,17 @@ const poly = polyGeneral.subIntoCoeffs({ k }) as Polynomial;
 		$${`2^{2x-1} = 2^{x+2} - k`}
 
 		can be expressed as
-		~${'align*'}
+		$${'align*'}
 		${polyGeneral} &= 0 \\\\
 		${polyGeneral.times(2)} &= 0 
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{Discriminant} \\\\
 		&= ({${b}})^2 - 4\\left(${a}\\right)(${c}) \\\\
 		&= ${d}
 
 		If ${`k > 8,`}
-		~${'align*'}
+		$${'align*'}
 		2k &> 16 \\\\
 		-2k &< {-16} \\\\
 		16 - 2k &< 0

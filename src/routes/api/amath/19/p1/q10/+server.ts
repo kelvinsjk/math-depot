@@ -30,22 +30,22 @@ const answer = new Answer();
 	const [eqn1, eqn2] = working.eqns;
 
 	const soln = mathlify`
-		~${'align'}
+		$${'align'}
 		3^{x+y} &= \\left( 3^3 \\right)^{${oneThird}} \\notag \\\\
 		x + y &= 1 
 
-		~${'align'}
+		$${'align'}
 		\\frac{2^{2y}}{2^x} &= \\left( 2^{-1} \\right)^{-3} \\notag \\\\
 		2y - x &= 3
 
 		Taking ${'(1) + (2)'},
-		~${'align*'}
+		$${'align*'}
 		${eqn1.plus(eqn2)} &= ${values[0] + values[1]} \\\\
 		y &= ${y} ${qed}
 
 		Substituting ${`y=${y}`}
 		into ${'(1)'},
-		~${'align*'}
+		$${'align*'}
 		${eqn1.subIn({ y })} &= ${values[0]} \\\\
 		x &= {${x}} ${qed}
 	`;
@@ -67,7 +67,7 @@ const answer = new Answer();
 	working.rationalize();
 
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		\\pi r^2 \\left( ${height} \\right) &= \\left( ${vol} \\right) \\pi \\\\
 		r^2 ${working} ${qed}
 	`;

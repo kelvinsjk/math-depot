@@ -36,19 +36,19 @@ let coeff3: Polynomial;
 	[p1, p2] = pWorking.factorizeQuadratic();
 	//const a = aWorking.solveLinear();
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\left( ${poly} \\right)^${n} \\\\
 		& = ${working} \\\\
 		& = ${exp} + \\dotsb
 
-		~${'align*'}
+		$${'align*'}
 		& (${poly2a})^2 \\left( ${poly} \\right)^${n} \\\\
 		&= (${poly2}) \\left(${exp} + \\dotsb \\right) \\\\
 		&= ${working2} + \\dotsb \\\\
 		&= ${finalExp} + \\dotsb 
 
 		Comparing coefficients of ${`x^{${pow}}`},
-		~${'align*'}
+		$${'align*'}
 		${pWorking}
 
 		$${`p={${p1}}`} ${or} p=${p2} ${qed}
@@ -68,13 +68,13 @@ let coeff3: Polynomial;
 	const c32 = coeff3.subIn(p2);
 	const soln = mathlify`
 		When ${`p={${p1}}`},
-		~${'align*'}
+		$${'align*'}
 		& \\text{Coefficient of } x^3 \\\\
 		&= ${coeff3.replaceXWith(`({${p1}})`)} \\\\
 		&= ${c31} ${qed}
 		
 		When ${`p={${p2}}`},
-		~${'align*'}
+		$${'align*'}
 		& \\text{Coefficient of } x^3 \\\\
 		&= ${coeff3.replaceXWith(`({${p2}})`)} \\\\
 		&= {${c32}} ${qed}

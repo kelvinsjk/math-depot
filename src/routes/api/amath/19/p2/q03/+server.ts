@@ -15,13 +15,13 @@ const factor = Polynomial.fromRoot(root);
 	const soln = mathlify`
 		Let ${`f(x)=${den}`}
 
-		~${'align*'}
+		$${'align*'}
 		f(${root}) &= ${den.replaceXWith(`${root}`)} \\\\
 		&= ${den.subIn(root)}
 
 		Hence ${`x=${root}`}
 		is a root of ${`f(x)=0`}
-		@${`@br`}
+		--newline--
 		By the Factor Theorem, ${`${factor}`}
 		is a factor of ${`${den}`} ${qed}
 	`;
@@ -48,27 +48,27 @@ const factor = Polynomial.fromRoot(root);
 		$${den}=(${factor})(ax^2+bx+c)
 
 		Comparing coefficients,		
-		~${'align*'}
+		$${'align*'}
 		${working}
 
-		~${'align*'}
+		$${'align*'}
 		& ${den} \\\\
 		&= (${factor})(${quadratic}) \\\\
 		&= ${exp}
 
-		~${'align*'}
+		$${'align*'}
 		${start}
 
 		When ${`x=${substitutions[0][0]}`}, 
-		~${'align*'}
+		$${'align*'}
 		${substitutions[0][1]}
 
 		When ${`x=${substitutions[1][0]}`},
-		~${'align*'}
+		$${'align*'}
 		${substitutions[1][1]}
 
 		Comparing coefficients,
-		~${'alignat*{2}'}
+		$${'alignat*{2}'}
 		${comparing}
 
 		$${``}\\frac{${num}}{${den}} = ${result} ${qed}

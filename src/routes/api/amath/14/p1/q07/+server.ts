@@ -36,7 +36,7 @@ let xB: Polynomial;
 	const soln = mathlify`
 		Substituting ${`x=h`}
 		into the equation of ${'OA'},
-		~${'gather*'}
+		$${'gather*'}
 		y = ${yA} \\\\
 		\\text{Coordinates of } A = \\left( h, ${yA} \\right) ${qed}
 
@@ -48,7 +48,7 @@ let xB: Polynomial;
 
 		Substituting ${'x=h'}
 		into the equation of ${'OC'},
-		~${'gather*'}
+		$${'gather*'}
 		y = ${yC} \\\\
 		\\text{Coordinates of } C = \\left( h, ${yC} \\right) ${qed}
 
@@ -57,7 +57,7 @@ let xB: Polynomial;
 		it has gradient ${m}
 
 		Equation of ${'BC'}:
-		~${'gather*'}
+		$${'gather*'}
 		y - ${yC} = ${m} \\left( x - h \\right) \\\\
 		y = ${BC}
 
@@ -69,16 +69,16 @@ let xB: Polynomial;
 
 		Substituting ${`y=${yA}`}
 		into the equation of ${'BC'},
-		~${'gather*'}
+		$${'gather*'}
 		${working}
 
 		$${`\\text{Coordinates of } B = \\left( ${xB}, ${yA} \\right)`} ${qed}
 	`;
 	const ans = mathlify`
 		${`A \\left( h, ${yA} \\right)`}.
-		@${'@br'}
+		--newline--
 		${`B \\left( ${xB}, ${yA} \\right)`}.
-		@${'@br'}
+		--newline--
 		${`C \\left( h, ${yC} \\right)`}.
 	`;
 	answer.addPart(ans, soln);
@@ -94,12 +94,12 @@ let xB: Polynomial;
 	const { matrix, working, area } = areaWorking(O, C, B, A);
 	const soln = mathlify`
 		Where ${`h=${h}`},
-		~${'align*'}
+		$${'align*'}
 		\\text{Coordinates of } A &= ${A} \\\\
 		\\text{Coordinates of } B &= ${B} \\\\
 		\\text{Coordinates of } C &= ${C} \\\\
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{Area of } OABC \\\\
 		&= ${matrix} \\\\
 		&= ${working} \\\\

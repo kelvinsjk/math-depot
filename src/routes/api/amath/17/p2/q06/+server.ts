@@ -28,11 +28,11 @@ let eqn: xPolynomial;
 
 	const soln = mathlify`
 		Equating the curve and the line,
-		~${'gather*'}
+		$${'gather*'}
 		${working}
 
 		Since the line is a tangent to the curve,
-		~${'align*'}
+		$${'align*'}
 		\\text{discriminant} &= 0 \\\\
 		(${b})^2 - 4(${a})(${c}) &= 0 \\\\
 		${working2}
@@ -71,7 +71,7 @@ let eqn: xPolynomial;
 
 		When ${`x={${x0}}`},
 		${`y = ${y0}`}
-		~${'align*'}
+		$${'align*'}
 		${y0} &= ${y.subIntoCoeffs({ m }).replaceXWith(`({${x0}})`)} \\\\
 		${working}
 
@@ -79,12 +79,12 @@ let eqn: xPolynomial;
 		$${eqn}=0
 
 		Substituting ${`m=${m}`},
-		~${'gather*'}
+		$${'gather*'}
 		${working2} \\\\
 		x = {${xP}}
 
 		When ${`x={${xP}}`},
-		~${'align*'}
+		$${'align*'}
 		y &= mx + c \\\\
 		&= ${m} \\left({${xP}}\\right) + ${c} \\\\
 		&= ${yP}

@@ -25,21 +25,21 @@ const r = circle.radius;
 // part a
 {
 	const soln = mathlify`
-		~${'gather'}
+		$${'gather'}
 		${circle.toGeneralForm({ rhsConstant: true }).eqn} \\notag \\\\
 		${completeSquare(new Polynomial([1, xCoeff, 0]))} + ${completeSquare(
 			new Polynomial([1, yCoeff, 0]),
 		)} = ${coeff} \\notag \\\\
 		${circle}
 
-		~${'align*'}
+		$${'align*'}
 		\\text{Coordinates of } A &= ${A} ${qed} \\\\
 		\\text{Radius} &= \\sqrt{${r.square()}} \\\\
 			&= ${r} ${qed}
 	`;
 	const ans = mathlify`
 		${`A ${A}`}.
-		@${'@br'}
+		--newline--
 		${'\\text{Radius}='}${r}.
 	`;
 	answer.addPart(ans, soln);
@@ -52,7 +52,7 @@ const P = new Point(10, 7);
 		Substituting ${`x=${P.x}`}
 		and ${`y=${P.y}`}
 		into ${'(1)'},
-		~${'align*'}
+		$${'align*'}
 		\\text{LHS} &= \\left( ${P.x} ${xCoeff / 2} \\right)^2 + \\left( ${P.y} ${
 			yCoeff / 2
 		} \\right)^2 \\\\
@@ -80,13 +80,13 @@ let tangent: Polynomial;
 	const lWorking = lineWorking({ m, pt: P });
 	tangent = lWorking.eqn;
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		\\text{Gradient of } AP	& = ${mWorking.working} \\\\
 		& = ${mWorking.gradient} \\\\
 		\\text{Gradient of tangent} &= ${m}
 
 		Equation of ${'PC:'}
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${tangent} ${qed}
 	`;
@@ -102,7 +102,7 @@ const C2 = new Circle(M, A);
 // part d
 {
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		\\text{Midpoint of } AP	& = ${mWorking.working} \\\\
 		& = ${M} \\\\
 		\\text{Radius of circle} &= \\frac{${r}}{2} \\\\

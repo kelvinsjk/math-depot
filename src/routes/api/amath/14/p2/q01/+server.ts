@@ -16,7 +16,7 @@ let k: number;
 	const soln = mathlify`
 		When ${`t=0`},
 		${`T = ${T0}`}
-		~${'align*'}
+		$${'align*'}
 		${c} + A ${e}^{k(0)} &= ${T0} \\\\
 		A &= ${T0} - ${c} \\\\
 		&= ${A} ${qed}
@@ -35,7 +35,7 @@ let k: number;
 	const soln = mathlify`
 		When ${`t=${t1}`},
 		${`T = ${T1}`}
-		~${'align*'}
+		$${'align*'}
 		${c} + ${A} ${e}^{-k(${t1})} &= ${T1} \\\\
 		${A} ${e}^{-k} &= ${T1} - ${c} \\\\
 		${e}^{-k} &= \\frac{${T1 - c}}{${A}} \\\\
@@ -55,7 +55,7 @@ let k: number;
 	const TSafe = 40;
 	const soln = mathlify`
 		When ${`t=${t2}`},
-		~${'align*'}
+		$${'align*'}
 		T &= ${c} + ${A} ${e}^{-k(${t2})} \\\\
 		&= ${T2.toPrecision(5)} < ${TSafe}
 

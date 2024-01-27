@@ -24,10 +24,10 @@ const answer = new Answer();
 
 	const soln = mathlify`
 	Equating the two,
-	~${'align*'}
+	$${'align*'}
 	${working}
 
-	~${'alignat*{3}'}
+	$${'alignat*{3}'}
 	x &= {${x1}} ${qed} &\\text{or}&&    x &= ${x2} ${qed} \\\\
 	y &= ${y2.replaceXWith(`({${x1}})`)} \\quad &&& \\quad  y &= ${y2.replaceXWith(
 		`\\left(${x2}\\right)`,
@@ -53,7 +53,7 @@ const answer = new Answer();
 
 	const soln = mathlify`
 	For the quadratic to be negative for all ${'x'},
-	~${'align*'}
+	$${'align*'}
 	\\text{discriminant} &< 0 \\\\
 	${b}^2 - 4${a}(${c}) &< 0 \\\\
 	${working}
@@ -81,11 +81,11 @@ const answer = new Answer();
 
 	const soln = mathlify`
 	Equating the two,
-	~${'gather*'}
+	$${'gather*'}
 	${working}
 
 	Since the line is a tangent to the curve,
-	~${'align*'}
+	$${'align*'}
 	\\text{discriminant} &= 0 \\\\
 	(${b})^2 - 4(${a})\\left(${c}\\right) &= 0 \\\\
 	${working2}

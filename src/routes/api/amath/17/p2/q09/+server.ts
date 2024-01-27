@@ -30,26 +30,26 @@ let mABExp: RationalTerm;
 	working.crossMultiply();
 	p = working.solveLinear();
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\text{Gradient of } AB	\\\\
 		& = \\frac{p-1}{0-({-2})} \\\\
 		& = ${mABExp} ${qed}
 		
-		~${'align*'}
+		$${'align*'}
 		& \\text{Gradient of } CB	\\\\
 		& = \\frac{p-3}{0-1} \\\\
 		& = ${mCB} ${qed}
 
 		Since ${'\\angle ABO = \\angle CBO'},
-		~${'align*'}
+		$${'align*'}
 		m_{AB} &= - m_{CB} \\\\
 		${working} ${qed}
 	`;
 	const ans = mathlify`
 		Gradient of ${'AB = '} ${mABExp}.
-		@${'@br'}
+		--newline--
 		Gradient of ${'CB = '} ${mCB}.
-		@${'@br'}
+		--newline--
 		${`p=${p}`}.
 	`;
 	answer.addPart(ans, soln);
@@ -71,26 +71,26 @@ let D: Point;
 	D = new Point(xD, yD);
 	const soln = mathlify`
 		Substituting ${`p=${p}`},
-		~${'align*'}
+		$${'align*'}
 		&\\text{Gradient of AB} \\\\
 		&= \\frac{${p}-1}{2} \\\\
 		&= ${mAB}
 
 		Since ${'AB \\parallel DC'},
 		equation of DC:
-		~${'gather*'}
+		$${'gather*'}
 		${lDcWorking.working} \\\\
 		y = ${DC} 
 		
 		Since ${'AB \\perp AD'},
 		equation of AD:
-		~${'gather*'}
+		$${'gather*'}
 		${lADWorking.working} \\\\
 		y = ${AD}
 		
 		Equating the equations of lines ${'AD'}
 		and ${'DC'},
-		~${'align*'}
+		$${'align*'}
 		${working} \\\\
 		y &= ${AD.replaceXWith(`\\left( {${xD}} \\right)`)} \\\\
 		&= ${yD}
@@ -108,7 +108,7 @@ const B = new Point(0, p);
 {
 	const { matrix, working, area } = areaWorking(A, D, C, B);
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\text{Area of } ABCD \\\\
 		&= ${matrix} \\\\
 		&= ${working} \\\\

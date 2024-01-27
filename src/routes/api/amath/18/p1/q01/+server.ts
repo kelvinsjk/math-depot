@@ -17,12 +17,12 @@ const answer = new Answer();
 	const pow = x.times(3).divide(2);
 	const final = Math.pow(5, pow.valueOf());
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		\\left( 5^{${nLeft1}} \\right)^{\\frac{1}{2}} &= \\frac{5^{${nRightNum}}}{5^{${nRightDen}}} \\\\
 		5^{${nLeft}} &= 5^{${nRight}} \\\\
 		${working}
 
-		~${'align*'}
+		$${'align*'}
 		& \\sqrt{125^x} \\\\
 		&= \\left( 5^{3x} \\right)^\\frac{1}{2} \\\\
 		&= 5^{${pow}} \\\\

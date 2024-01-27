@@ -20,19 +20,19 @@ const answer = new Answer();
 	const c = Math.pow(a, y3);
 	const soln = mathlify`
 		Since the graph passes through ${`\\left( ${x1}, ${y1} \\right)`},
-		~${'align*'}
+		$${'align*'}
 		\\log_a ${x1} &= ${y1} \\\\
 		a^${y1} &= ${x1} \\\\
 		a^${y1} &= 2^3 \\\\
 		a &= ${a} ${qed}
 
 		Since the graph passes through ${`\\left( ${x2}, ${y2} \\right)`},
-		~${'align*'}
+		$${'align*'}
 		\\log_a ${x2} &= ${y2} \\\\
 		b &= ${b} ${qed}
 
 		Since the graph passes through ${`\\left( ${x3}, ${y3} \\right)`},
-		~${'align*'}
+		$${'align*'}
 		\\log_a ${x3} &= {${y3}} \\\\
 		c &= a^{{${y3}}} \\\\
 		&= ${c} ${qed}

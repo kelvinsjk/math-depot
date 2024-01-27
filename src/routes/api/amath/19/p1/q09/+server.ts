@@ -20,7 +20,7 @@ const answer = new Answer();
 
 		Since ${'AB=4'}
 		and ${`OA=2`},
-		~${'gather*'}
+		$${'gather*'}
 		OA = OB = 2 \\\\
 		OP \\text{ is common} \\\\
 		\\angle AOP = \\angle BOP = 90 \\degree
@@ -83,23 +83,23 @@ const C = new Point(base, -base / 2);
 	const xD = working.solveLinear();
 
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		&\\text{Coordinates of } P \\\\
 		& = ${pWorking.working} \\\\
 		& = ${pWorking.midPoint}
 		
-		~${'align*'}
+		$${'align*'}
 		&\\text{Gradient of } BP \\\\
 		& = ${gWorking.working} \\\\
 		& = ${m}
 
 		Equation of ${'BD:'}
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${BP}
 
 		Since the area of the kite is ${'28'}\\text{ units}^2,
-		~${'gather*'}
+		$${'gather*'}
 		\\text{Area of } \\triangle BCD = ${triangle} \\\\
 		\\frac{1}{2} \\times BC \\times h = ${triangle} \\\\
 		h = \\frac{2(${triangle})}{${base}} \\\\
@@ -115,7 +115,7 @@ const C = new Point(base, -base / 2);
 
 		Substituting ${`y=${yD}`}
 		into the equation of ${'BD'},
-		~${'align*'}
+		$${'align*'}
 		${working}
 
 		$${''}\\text{Coordinates of } D = \\left( ${xD}, ${yD} \\right) ${qed}  

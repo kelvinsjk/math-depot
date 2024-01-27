@@ -27,21 +27,21 @@ const r = circle.radius;
 // part a
 {
 	const soln = mathlify`
-		~${'gather'}
+		$${'gather'}
 		${circle.toGeneralForm({ rhsConstant: true }).eqn} \\notag \\\\
 		${completeSquare(new Polynomial([1, xCoeff, 0]))} + ${completeSquare(
 			new Polynomial([1, yCoeff, 0]),
 		)} = ${coeff} \\notag \\\\
 		${circle}
 
-		~${'align*'}
+		$${'align*'}
 		\\text{Coordinates of centre } &= ${A} ${qed} \\\\
 		\\text{Radius} &= \\sqrt{${r.square()}} \\\\
 			&= ${r} ${qed}
 	`;
 	const ans = mathlify`
 		${`\\text{Centre} = ${A}`}.
-		@${'@br'}
+		--newline--
 		${'\\text{Radius}='}${r}.
 	`;
 	answer.addPart(ans, soln);
@@ -59,13 +59,13 @@ let tangent: Polynomial;
 	working.times(3);
 	working.rhsZero();
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		\\text{Gradient of } AP	& = ${mWorking.working} \\\\
 		& = ${mWorking.gradient} \\\\
 		\\text{Gradient of tangent} &= ${m}
 
 		Equation of ${'PC:'}
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		${working} ${qed}
 	`;
@@ -89,21 +89,21 @@ let tangent2: Polynomial;
 	const soln = mathlify`
 		Substituting ${`x={${P.x}}`}
 		into the equation of the circle,
-		~${'gather*'}
+		$${'gather*'}
 		${P.x.square()} + y^2 ${P.x.times(xCoeff)} ${yCoeff}y ${coeff} \\\\
 		${working} \\\\
 		y = ${yP} ${or} y = ${yQ}
 
 		$${`\\text{Coordinates of } Q = ${Q}`}
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{Gradient of line from centre to } Q \\\\
 		& = ${mWorking.working} \\\\
 		& \\text{Gradient of tangent} \\\\
 		& = ${m} \\\\
 
 		Equation of tangent at ${'Q:'}
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${tangent2} ${qed}
 	`;
@@ -122,7 +122,7 @@ let tangent2: Polynomial;
 	const R = new Point(x, y);
 	const soln = mathlify`
 		Equating the equations of the tangents,
-		~${'align*'}
+		$${'align*'}
 		${working} \\\\
 		y &= ${tangent.replaceXWith(`\\left({${x}}\\right)`)} \\\\
 		&= ${y}

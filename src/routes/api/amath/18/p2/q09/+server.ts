@@ -30,10 +30,10 @@ const y = new xPolynomial([2, ['k', 2], 'k']);
 
 	let soln = mathlify`
 		Equating the curve and the line,
-		~${'gather*'}
+		$${'gather*'}
 		${working}
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{discriminant} \\\\
 		&= ({${b}})^2 - 4(${a})(${c}) \\\\
 		&= ${d}
@@ -46,13 +46,13 @@ const y = new xPolynomial([2, ['k', 2], 'k']);
 	const y0 = line.subIn(x0);
 
 	soln += mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		${working} \\\\
 		x = ${x0}
 
 		Substituting ${`x=${x0}`}
 		into the equation of the line,
-		~${'align*'}
+		$${'align*'}
 		y &= ${line.replaceXWith(`(${x0})`)} \\\\
 		&= ${y0}
 
@@ -74,7 +74,7 @@ const y = new xPolynomial([2, ['k', 2], 'k']);
 	const [k] = solveQuadratic(d);
 
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\text{discriminant} \\\\
 		&= ({${b}})^2 - 4(${a})(${c}) \\\\
 		&= ${b.square()} - ${a.times(c).times(4)} \\\\

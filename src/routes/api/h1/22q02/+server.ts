@@ -12,12 +12,11 @@ const x1 = 1;
 const y1 = expFn.subIn(x1);
 const m = fPrime.subIn(x1);
 // y - y1 = m(x - x1) = mx - mx1
-const tangent = new Expression(new Term('x').times(m), m.times(x1), y1);
+const tangent = new Expression(new Term('x').times(m), m.times(x1).negative(), y1);
 // part bii
 // k exp(fx) = m2
 const m2 = new Fraction(-2);
 const lnArg = m2.divide(fPrime.coeff);
-console.log(`${fPrime.fx} = \\ln ${lnArg}`);
 // a + bx = ln lnArg
 const [a, b] = expFn.fx.coeffs;
 // ln lnArg - a

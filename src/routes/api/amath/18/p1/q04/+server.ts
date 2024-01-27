@@ -29,16 +29,16 @@ const answer = new Answer();
 		Substitute ${`x=${x}`}
 		into the equation,
 		
-		~${'gather*'}
+		$${'gather*'}
 		\\left( ${x} \\right)^2 + a (${x}) + b = 0 \\\\
 		${workingA.expArray[1]} + a (${x}) + b = 0 \\\\
 		${workingA.expArray[2]} + a (${x}) + b = 0 \\\\
 		(29 + 3a + b) + (12 + 2a) ${root5} = 0
 		
-		~${'align*'}
+		$${'align*'}
 		${eqn1} ${qed}
 
-		~${'align*'}
+		$${'align*'}
 		${compareRational} &= 0 \\\\
 		${eqn2} ${qed}
 	`;
@@ -61,7 +61,7 @@ const answer = new Answer();
 	working.rationalize();
 
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\text{Breadth} \\\\
 		&= \\frac{24+\\sqrt{16 \\times 3}}{6+\\sqrt{4 \\times 3}} \\\\
 		&= \\frac{${area}}{${l}} \\\\

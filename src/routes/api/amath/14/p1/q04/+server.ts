@@ -13,19 +13,19 @@ const {
 } = partialFractionsWorking(num, [['x', 2], den2]);
 
 const soln = mathlify`
-	~${'gather*'}
+	$${'gather*'}
 	${start}
 
 	When ${`x=${substitutions[0][0]}`}, 
-	~${'align*'}
+	$${'align*'}
 	${substitutions[0][1]}
 
 	When ${`x=${substitutions[1][0]}`}, 
-	~${'align*'}
+	$${'align*'}
 	${substitutions[1][1]}
 
 	Comparing coefficients,
-	~${'alignat*{2}'}
+	$${'alignat*{2}'}
 	${comparing}
 
 	$${``}\\frac{${num}}{${den}} = ${result} ${qed}

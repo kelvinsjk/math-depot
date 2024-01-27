@@ -15,7 +15,7 @@ const log9x = new LnFn('x', { base: 9 });
 	const { rational: final } = log3x.changeBase(10);
 	rhs = final.times(3).divide(2);
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& ${log3x} + ${log9x} \\\\
 		& = ${log3x} + ${rational} \\\\
 		& = ${log3x} + \\frac{${num}}{\\log_3 3^2} \\\\
@@ -37,7 +37,7 @@ const log9x = new LnFn('x', { base: 9 });
 	const finalRHS = `\\frac{${rhs.den.times(eqnRHS)}}{${rhs.num.cast.toTerm().coeff}}`;
 	const final = Math.pow(10, (8 * Math.log10(3)) / 3);
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		${log3x} + ${log9x} &= ${eqnRHS} \\\\
 		${rhs} &= ${eqnRHS} \\\\
 		\\lg x &= ${finalRHS} \\\\

@@ -17,14 +17,14 @@ const binomWorking = new BinomialGeneralTermWorking('p', 3, 1, -1, 9, { aligned:
 // part a
 {
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\text{General term} \\\\
 		& ${binomWorking}
 
 		${'4r'}
 		is even so ${binomWorking.power}
 		is odd
-		@${'@br'}
+		--newline--
 		Hence there are no even powers of ${'x'} ${qed}
 	`;
 
@@ -53,17 +53,17 @@ const binomWorking = new BinomialGeneralTermWorking('p', 3, 1, -1, 9, { aligned:
 	const soln = mathlify`
 		For the ${`x^{${n1}}`}
 		term
-		~${'align*'}
+		$${'align*'}
 		${working}
 		
 		For the ${`x^{${n2}}`}
 		term
-		~${'align*'}
+		$${'align*'}
 		${working2}
 
 		Since the coefficient of ${`x^{${n1}}`}
 		is twice the coefficient of ${`x^{${n2}}`},
-		~${'align*'}
+		$${'align*'}
 		${t1.coeffWorking} &= 2  ${t2.coeffWorking} \\\\
 		${workingP} \\\\
 		p^4 (p - 2) &= 0

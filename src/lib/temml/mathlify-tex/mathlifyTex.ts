@@ -1,12 +1,16 @@
-import { mathlifyGen } from '../core/mathlifyGen';
+import { mathlifyGen, type Modules } from '../core/mathlifyGen';
 
-const modules = {
+const modules: Modules = {
 	math,
 	display,
 	em,
 	b,
-	br,
-	hr,
+	postProcess: (x: string) => {
+		// br, hr
+		x = x.replaceAll('--newline--', '\\newline ');
+		x = x.replaceAll('--hrule--', '\\hrule ');
+		return x;
+	},
 	mathEnvs: {
 		equation: mathEnvironmentGenerator('equation'),
 		align: mathEnvironmentGenerator('align'),
@@ -39,12 +43,6 @@ function em(x: string): string {
 }
 function b(x: string): string {
 	return `\\textbf{${x}}`;
-}
-function br(): string {
-	return `\\newline `;
-}
-function hr(): string {
-	return `\\hrule `;
 }
 function mathEnvironmentGenerator(env: string): (x: string) => string {
 	return (x: string) => {

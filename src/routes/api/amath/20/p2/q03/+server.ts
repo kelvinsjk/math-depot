@@ -14,17 +14,17 @@ const binomWorking = new BinomialGeneralTermWorking(3, -2, 1, 1, 8, { aligned: t
 	working.setAligned(true);
 	const r = working.solveLinear();
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\text{General term} \\\\
 		& ${binomWorking}
 
 		For term independent of ${'x'},
-		~${'align*'}
+		$${'align*'}
 		${working}
 
 		Since ${'r'}
 		is not a non-negative integer, there is no term independent of ${'x'}.
-		@${'@br'}
+		--newline--
 		Hence every term is dependent on ${'x'} ${qed}
 	`;
 
@@ -46,10 +46,10 @@ const binomWorking = new BinomialGeneralTermWorking(3, -2, 1, 1, 8, { aligned: t
 	const soln = mathlify`
 		For the ${'x^{-1}'}
 		term in ${binomWorking.binomial},
-		~${'align*'}
+		$${'align*'}
 		${working}
 
-		~${'align*'}
+		$${'align*'}
 		& ${binomWorking.binomial} (${poly}) \\\\
 		& = \\left( ${sub.working} + \\dotsb \\right) (${poly}) \\\\
 		& = \\left( ${sub.term} + \\dotsb \\right) (${poly}) \\\\

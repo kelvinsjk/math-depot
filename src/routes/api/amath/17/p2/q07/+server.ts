@@ -15,7 +15,7 @@ const answer = new Answer();
 	const soln = mathlify`
 		When ${`t=${yearsGiven}`},
 		${`P = ${pGiven}`}
-		~${'align*'}
+		$${'align*'}
 		${pGiven} = &100 ${e}^{-k(${yearsGiven})} \\\\
 		${e}^{-k(${yearsGiven})} &= ${new Fraction(pGiven, 100)} \\\\
 		\\ln ${e}^{-k(${yearsGiven})} &= \\ln ${new Fraction(pGiven, 100)} \\\\
@@ -32,7 +32,7 @@ const answer = new Answer();
 		const years = 8000;
 		const percentage = 100 * Math.exp(-k * years);
 		const soln = mathlify`
-			~${'align*'}
+			$${'align*'}
 			${`P &= 100 ${e}^{-k(${years})}`} \\\\
 			&= 100 ${e}^{${k.toPrecision(5)}(${years})} \\\\
 			&= ${percentage.toPrecision(3)} ${qed}
@@ -53,14 +53,14 @@ const answer = new Answer();
 	const S = Math.log10(I2);
 	const soln = mathlify`
 		When ${`S=${sGiven}`},
-		~${'align*'}
+		$${'align*'}
 		${sGiven} &= \\lg \\frac{I}{c} \\\\
 		\\frac{I}{c} &= 10^{${sGiven}} \\\\
 		I &= 10^{${sGiven}} c
 
 		When the intensity is ${multiple}
 		times,
-		~${'align*'}
+		$${'align*'}
 		S &= \\lg \\frac{50 \\times 10^{${sGiven}} c}{c} \\\\
 		&= \\lg \\left( 50 \\times 10^{${sGiven}} \\right) \\\\
 		&= ${S.toPrecision(3)} ${qed}

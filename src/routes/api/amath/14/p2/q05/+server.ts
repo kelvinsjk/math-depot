@@ -21,14 +21,14 @@ const x = new Polynomial('x');
 	const [c, b, a] = poly.coeffs;
 	const d = discriminant(poly);
 	const soln = mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		2 \\log_2 x - ${t2} = ${rhs} \\\\
 		${t1} - ${t2} = ${rhs} \\\\
 		${lhs.exp} = ${rhs} \\\\
 		${lhs.arg} = ${base}^{${rhs}} \\\\
 		${working} ${qed}
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{Discriminant} \\\\
 		& = ({${b}})^2 - 4(${a})(${c}) \\\\
 		& = {${d}} < 0
@@ -48,7 +48,7 @@ const x = new Polynomial('x');
 	const t2 = 8;
 	const rhs = -2;
 	const soln = mathlify`
-		~${'gather*'}
+		$${'gather*'}
 		\\frac{(${logXY})^2}{${logYX}} + ${t2} = 0 \\\\
 		\\frac{(${logXY})^2}{${logYX.changeBase('x').rational}} = {-${t2}} \\\\
 		(${logXY})^3 = {-${t2}} \\\\

@@ -12,8 +12,6 @@ export interface Modules {
 	display: (x: string, options?: Options) => string;
 	em?: (x: string) => string;
 	b?: (x: string) => string;
-	br?: () => string;
-	hr?: () => string;
 	postProcess?: (x: string) => string;
 	mathEnvs?: {
 		equation?: (x: string, options?: Options) => string;
@@ -68,11 +66,20 @@ export function mathlifyGen(
 		strings.forEach((str, i) => {
 			const nextVal = values[i] ?? '';
 			if (mode === Modes.text) {
-				if (str.endsWith('@')) {
-					curr += `${str.slice(0, str.length - 1)}${handleTextMode(`${nextVal}`, modules)}`;
+				if (str.endsWith('#')) {
+					curr += `${str.slice(0, str.length - 1)}${handleTextMode(
+						`${nextVal}`,
+						modules,
+					)}`;
 				} else {
 					// starts new environment
-					[mode, acc, curr, mathEnvOptions] = startNewEnv(str, '', nextVal, curr, modules);
+					[mode, acc, curr, mathEnvOptions] = startNewEnv(
+						str,
+						'',
+						nextVal,
+						curr,
+						modules,
+					);
 					options = {};
 				}
 			} else if (mode === Modes.math) {
@@ -86,7 +93,13 @@ export function mathlifyGen(
 					if (acc) {
 						curr += modules.math(acc, options);
 					}
-					[mode, acc, curr, mathEnvOptions] = startNewEnv(after, newline, nextVal, curr, modules);
+					[mode, acc, curr, mathEnvOptions] = startNewEnv(
+						after,
+						newline,
+						nextVal,
+						curr,
+						modules,
+					);
 					options = {};
 				} else {
 					// continue math mode
@@ -95,7 +108,9 @@ export function mathlifyGen(
 						options = nextVal;
 						acc += `${str.slice(0, str.length - 1)}`;
 					} else {
-						acc += `${str}${nextVal}`;
+						if (!isEmptyObject(nextVal)) {
+							acc += `${str}${nextVal}`;
+						}
 					}
 					if (i === strings.length - 1) {
 						// final string
@@ -113,7 +128,13 @@ export function mathlifyGen(
 					if (acc) {
 						curr += modules.display(acc, options);
 					}
-					[mode, acc, curr, mathEnvOptions] = startNewEnv(after, newline, nextVal, curr, modules);
+					[mode, acc, curr, mathEnvOptions] = startNewEnv(
+						after,
+						newline,
+						nextVal,
+						curr,
+						modules,
+					);
 					options = {};
 				} else {
 					// continue display mode
@@ -122,7 +143,9 @@ export function mathlifyGen(
 						options = nextVal;
 						acc += `${str.slice(0, str.length - 1)}`;
 					} else {
-						acc += `${str}${nextVal}`;
+						if (!isEmptyObject(nextVal)) {
+							acc += `${str}${nextVal}`;
+						}
 					}
 					if (i === strings.length - 1) {
 						// final string
@@ -140,7 +163,13 @@ export function mathlifyGen(
 					if (acc) {
 						curr += insertMathEnv(mathEnvOptions, acc, options, modules);
 					}
-					[mode, acc, curr, mathEnvOptions] = startNewEnv(after, newline, nextVal, curr, modules);
+					[mode, acc, curr, mathEnvOptions] = startNewEnv(
+						after,
+						newline,
+						nextVal,
+						curr,
+						modules,
+					);
 					options = {};
 				} else {
 					// continue mathEnv mode
@@ -149,7 +178,9 @@ export function mathlifyGen(
 						options = nextVal;
 						acc += `${str.slice(0, str.length - 1)}`;
 					} else {
-						acc += `${str}${nextVal}`;
+						if (!isEmptyObject(nextVal)) {
+							acc += `${str}${nextVal}`;
+						}
 					}
 					if (i === strings.length - 1) {
 						// final string
@@ -176,45 +207,59 @@ function startNewEnv(
 ): [Modes, string, string, MathEnvOptions] {
 	const defaultMathEnvOptions = { mathEnv: MathEnvs.equation };
 	if (after.endsWith('$')) {
+		// check for math environment
+		let mathEnv = MathEnvs.equation;
+		let eqnColumns: number | undefined = undefined;
+		let mathEnvDetected = false;
+		const nextValStr = `${nextVal}`;
+		if (nextValStr.startsWith('alignat{') && nextValStr.endsWith('}')) {
+			eqnColumns = parseInt(nextValStr.slice(8, nextValStr.length - 1));
+			mathEnv = MathEnvs.alignat;
+			mathEnvDetected = true;
+		} else if (nextValStr.startsWith('alignat*{') && nextValStr.endsWith('}')) {
+			eqnColumns = parseInt(nextValStr.slice(9, nextValStr.length - 1));
+			mathEnv = MathEnvs.alignatStar;
+			mathEnvDetected = true;
+		} else if (envs[nextValStr] !== undefined) {
+			mathEnv = envs[nextValStr];
+			mathEnvDetected = true;
+		}
+		if (mathEnvDetected) {
+			// new math environment
+			return [
+				Modes.mathEnv,
+				'',
+				curr + newline + after.slice(0, after.length - 1),
+				{ mathEnv, eqnColumns },
+			];
+		}
 		// new display mode
 		return [
 			Modes.display,
-			`${nextVal}`,
+			isEmptyObject(nextVal) ? '' : `${nextVal}`,
 			curr + `${newline}${after.slice(0, after.length - 1)}`,
 			defaultMathEnvOptions,
 		];
-	} else if (after.endsWith('@')) {
+	} else if (after.endsWith('#')) {
 		// new text mode
 		return [
 			Modes.text,
 			'',
 			curr +
-				`${newline}${after.slice(0, after.length - 1)}${handleTextMode(`${nextVal}`, modules)}`,
+				`${newline}${after.slice(0, after.length - 1)}${handleTextMode(
+					`${nextVal}`,
+					modules,
+				)}`,
 			defaultMathEnvOptions,
-		];
-	} else if (after.endsWith('~')) {
-		// new math env
-		let mathEnv = MathEnvs.equation;
-		let eqnColumns: number | undefined = undefined;
-		const nextValStr = `${nextVal}`;
-		if (nextValStr.startsWith('alignat{') && nextValStr.endsWith('}')) {
-			eqnColumns = parseInt(nextValStr.slice(8, nextValStr.length - 1));
-			mathEnv = MathEnvs.alignat;
-		} else if (nextValStr.startsWith('alignat*{') && nextValStr.endsWith('}')) {
-			eqnColumns = parseInt(nextValStr.slice(9, nextValStr.length - 1));
-			mathEnv = MathEnvs.alignatStar;
-		} else {
-			mathEnv = envs[nextValStr] ?? MathEnvs.equation;
-		}
-		return [
-			Modes.mathEnv,
-			'',
-			curr + newline + after.slice(0, after.length - 1),
-			{ mathEnv, eqnColumns },
 		];
 	} else {
 		// new math mode
-		return [Modes.math, `${nextVal}`, curr + newline + after, defaultMathEnvOptions];
+		return [
+			Modes.math,
+			isEmptyObject(nextVal) ? '' : `${nextVal}`,
+			curr + newline + after,
+			defaultMathEnvOptions,
+		];
 	}
 }
 
@@ -225,10 +270,6 @@ function handleTextMode(nextVal: string, modules: Modules): string {
 	} else if (nextVal.startsWith('b{') && nextVal.endsWith('}')) {
 		const bArg = nextVal.slice(2, nextVal.length - 1);
 		return modules.b ? modules.b(bArg) : bArg;
-	} else if (nextVal === '@br') {
-		return modules.br ? modules.br() : nextVal;
-	} else if (nextVal === '@hr') {
-		return modules.hr ? modules.hr() : nextVal;
 	} else {
 		return nextVal;
 	}
@@ -244,7 +285,9 @@ function insertMathEnv(
 	if (mathEnv === MathEnvs.equation) {
 		return modules.mathEnvs?.equation ? modules.mathEnvs.equation(acc, options) : acc;
 	} else if (mathEnv === MathEnvs.equationStar) {
-		return modules.mathEnvs?.equationStar ? modules.mathEnvs.equationStar(acc, options) : acc;
+		return modules.mathEnvs?.equationStar
+			? modules.mathEnvs.equationStar(acc, options)
+			: acc;
 	} else if (mathEnv === MathEnvs.align) {
 		return modules.mathEnvs?.align ? modules.mathEnvs.align(acc, options) : acc;
 	} else if (mathEnv === MathEnvs.alignStar) {
@@ -264,4 +307,16 @@ function insertMathEnv(
 	}
 	console.warn(`mathEnv ${mathEnv} not found`);
 	return acc;
+}
+
+function isEmptyObject(obj: unknown) {
+	if (typeof obj !== 'object') {
+		return false;
+	}
+	for (const prop in obj) {
+		if (Object.hasOwn(obj, prop)) {
+			return false;
+		}
+	}
+	return true;
 }

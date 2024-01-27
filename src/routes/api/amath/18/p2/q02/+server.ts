@@ -26,23 +26,23 @@ const answer = new Answer();
 	const x2Coeff = finalExp.coeffs[2];
 	const b = x2Coeff.subIn({ a });
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\left( ${poly} \\right)^${n} \\\\
 		& = ${working} \\\\
 		& = ${exp} + \\dotsb
 
-		~${'align*'}
+		$${'align*'}
 		& (${poly2}) \\left( ${poly} \\right)^${n} \\\\
 		&= (${poly2}) \\left(${exp} + \\dotsb \\right) \\\\
 		&= ${working2} + \\dotsb \\\\
 		&= ${finalExp} + \\dotsb 
 
 		Comparing coefficients of ${'x'},
-		~${'align*'}
+		$${'align*'}
 		${aWorking} ${qed}
 
 		Comparing coefficients of ${'x^2'},
-		~${'align*'}
+		$${'align*'}
 		b &= ${castToPoly(x2Coeff).replaceXWith(`\\left({${a}}\\right)`)} \\\\
 		&= {${b}} ${qed}
 	`;

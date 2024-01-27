@@ -43,11 +43,11 @@ let circle: Circle;
 	const soln = mathlify`
 		Let ${`\\left( x, x \\right)`}
 		be the centre of the circle
-		@${'@br'}
+		--newline--
 		Since both axes are tangents to the circle,
 		the radius is also ${'x'}
 
-		~${'gather*'}
+		$${'gather*'}
 		\\sqrt{\\left( ${poly1} \\right)^2 + \\left( ${poly2} \\right)^2} = x \\\\
 		\\left( ${poly1.square()} \\right) + \\left( ${poly2.square()} \\right) = x^2 \\\\
 		${working} \\\\
@@ -77,7 +77,7 @@ let circle: Circle;
 		and ${'X'}
 		denote the centre of the circle
 
-		~${'align*'}
+		$${'align*'}
 		&\\text{Gradient } CX \\\\
 		&= ${gWorking.working} \\\\
 		&= ${gWorking.gradient} \\\\
@@ -85,7 +85,7 @@ let circle: Circle;
 		&= ${m}
 
 		Equation of ${'T'}:
-		~${'gather*'}
+		$${'gather*'}
 		${lWorking.working} \\\\
 		y = ${T} ${qed}
 	`;

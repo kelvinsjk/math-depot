@@ -7,9 +7,10 @@ const modules: Modules = {
 	display,
 	em: (x: string) => `<em>${x}</em>`,
 	b: (x: string) => `<strong>${x}</strong>`,
-	br: () => `<br />`,
-	hr: () => `<hr />`,
 	postProcess: (x: string) => {
+		// br, hr
+		x = x.replaceAll('--newline--', '<br />');
+		x = x.replaceAll('--hrule--', '<hr />');
 		// paragraphing
 		let pTagged = x.replace(/\r?\n[ \t\r\n]*\r?\n[ \t]*(?![ \t]*<(p|div))/g, '<p>');
 		if (!pTagged.trim().startsWith('<')) {

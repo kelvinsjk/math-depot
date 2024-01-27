@@ -19,7 +19,7 @@ const answer = new Answer();
 	const working = binomialExpansionWorking(poly, n, 4);
 	const exp = poly.pow(n).slice(4);
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\left( ${poly} \\right)^${n} \\\\
 		& = ${working} \\\\
 		&= ${exp} + \\dotsb
@@ -36,7 +36,7 @@ const answer = new Answer();
 		const finalExp = exp.replaceXWith(newP).slice(4);
 		const x3Coeff = finalExp.coeffs[3];
 		const soln = mathlify`
-			~${'align*'}
+			$${'align*'}
 			& \\left( ${poly.replaceXWith(newP)} \\right)^${n} \\\\
 			& = ${exp.replaceXWith(`(${newP})`)} + \\dotsb \\\\
 			& = 1 + 9z - 9z^2 + 36(${newP
@@ -63,7 +63,7 @@ const binomWorking = new BinomialGeneralTermWorking(2, 1, new Fraction(1, 3), -3
 });
 {
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\text{General term} \\\\
 		& ${binomWorking} ${qed}
 	`;
@@ -76,7 +76,7 @@ const binomWorking = new BinomialGeneralTermWorking(2, 1, new Fraction(1, 3), -3
 
 {
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		& \\text{Power of } x \\text{ in this general term} \\\\
 		&= ${binomWorking.power} ${qed}
 	`;
@@ -94,10 +94,10 @@ const binomWorking = new BinomialGeneralTermWorking(2, 1, new Fraction(1, 3), -3
 	const x2Term = binomWorking.at(r);
 	const soln = mathlify`
 		For term in ${'x^2'},
-		~${'align*'}
+		$${'align*'}
 		${working}
 
-		~${'align*'}
+		$${'align*'}
 		& \\text{Coefficient of } x^2 \\\\
 		&= ${x2Term.coeffWorking} \\\\
 		&= ${x2Term.coeff} ${qed}

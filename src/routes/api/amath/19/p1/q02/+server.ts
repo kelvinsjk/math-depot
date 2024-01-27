@@ -24,11 +24,11 @@ const roots = working2.factorizeQuadratic();
 
 const soln = mathlify`
 Equating the two,
-~${'align*'}
+$${'align*'}
 ${working}
 
 For the curve to be entirely above the line,
-~${'gather*'}
+$${'gather*'}
 \\text{discriminant} < 0 \\\\
 ${working2} \\\\
 ${roots} ${qed}

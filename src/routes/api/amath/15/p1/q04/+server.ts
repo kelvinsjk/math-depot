@@ -21,12 +21,12 @@ let rhs: Expression;
 	let soln = mathlify`
 		For ${y}
 		to be always negative,
-		~${'equation'}
+		$${'equation'}
 		a < 0
 
 		and
 
-		~${'align*'}
+		$${'align*'}
 		\\textrm{ discriminant } &< 0 \\\\
 		${working}
 	`;
@@ -37,7 +37,7 @@ let rhs: Expression;
 	rhs = working.rhs;
 
 	soln += mathlify`
-		~${'equation'}
+		$${'equation'}
 		${working}
 
 		Hence ${'a < 0'} ${qed}

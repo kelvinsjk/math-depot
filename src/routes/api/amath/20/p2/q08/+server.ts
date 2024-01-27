@@ -28,7 +28,7 @@ const y = new Polynomial('y');
 	const eX = `${e}^x`;
 	const soln = mathlify`
 		Let ${`y = ${eX}`}
-		~${'gather*'}
+		$${'gather*'}
 		${working} \\\\
 		\\begin{aligned}
 		y &= {${y1}} & ${or} && y &= ${y2} \\\\
@@ -54,7 +54,7 @@ const y = new Polynomial('y');
 	const working = new EquationWorking(yPlus3, y.times(8).times(2), { aligned: true });
 	const yVal = working.solveLinear();
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		1 + ${logY} + \\frac{1}{${log_8_2}} &= ${logYPlus3} \\\\
 		1 + ${logY} + \\frac{1}{${changedBase}} &= ${logYPlus3} \\\\
 		1 + ${logY} + ${log8} &= ${logYPlus3} \\\\
@@ -76,7 +76,7 @@ const y = new Polynomial('y');
 	const poly = new Polynomial([2, 7]);
 	const den = 3;
 	const soln = mathlify`
-		~${'align*'}
+		$${'align*'}
 		x &= 2 \\ln \\left( \\frac{${poly}}{${den}} \\right) \\\\		
 		\\frac{x}{2} &= \\ln \\left( \\frac{${poly}}{${den}} \\right) \\\\
 		${e}^{\\frac{x}{2}} &= \\frac{${poly}}{${den}} ${qed} \\\\
@@ -88,7 +88,7 @@ const y = new Polynomial('y');
 	`;
 	const ans = mathlify`
 		${`${e}^{\\frac{x}{2}} = \\frac{${poly}}{${den}}`}.
-		@${'@br'}
+		--newline--
 		${`y = ${poly.plus(4)}`}.
 	`;
 	answer.addPart(ans, soln);
